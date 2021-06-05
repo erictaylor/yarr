@@ -1,5 +1,6 @@
 import 'react-app-polyfill/ie11';
-import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import { render } from 'react-dom';
 
 const App = () => {
   return (
@@ -9,4 +10,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById('root'));
