@@ -1,0 +1,81 @@
+{
+  "name": "yarrr",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Eric Taylor <eric@daxos.com>",
+  "description": "Yet another React Router... really",
+  "repository": "https://github.com/erictaylor/yarrr",
+  "main": "dist/index.js",
+  "module": "dist/yarrr.esm.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/yarrr.esm.js",
+    "default": "./dist/yarrr.esm.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "concurrent",
+    "route",
+    "routing",
+    "preloading",
+    "prefetching",
+    "relay",
+    "suspense",
+    "render-as-you-fetch"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {
+    "react": ">=16.14.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "size-limit": [
+    {
+      "path": "dist/yarrr.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/yarrr.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.11.0",
+    "@skypack/package-check": "^0.2.2",
+    "@types/react": "^17.0.9",
+    "@types/react-dom": "^17.0.6",
+    "husky": "^6.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "size-limit": "^4.11.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.3.2"
+  }
+}
