@@ -25,6 +25,9 @@ jobs:
       - name: Lint
         run: yarn lint
 
+      - name: TypeScript Check
+        run: yarn tsc
+
       - name: Test
         run: yarn test --ci --coverage --maxWorkers=2
 

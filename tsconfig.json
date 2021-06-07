@@ -14,7 +14,9 @@
     // stricter type-checking for stronger correctness. Recommended by TS
     "strict": true,
     // linter checks for common issues
+    "noImplicitAny": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
