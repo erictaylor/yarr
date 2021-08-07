@@ -61,22 +61,22 @@
     }
   ],
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@size-limit/preset-small-lib": "^4.11.0",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@size-limit/preset-small-lib": "^5.0.2",
     "@skypack/package-check": "^0.2.2",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/react-hooks": "^7.0.0",
-    "@testing-library/user-event": "^13.1.9",
-    "@types/react": "^17.0.9",
-    "@types/react-dom": "^17.0.6",
-    "husky": "^6.0.0",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/react-hooks": "^7.0.1",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/react": "^17.0.16",
+    "@types/react-dom": "^17.0.9",
+    "husky": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "size-limit": "^4.11.0",
+    "size-limit": "^5.0.2",
     "tsdx": "^0.14.1",
-    "tslib": "^2.2.0",
-    "typescript": "^4.3.2"
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "history": "^5.0.0"
