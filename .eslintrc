@@ -1,0 +1,36 @@
+{
+  "extends": [
+    "canonical",
+    "canonical/react",
+    "canonical/typescript",
+    "canonical/jest",
+    "prettier",
+    "plugin:typescript-sort-keys/recommended"
+  ],
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./scripts/tsconfig.json"]
+  },
+  "plugins": ["typescript-sort-keys"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/no-confusing-void-expression": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-redeclare": 0,
+    "@typescript-eslint/unbound-method": 0,
+    "arrow-body-style": 0,
+    "filenames/match-regex": 0,
+    "import/extensions": 0,
+    "import/no-namespace": 0,
+    "import/no-unassigned-import": 0,
+    "import/no-unresolved": 0,
+    "max-nested-callbacks": 0,
+    "unicorn/no-reduce": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
