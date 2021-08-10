@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import { RouterContext } from '../context/RouterContext';
-import { CreateRouterContext } from '../types';
+import type { CreateRouterContext } from '../types';
 
 export interface RouterProviderProps {
   children: ReactNode;

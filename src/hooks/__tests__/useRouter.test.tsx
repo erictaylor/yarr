@@ -1,9 +1,9 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { ReactNode } from 'react';
+import React from 'react';
+import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
+import type { CreateRouterContext } from '../../types';
 import { useRouter } from '../useRouter';
-import { CreateRouterContext } from '../../types';
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => {
   return (

@@ -1,6 +1,7 @@
-import { createMemoryHistory, MemoryHistoryOptions } from 'history';
+import type { MemoryHistoryOptions } from 'history';
+import { createMemoryHistory } from 'history';
+import type { RoutesConfig } from '../types';
 import { createRouter } from './createRouter';
-import { RoutesConfig } from '../types';
 import { verifyRoutesConfig } from './verifyRoutesConfig';
 
 export const createMemoryRouter = <Routes extends RoutesConfig>(

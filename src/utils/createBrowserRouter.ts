@@ -1,6 +1,7 @@
-import { BrowserHistoryOptions, createBrowserHistory } from 'history';
+import type { BrowserHistoryOptions} from 'history';
+import { createBrowserHistory } from 'history';
+import type { RoutesConfig } from '../types';
 import { createRouter } from './createRouter';
-import { RoutesConfig } from '../types';
 import { verifyRoutesConfig } from './verifyRoutesConfig';
 
 export const createBrowserRouter = <Routes extends RoutesConfig>(

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { RouterContextProps } from '../types';
+import type { RouterContextProps } from '../types';
 
 export const isRouterContext = (
   context: RouterContextProps | null

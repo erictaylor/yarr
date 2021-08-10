@@ -1,6 +1,7 @@
-import { createHashHistory, HashHistoryOptions } from 'history';
+import type { HashHistoryOptions } from 'history';
+import { createHashHistory } from 'history';
+import type { RoutesConfig } from '../types';
 import { createRouter } from './createRouter';
-import { RoutesConfig } from '../types';
 import { verifyRoutesConfig } from './verifyRoutesConfig';
 
 export const createHashRouter = <Routes extends RoutesConfig>(

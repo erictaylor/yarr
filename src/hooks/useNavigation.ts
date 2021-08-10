@@ -1,4 +1,4 @@
-import { History } from 'history';
+import type { History } from 'history';
 import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
 

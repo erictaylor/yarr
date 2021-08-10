@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
-import { RouterContextProps } from '../types';
+import type { RouterContextProps } from '../types';
 
 type UseRouter = Pick<
   RouterContextProps,

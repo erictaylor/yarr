@@ -1,4 +1,4 @@
-import { BrowserHistory, HashHistory, MemoryHistory } from 'history';
+import type { BrowserHistory, HashHistory, MemoryHistory } from 'history';
 
 export type RoutesConfig = ReadonlyArray<{}>;
 

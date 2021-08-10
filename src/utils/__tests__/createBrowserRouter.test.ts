@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history';
-import { createRouter } from '../createRouter';
 import { createBrowserRouter } from '../createBrowserRouter';
+import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
   createBrowserHistory: jest.fn(() => 'BrowserHistory'),

@@ -1,5 +1,5 @@
-import { History } from 'history';
-import { CreateRouterContext, RoutesConfig } from '../types';
+import type { History } from 'history';
+import type { CreateRouterContext, RoutesConfig } from '../types';
 
 const unimplementedFunction = () => {
   throw new Error('Function not yet implemented.');

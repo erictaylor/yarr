@@ -1,6 +1,6 @@
 import { createMemoryHistory } from 'history';
-import { createRouter } from '../createRouter';
 import { createMemoryRouter } from '../createMemoryRouter';
+import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
   createMemoryHistory: jest.fn(() => 'MemoryHistory'),

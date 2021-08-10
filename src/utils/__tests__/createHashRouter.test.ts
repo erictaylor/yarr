@@ -1,6 +1,6 @@
 import { createHashHistory } from 'history';
-import { createRouter } from '../createRouter';
 import { createHashRouter } from '../createHashRouter';
+import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
   createHashHistory: jest.fn(() => 'HashHistory'),
