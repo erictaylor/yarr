@@ -1,4 +1,5 @@
 import { createMemoryHistory } from 'history';
+import type { RoutesConfig } from '../../types';
 import { createMemoryRouter } from '../createMemoryRouter';
 import { createRouter } from '../createRouter';
 
@@ -20,8 +21,11 @@ describe('createMemoryRouter', () => {
   });
 
   it('calls createMemoryHistory with history options, and createRouter with routes and history', () => {
-    const routes = [{}, {}];
-    createMemoryRouter(routes, { initialEntries: ['/'], initialIndex: 0 });
+    const routes = [{}];
+    createMemoryRouter(routes as unknown as RoutesConfig, {
+      initialEntries: ['/'],
+      initialIndex: 0,
+    });
 
     expect(createMemoryHistory).toHaveBeenCalledTimes(1);
     expect(createMemoryHistory).toHaveBeenCalledWith({

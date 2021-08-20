@@ -12,7 +12,7 @@ export const createRouter = <Routes extends RoutesConfig>({
   routes: Routes;
 }): CreateRouterContext => {
   const context: CreateRouterContext = {
-    assistPrefetch: false,
+    assistPreload: false,
     awaitComponent: false,
     get: unimplementedFunction,
     history,

@@ -1,4 +1,5 @@
 import { createHashHistory } from 'history';
+import type { RoutesConfig } from '../../types';
 import { createHashRouter } from '../createHashRouter';
 import { createRouter } from '../createRouter';
 
@@ -20,8 +21,10 @@ describe('createHashRouter', () => {
   });
 
   it('calls createHashHistory with history options, and createRouter with routes and history', () => {
-    const routes = [{}, {}];
-    createHashRouter(routes, { window: ('iframe' as unknown) as Window });
+    const routes = [{}];
+    createHashRouter(routes as unknown as RoutesConfig, {
+      window: 'iframe' as unknown as Window,
+    });
 
     expect(createHashHistory).toHaveBeenCalledTimes(1);
     expect(createHashHistory).toHaveBeenCalledWith({ window: 'iframe' });
