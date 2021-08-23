@@ -1,4 +1,10 @@
-import type { BrowserHistory, HashHistory, MemoryHistory } from 'history';
+import type {
+  BrowserHistory,
+  HashHistory,
+  History,
+  MemoryHistory,
+  PartialPath,
+} from 'history';
 import type { ComponentType } from 'react';
 import type { SuspenseResource } from './utils/SuspenseResource';
 
@@ -29,6 +35,17 @@ export type PathParameters<Path extends string> =
 export type RouteParameters<Path extends string> = {
   [K in PathParameters<Path>]: string;
 };
+
+export type PreloadFunction = () => Promise<unknown>;
+
+export interface PreloadConfig {
+  data: PreloadFunction;
+  defer?: boolean;
+}
+
+export interface PreloadedValue {
+  [key: string]: PreloadConfig | PreloadFunction;
+}
 
 /**
  * A single route configuration object.
@@ -72,9 +89,9 @@ export interface RouteConfig<
    * })
    * ```
    */
-  preload?: (routeParameters: RouteParameters<`${ParentPath}${Path}`>) => {
-    [key: string]: () => Promise<unknown>;
-  };
+  preload?: (
+    routeParameters: RouteParameters<`${ParentPath}${Path}`>
+  ) => PreloadedValue;
   /**
    * A function where you can perform logic to conditionally determine
    * if the router should redirect the user to another route.
@@ -97,6 +114,20 @@ export type RouteEntry = Omit<RouteConfig, 'component' | 'path'> & {
   component: SuspenseResource<ComponentType>;
 };
 
+export type RoutesEntryMap = Map<string, RouteEntry>;
+
+export interface RouterOptions<Routes extends RoutesConfig> {
+  assistPreload?: boolean;
+  awaitComponent?: boolean;
+  awaitPreload?: boolean;
+  routes: Routes;
+}
+
+export interface CreateRouterOptions<Routes extends RoutesConfig>
+  extends RouterOptions<Routes> {
+  history: History;
+}
+
 export type RouterSubscriptionCallback = (nextEntry: RouteEntry) => void;
 
 export type RouterSubscriptionDispose = () => void;
@@ -104,14 +135,47 @@ export type RouterSubscriptionDispose = () => void;
 export interface CreateRouterContext {
   readonly assistPreload: boolean;
   readonly awaitComponent: boolean;
+  readonly awaitPreload: boolean;
   readonly get: () => RouteEntry;
   readonly history: BrowserHistory | HashHistory | MemoryHistory;
   readonly isActive: (path: string, exact: boolean) => boolean;
+  /**
+   * Preloads the component code for a given route.
+   */
   readonly preloadCode: (pathname: string) => void;
   readonly subscribe: (
     callback: RouterSubscriptionCallback
   ) => RouterSubscriptionDispose;
+  /**
+   * Preloads both the component code and data for a given route.
+   */
   readonly warmRoute: (pathname: string) => void;
 }
 
 export type RouterContextProps = CreateRouterContext;
+
+export type LocationFragment = PartialPath;
+export interface MatchedRoute {
+  location: LocationFragment;
+  params: Record<string, string[] | string>;
+  route: RouteEntry;
+}
+
+export type PreloadedMap = Map<
+  string,
+  { data: SuspenseResource<unknown>; defer: boolean }
+>;
+
+export interface PreparedMatchFragment {
+  component: SuspenseResource<ComponentType>;
+  location: LocationFragment;
+  params: Record<string, string[] | string>;
+}
+
+export interface PreparedMatchWithAssist extends PreparedMatchFragment {
+  preloaded?: PreloadedMap;
+}
+
+export interface PreparedMatchWithoutAssist extends PreparedMatchFragment {
+  preloaded?: PreloadedValue;
+}

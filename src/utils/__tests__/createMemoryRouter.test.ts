@@ -22,10 +22,18 @@ describe('createMemoryRouter', () => {
 
   it('calls createMemoryHistory with history options, and createRouter with routes and history', () => {
     const routes = [{}];
-    createMemoryRouter(routes as unknown as RoutesConfig, {
-      initialEntries: ['/'],
-      initialIndex: 0,
-    });
+    createMemoryRouter(
+      {
+        assistPreload: false,
+        awaitComponent: false,
+        awaitPreload: false,
+        routes: routes as unknown as RoutesConfig,
+      },
+      {
+        initialEntries: ['/'],
+        initialIndex: 0,
+      }
+    );
 
     expect(createMemoryHistory).toHaveBeenCalledTimes(1);
     expect(createMemoryHistory).toHaveBeenCalledWith({
@@ -34,6 +42,9 @@ describe('createMemoryRouter', () => {
     });
     expect(createRouter).toHaveBeenCalledTimes(1);
     expect(createRouter).toHaveBeenCalledWith({
+      assistPreload: false,
+      awaitComponent: false,
+      awaitPreload: false,
       history: 'MemoryHistory',
       routes,
     });

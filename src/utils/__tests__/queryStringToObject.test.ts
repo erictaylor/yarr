@@ -1,12 +1,12 @@
-import { parametersStringToObject } from '../parametersStringToObject';
+import { queryStringToObject } from '../queryStringToObject';
 
-describe('parametersStringToObject()', () => {
+describe('queryStringToObject()', () => {
   it('should return empty object if empty string passed', () => {
-    expect(parametersStringToObject('')).toEqual({});
+    expect(queryStringToObject('')).toEqual({});
   });
 
   it('correctly transforms string of query params to object', () => {
-    expect(parametersStringToObject('?foo=bar&baz=qux&quux=quuz')).toEqual({
+    expect(queryStringToObject('?foo=bar&baz=qux&quux=quuz')).toEqual({
       baz: 'qux',
       foo: 'bar',
       quux: 'quuz',
@@ -15,9 +15,7 @@ describe('parametersStringToObject()', () => {
 
   it('correctly transforms string of query params to object with nested parameters', () => {
     expect(
-      parametersStringToObject(
-        '?foo=bar&baz=qux&quux=quuz&quux=corge&quux=grault'
-      )
+      queryStringToObject('?foo=bar&baz=qux&quux=quuz&quux=corge&quux=grault')
     ).toEqual({
       baz: 'qux',
       foo: 'bar',

@@ -1,10 +1,10 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { sortAndStringifyRequestParameters } from '../sortAndStringifyRequestParameters';
+import { sortAndStringifySearchParameters } from '../sortAndStringifySearchParameters';
 
-describe('sortAndStringifyRequestParameters()', () => {
+describe('sortAndStringifySearchParameters()', () => {
   it('should return sorted parameters as expected for simple object', () => {
     expect(
-      sortAndStringifyRequestParameters({
+      sortAndStringifySearchParameters({
         foo: 'foo',
         bar: 'bar',
         qux: 'qux',
@@ -15,7 +15,7 @@ describe('sortAndStringifyRequestParameters()', () => {
 
   it('should return sorted params as expected for object with array values', () => {
     expect(
-      sortAndStringifyRequestParameters({
+      sortAndStringifySearchParameters({
         red: 'red',
         fruits: ['orange', 'banana', 'apple', 'grape'],
         blue: 'blue',

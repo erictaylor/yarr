@@ -1,9 +1,7 @@
 /**
- * Sorts an array of object params and compute a query-like string.
- * The result will eventually be used as a unique idenifier to avoid multiple invocations
- * of route prefetch to ultimately prevent duplicate requests.
+ * Sorts an object of string params and returns a query string.
  */
-export const sortAndStringifyRequestParameters = (
+export const sortAndStringifySearchParameters = (
   parameters: Record<string, string[] | string>
 ): string => {
   const parametersArray = [];

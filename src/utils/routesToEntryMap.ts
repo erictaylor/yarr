@@ -1,4 +1,4 @@
-import type { RouteConfig, RouteEntry, RoutesConfig } from '../types';
+import type { RouteConfig, RoutesConfig, RoutesEntryMap } from '../types';
 import { SuspenseResource } from './SuspenseResource';
 import { getCanonicalPath } from './getCanonicalPath';
 
@@ -6,10 +6,8 @@ import { getCanonicalPath } from './getCanonicalPath';
  * We create a Map from the routes array so we can optimistically perform matches with O(1) complexity.
  * This operation happens only once when initialising; generated Map is kept in memory for quick access.
  */
-export const routesToEntryMap = (
-  routes: RoutesConfig
-): Map<string, RouteEntry> => {
-  const routesEntryMap: Map<string, RouteEntry> = new Map();
+export const routesToEntryMap = (routes: RoutesConfig): RoutesEntryMap => {
+  const routesEntryMap: RoutesEntryMap = new Map();
 
   const routesIterator = (
     inputRoutes: RoutesConfig,

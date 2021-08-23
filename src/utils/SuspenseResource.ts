@@ -3,8 +3,6 @@
 type Loader<Result> = () => Promise<Result>;
 
 /**
- * SuspenseResource
- *
  * Allows handling of a asynchronous loader function in a way that
  * integrates natively with React Suspense.
  */

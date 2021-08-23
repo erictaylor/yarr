@@ -22,14 +22,25 @@ describe('createBrowserRouter', () => {
 
   it('calls createBrowserHistory with history options, and createRouter with routes and history', () => {
     const routes = [{}];
-    createBrowserRouter(routes as unknown as RoutesConfig, {
-      window: 'iframe' as unknown as Window,
-    });
+    createBrowserRouter(
+      {
+        assistPreload: false,
+        awaitComponent: false,
+        awaitPreload: false,
+        routes: routes as unknown as RoutesConfig,
+      },
+      {
+        window: 'iframe' as unknown as Window,
+      }
+    );
 
     expect(createBrowserHistory).toHaveBeenCalledTimes(1);
     expect(createBrowserHistory).toHaveBeenCalledWith({ window: 'iframe' });
     expect(createRouter).toHaveBeenCalledTimes(1);
     expect(createRouter).toHaveBeenCalledWith({
+      assistPreload: false,
+      awaitComponent: false,
+      awaitPreload: false,
       history: 'BrowserHistory',
       routes,
     });

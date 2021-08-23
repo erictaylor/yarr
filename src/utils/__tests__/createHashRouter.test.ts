@@ -22,14 +22,25 @@ describe('createHashRouter', () => {
 
   it('calls createHashHistory with history options, and createRouter with routes and history', () => {
     const routes = [{}];
-    createHashRouter(routes as unknown as RoutesConfig, {
-      window: 'iframe' as unknown as Window,
-    });
+    createHashRouter(
+      {
+        assistPreload: false,
+        awaitComponent: false,
+        awaitPreload: false,
+        routes: routes as unknown as RoutesConfig,
+      },
+      {
+        window: 'iframe' as unknown as Window,
+      }
+    );
 
     expect(createHashHistory).toHaveBeenCalledTimes(1);
     expect(createHashHistory).toHaveBeenCalledWith({ window: 'iframe' });
     expect(createRouter).toHaveBeenCalledTimes(1);
     expect(createRouter).toHaveBeenCalledWith({
+      assistPreload: false,
+      awaitComponent: false,
+      awaitPreload: false,
       history: 'HashHistory',
       routes,
     });

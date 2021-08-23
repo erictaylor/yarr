@@ -3,10 +3,12 @@ import { aggregateKeyValues } from './aggregateKeyValues';
 /**
  * Transform a string of parameters to an object
  */
-export const parametersStringToObject = (
+export const queryStringToObject = (
   search: string
 ): Record<string, string[] | string> => {
   if (!search) return {};
+
+  // TODO: Should we just use URLSearchParams here?
 
   const parametersString = search.slice(1).split('&');
 
