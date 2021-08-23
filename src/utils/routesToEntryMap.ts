@@ -1,4 +1,9 @@
-import type { RouteConfig, RoutesConfig, RoutesEntryMap } from '../types';
+import type {
+  RouteConfig,
+  RouteEntry,
+  RoutesConfig,
+  RoutesEntryMap,
+} from '../types';
 import { SuspenseResource } from './SuspenseResource';
 import { getCanonicalPath } from './getCanonicalPath';
 
@@ -15,14 +20,14 @@ export const routesToEntryMap = (routes: RoutesConfig): RoutesEntryMap => {
   ) =>
     inputRoutes.forEach((route) => {
       const { path, children, ...routeProps } = route;
-      const { path: parentPath = '', ...parentProps } = parentRoute ?? {};
+      const { path: parentPath = '', redirectRules } = parentRoute ?? {};
 
       const parentCanonicalPath = parentPath === '/' ? '' : parentPath;
       const routeCanonicalPath = path ? getCanonicalPath(path) : '';
       const canonicalPath = [parentCanonicalPath, routeCanonicalPath].join('');
 
-      const routeEntry = {
-        ...parentProps,
+      const routeEntry: RouteEntry = {
+        redirectRules,
         ...routeProps,
         component: new SuspenseResource(routeProps.component),
       };
@@ -30,17 +35,12 @@ export const routesToEntryMap = (routes: RoutesConfig): RoutesEntryMap => {
       routesEntryMap.set(canonicalPath, routeEntry);
 
       if (children && Array.isArray(children)) {
-        routesIterator(
-          children,
-          // descendants of group routes will have group properties merged with theirs
-          // if current route is a group its properties will be passed down
-          // otherwise we keep iterating the same group parent
-          {
-            ...parentProps,
-            ...routeProps,
-            path: canonicalPath,
-          }
-        );
+        routesIterator(children, {
+          // Redirect rules are merged from a parent route unless overwritten on the child route.
+          redirectRules,
+          ...routeProps,
+          path: canonicalPath,
+        });
       }
     });
 

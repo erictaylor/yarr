@@ -249,7 +249,8 @@ describe('routesToEntryMap()', () => {
     );
   });
 
-  it('should merge group route properties to all children', () => {
+  it('should merge pass redirectRules from parent route to children', () => {
+    const preload = jest.fn(() => ({ foo: 'bar' }));
     const redirectRule = jest.fn(() => null);
     const routes = [
       {
@@ -274,6 +275,7 @@ describe('routesToEntryMap()', () => {
             ],
             component: 'User',
             path: 'user',
+            preload,
             redirectRules: redirectRule,
           },
           { component: 'NotFound', path: '*' },
@@ -319,6 +321,7 @@ describe('routesToEntryMap()', () => {
               load: expect.any(Function),
               read: expect.any(Function),
             },
+            preload,
             redirectRules: redirectRule,
           },
         ],
@@ -365,7 +368,7 @@ describe('routesToEntryMap()', () => {
     );
   });
 
-  it('should override group route property when property is explicitly declared on children', () => {
+  it('should override redirectRules from parent if provided on child route', () => {
     const redirectRuleLevel1 = jest.fn(() => null);
     const redirectRuleLevel2 = jest.fn(() => null);
 

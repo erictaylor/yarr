@@ -13,7 +13,7 @@ export const locationsMatch = (
     return false;
   }
 
-  // TODO: Should be sort `search` values when `exact` is true and comparing?
+  // TODO: Should we sort `search` values when `exact` is true and comparing?
 
   return exact
     ? leftLocationFragment.search === rightLocationFragment.search &&
