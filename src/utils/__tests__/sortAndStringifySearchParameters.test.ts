@@ -20,6 +20,8 @@ describe('sortAndStringifySearchParameters()', () => {
         fruits: ['orange', 'banana', 'apple', 'grape'],
         blue: 'blue',
       })
-    ).toBe('?blue=blue&fruits=apple,banana,grape,orange&red=red');
+    ).toBe(
+      '?blue=blue&fruits=apple&fruits=banana&fruits=grape&fruits=orange&red=red'
+    );
   });
 });

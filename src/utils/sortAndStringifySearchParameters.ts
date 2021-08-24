@@ -22,7 +22,7 @@ export const sortAndStringifySearchParameters = (
     .reduce((identifier, element) => {
       const rawValue = parameters[element.value];
       const value = Array.isArray(rawValue)
-        ? rawValue.sort((a, b) => (a > b ? 1 : -1)).join(',')
+        ? rawValue.sort((a, b) => (a > b ? 1 : -1)).join(`&${element.value}=`)
         : rawValue;
 
       return `${identifier}${identifier ? '&' : '?'}${element.value}=${value}`;
