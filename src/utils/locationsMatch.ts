@@ -1,5 +1,7 @@
 import type { PartialPath } from 'history';
 import { pathToLocationFragment } from './pathToLocationFragment';
+import { queryStringToObject } from './queryStringToObject';
+import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';
 
 export const locationsMatch = (
   leftLocation: PartialPath | string,
@@ -13,10 +15,19 @@ export const locationsMatch = (
     return false;
   }
 
-  // TODO: Should we sort `search` values when `exact` is true and comparing?
+  if (exact) {
+    const leftLocationSearch = sortAndStringifySearchParameters(
+      queryStringToObject(leftLocationFragment.search ?? '')
+    );
+    const rightLocationSearch = sortAndStringifySearchParameters(
+      queryStringToObject(rightLocationFragment.search ?? '')
+    );
 
-  return exact
-    ? leftLocationFragment.search === rightLocationFragment.search &&
-        leftLocationFragment.hash === rightLocationFragment.hash
-    : true;
+    return (
+      leftLocationSearch === rightLocationSearch &&
+      leftLocationFragment.hash === rightLocationFragment.hash
+    );
+  }
+
+  return true;
 };
