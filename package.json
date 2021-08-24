@@ -69,6 +69,7 @@
     "eslint": "^7.32.0",
     "eslint-config-canonical": "^26.2.3",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-typescript-sort-keys": "^1.8.0",
     "husky": "^7.0.1",
     "prettier": "^2.3.2",
