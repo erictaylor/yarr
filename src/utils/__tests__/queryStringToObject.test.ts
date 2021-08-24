@@ -22,4 +22,14 @@ describe('queryStringToObject()', () => {
       quux: ['quuz', 'corge', 'grault'],
     });
   });
+
+  it('should decode URI components', () => {
+    expect(queryStringToObject('?foo=ABC%20abc%20123')).toEqual({
+      foo: 'ABC abc 123',
+    });
+
+    expect(queryStringToObject('?foo=ABC%20abc%20123&foo=%24')).toEqual({
+      foo: ['ABC abc 123', '$'],
+    });
+  });
 });
