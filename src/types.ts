@@ -155,7 +155,7 @@ export type RouterSubscriptionCallback = (nextEntry: RouteEntry) => void;
 
 export type RouterSubscriptionDispose = () => void;
 
-export interface CreateRouterContext {
+export interface RouterContextProps {
   /**
    * When true, tells the router that route preloads should be made into suspense resources.
    */
@@ -193,8 +193,6 @@ export interface CreateRouterContext {
    */
   readonly warmRoute: (pathname: string) => void;
 }
-
-export type RouterContextProps = CreateRouterContext;
 
 export type LocationFragment = PartialPath;
 export interface MatchedRoute {

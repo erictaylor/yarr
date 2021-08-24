@@ -1,5 +1,5 @@
 import type {
-  CreateRouterContext,
+  RouterContextProps,
   CreateRouterOptions,
   RoutesConfig,
   RouterSubscriptionCallback,
@@ -20,7 +20,7 @@ export const createRouter = <Routes extends RoutesConfig>({
   awaitPreload = false,
   history,
   routes,
-}: CreateRouterOptions<Routes>): CreateRouterContext => {
+}: CreateRouterOptions<Routes>): RouterContextProps => {
   const routesEntryMap = routesToEntryMap(routes);
 
   const entryMatch = matchRoutes(routesEntryMap, history.location);
@@ -53,7 +53,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     subscribers.forEach((historyCallback) => historyCallback(nextEntry));
   });
 
-  const context: CreateRouterContext = {
+  const context: RouterContextProps = {
     assistPreload,
     awaitComponent,
     get: () => currentEntry,

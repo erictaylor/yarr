@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 import { RouterContext } from '../context/RouterContext';
-import type { CreateRouterContext } from '../types';
+import type { RouterContextProps } from '../types';
 
 export interface RouterProviderProps {
   children: ReactNode;
-  router: CreateRouterContext;
+  router: RouterContextProps;
 }
 
 export const RouterProvider = ({ children, router }: RouterProviderProps) => {

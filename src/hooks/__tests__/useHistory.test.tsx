@@ -2,19 +2,19 @@ import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
 import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
-import type { CreateRouterContext } from '../../types';
+import type { RouterContextProps } from '../../types';
 import { useHistory } from '../useHistory';
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <RouterProvider
       router={
-        ({
+        {
           history: {
             action: 'mockHistoryAction',
             location: 'mockHistoryLocation',
           },
-        } as unknown) as CreateRouterContext
+        } as unknown as RouterContextProps
       }
     >
       {children}

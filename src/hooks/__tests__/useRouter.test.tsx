@@ -2,18 +2,18 @@ import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
 import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
-import type { CreateRouterContext } from '../../types';
+import type { RouterContextProps } from '../../types';
 import { useRouter } from '../useRouter';
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <RouterProvider
       router={
-        ({
+        {
           isActive: 'mockIsActive',
           preloadCode: 'mockPreloadCode',
           warmRoute: 'mockWarmRoute',
-        } as unknown) as CreateRouterContext
+        } as unknown as RouterContextProps
       }
     >
       {children}
