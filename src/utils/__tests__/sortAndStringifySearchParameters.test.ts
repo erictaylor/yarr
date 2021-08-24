@@ -9,8 +9,9 @@ describe('sortAndStringifySearchParameters()', () => {
         bar: 'bar',
         qux: 'qux',
         baz: 'baz',
+        zOO: 'zOO',
       })
-    ).toBe('?bar=bar&baz=baz&foo=foo&qux=qux');
+    ).toBe('?bar=bar&baz=baz&foo=foo&qux=qux&zOO=zOO');
   });
 
   it('should return sorted params as expected for object with array values', () => {
@@ -23,5 +24,14 @@ describe('sortAndStringifySearchParameters()', () => {
     ).toBe(
       '?blue=blue&fruits=apple&fruits=banana&fruits=grape&fruits=orange&red=red'
     );
+  });
+
+  it('should return encode values in returned string', () => {
+    expect(
+      sortAndStringifySearchParameters({
+        red: 'red',
+        encodeTest: 'abc 123',
+      })
+    ).toBe('?encodeTest=abc%20123&red=red');
   });
 });
