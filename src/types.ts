@@ -117,9 +117,32 @@ export type RouteEntry = Omit<RouteConfig, 'component' | 'path'> & {
 export type RoutesEntryMap = Map<string, RouteEntry>;
 
 export interface RouterOptions<Routes extends RoutesConfig> {
+  /**
+   * Indicates to the router whether it should
+   * transform preload requests into Suspense resources.
+   *
+   * @default false
+   */
   assistPreload?: boolean;
+  /**
+   * Tells the router whether or not to continue rendering a
+   * previous route component until the new requested route
+   * component code has fully loaded.
+   *
+   * @default false
+   */
   awaitComponent?: boolean;
+  /**
+   * Tells the router whether or not to continue rendering a
+   * previous route component until the newly requested routes
+   * preload data as loaded.
+   *
+   * @default false
+   */
   awaitPreload?: boolean;
+  /**
+   * An array of route configuration objects
+   */
   routes: Routes;
 }
 
@@ -133,16 +156,35 @@ export type RouterSubscriptionCallback = (nextEntry: RouteEntry) => void;
 export type RouterSubscriptionDispose = () => void;
 
 export interface CreateRouterContext {
+  /**
+   * When true, tells the router that route preloads should be made into suspense resources.
+   */
   readonly assistPreload: boolean;
+  /**
+   * When true, tells the router will continue to render a previous route component
+   * until the new route component is fully loaded and ready to use.
+   */
   readonly awaitComponent: boolean;
-  readonly awaitPreload: boolean;
+  /**
+   * Returns the current route entry for the current history location.
+   */
   readonly get: () => RouteEntry;
   readonly history: BrowserHistory | HashHistory | MemoryHistory;
-  readonly isActive: (path: string, exact: boolean) => boolean;
+  /**
+   * Returns true if the given pathname matches the current history location.
+   *
+   * Setting `exact` optional argument will take both
+   * the location search query and hash into account in the comparison.
+   */
+  readonly isActive: (path: string, exact?: boolean) => boolean;
   /**
    * Preloads the component code for a given route.
    */
   readonly preloadCode: (pathname: string) => void;
+  /**
+   * Function that allows you to subscribe to history location changes.
+   * Returns a function that you can call to unsubscribe from the history location changes.
+   */
   readonly subscribe: (
     callback: RouterSubscriptionCallback
   ) => RouterSubscriptionDispose;

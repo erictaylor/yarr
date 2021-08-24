@@ -87,6 +87,9 @@ interface PrepareMatchFunction {
     assistPreload?: false,
     awaitPreload?: boolean
   ): PreparedMatchWithoutAssist;
+  (match: MatchedRoute, assistPreload?: boolean, awaitPreload?: boolean):
+    | PreparedMatchWithAssist
+    | PreparedMatchWithoutAssist;
 }
 
 /**

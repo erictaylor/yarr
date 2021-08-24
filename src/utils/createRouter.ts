@@ -9,6 +9,11 @@ import { matchRoutes } from './matchRoutes';
 import { prepareMatch } from './prepareMatch';
 import { routesToEntryMap } from './routesToEntryMap';
 
+/**
+ * Creates a router from a passed in history type (Browser, Hash, or Memory)
+ * and an array of route configs. The router listens to history changes and
+ * preloads the necessary matching route component and preload data to be rendered.
+ */
 export const createRouter = <Routes extends RoutesConfig>({
   assistPreload = false,
   awaitComponent = false,
@@ -51,7 +56,6 @@ export const createRouter = <Routes extends RoutesConfig>({
   const context: CreateRouterContext = {
     assistPreload,
     awaitComponent,
-    awaitPreload,
     get: () => currentEntry,
     history,
     isActive: (path, exact) => locationsMatch(history.location, path, exact),
