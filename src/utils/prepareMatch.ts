@@ -1,3 +1,4 @@
+/* eslint-disable func-style */
 import type {
   MatchedRoute,
   PreloadConfig,
@@ -76,35 +77,32 @@ const prepareAssistPreloadMatch = (
   return preloaded;
 };
 
-interface PrepareMatchFunction {
-  (
-    match: MatchedRoute,
-    assistPreload: true,
-    awaitPreload?: boolean
-  ): PreparedMatchWithAssist;
-  (
-    match: MatchedRoute,
-    assistPreload?: false,
-    awaitPreload?: boolean
-  ): PreparedMatchWithoutAssist;
-  (match: MatchedRoute, assistPreload?: boolean, awaitPreload?: boolean):
-    | PreparedMatchWithAssist
-    | PreparedMatchWithoutAssist;
-}
-
 /**
  * Prepares a route before navigation is requested by warming up the component resource
  * and dealing with any data preloading that needs to take place.
  *
  * If `assistPreload` is true, we build suspense resources for all the requested preload data.
  */
-// TODO: FIX THE FUCKING TYPING ISSUE HERE!!!
-// @ts-expect-error -- fix the fucking typing issue here
-export const prepareMatch: PrepareMatchFunction = (
-  match,
+function prepareMatch(
+  match: MatchedRoute,
+  assistPreload: true,
+  awaitPreload?: boolean
+): PreparedMatchWithAssist;
+function prepareMatch(
+  match: MatchedRoute,
+  assistPreload?: false,
+  awaitPreload?: boolean
+): PreparedMatchWithoutAssist;
+function prepareMatch(
+  match: MatchedRoute,
+  assistPreload?: boolean,
+  awaitPreload?: boolean
+): PreparedMatchWithAssist | PreparedMatchWithoutAssist;
+function prepareMatch(
+  match: MatchedRoute,
   assistPreload = false,
   awaitPreload = false
-) => {
+) {
   const { route, params, location } = match;
 
   const pathnameMatch = location.pathname === lastPreparedMatch.pathname;
@@ -156,4 +154,6 @@ export const prepareMatch: PrepareMatchFunction = (
   };
 
   return preparedMatchWithoutAssist;
-};
+}
+
+export { prepareMatch };
