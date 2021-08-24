@@ -58,7 +58,7 @@ describe('matchRegexRoute()', () => {
     expect(matchRegexRoute('/:foo/file/*.js', '/bar/file/baz.jsx')).toEqual(
       null
     );
-    // TODO: Maybe we should support this?
+
     expect(
       matchRegexRoute(
         '/search/:resource?useIndex=true&term=amazing',
