@@ -104,7 +104,8 @@ export interface RouteConfig<
    * NOTE: redirect rules apply to children routes unless overridden.
    */
   redirectRules?: (
-    routeParameters: RouteParameters<`${ParentPath}${Path}`>
+    namedParameters: RouteParameters<`${ParentPath}${Path}`>,
+    searchParameters: Record<string, string[] | string>
   ) => string | null;
 }
 
@@ -199,6 +200,7 @@ export interface MatchedRoute {
   location: LocationFragment;
   params: Record<string, string[] | string>;
   route: RouteEntry;
+  search: Record<string, string[] | string>;
 }
 
 export type PreloadedMap = Map<
@@ -210,6 +212,7 @@ export interface PreparedMatchFragment {
   component: SuspenseResource<ComponentType>;
   location: LocationFragment;
   params: Record<string, string[] | string>;
+  search: Record<string, string[] | string>;
 }
 
 export interface PreparedMatchWithAssist extends PreparedMatchFragment {

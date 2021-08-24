@@ -30,14 +30,16 @@ describe('matchRoutes()', () => {
       location: { pathname: '/user/transactions' },
       params: {},
       route: { component: 'TransactionsComponent' },
+      search: {},
     });
   });
 
-  it('should match pathname with query parameters', () => {
+  it('should match pathname with search parameters', () => {
     expect(matchRoutes(routesEntryMap, '/user/transactions?foo=bar')).toEqual({
       location: { pathname: '/user/transactions', search: '?foo=bar' },
-      params: { foo: 'bar' },
+      params: {},
       route: { component: 'TransactionsComponent' },
+      search: { foo: 'bar' },
     });
   });
 
@@ -46,10 +48,11 @@ describe('matchRoutes()', () => {
       location: { hash: '#abc', pathname: '/user/transactions' },
       params: {},
       route: { component: 'TransactionsComponent' },
+      search: {},
     });
   });
 
-  it('should match pathname with both query parameters and hash', () => {
+  it('should match pathname with both search parameters and hash', () => {
     expect(
       matchRoutes(routesEntryMap, '/user/transactions?foo=bar#abc')
     ).toEqual({
@@ -58,12 +61,13 @@ describe('matchRoutes()', () => {
         pathname: '/user/transactions',
         search: '?foo=bar',
       },
-      params: { foo: 'bar' },
+      params: {},
       route: { component: 'TransactionsComponent' },
+      search: { foo: 'bar' },
     });
   });
 
-  it('should match location fragment with both query parameters and hash', () => {
+  it('should match location fragment with both search parameters and hash', () => {
     expect(
       matchRoutes(routesEntryMap, {
         hash: '#abc',
@@ -76,8 +80,9 @@ describe('matchRoutes()', () => {
         pathname: '/user/transactions',
         search: '?foo=bar',
       },
-      params: { foo: 'bar' },
+      params: {},
       route: { component: 'TransactionsComponent' },
+      search: { foo: 'bar' },
     });
   });
 
@@ -86,6 +91,7 @@ describe('matchRoutes()', () => {
       location: { pathname: '/user/transactions/123' },
       params: { transactionId: '123' },
       route: { component: 'TransactionComponent' },
+      search: {},
     });
   });
 
@@ -94,12 +100,16 @@ describe('matchRoutes()', () => {
       location: { pathname: '/login' },
       params: {},
       route: { component: 'LoginComponent' },
+      search: {},
     });
 
     expect(routesEntryMap.get('/user')?.redirectRules).toHaveBeenCalledTimes(1);
-    expect(routesEntryMap.get('/user')?.redirectRules).toHaveBeenCalledWith({
-      foo: 'bar',
-    });
+    expect(routesEntryMap.get('/user')?.redirectRules).toHaveBeenCalledWith(
+      {},
+      {
+        foo: 'bar',
+      }
+    );
   });
 
   it('shoud match wildcard (*) route when pathname is not found', () => {
@@ -107,6 +117,7 @@ describe('matchRoutes()', () => {
       location: { pathname: '/foo' },
       params: {},
       route: { component: 'NotFoundComponent' },
+      search: {},
     });
   });
 

@@ -16,7 +16,11 @@ export const matchRoutes = (
 ): MatchedRoute => {
   const locationToMatch = pathToLocationFragment(requestedMatch);
   const { pathname } = locationToMatch;
-  let parameters = { ...queryStringToObject(locationToMatch.search ?? '') };
+
+  let parameters: Record<string, string[] | string> = {};
+  const searchParameters = {
+    ...queryStringToObject(locationToMatch.search ?? ''),
+  };
 
   if (!pathname) {
     throw new Error('Unable to determine pathname from given location');
@@ -33,7 +37,7 @@ export const matchRoutes = (
         const match = matchRegexRoute(path, pathname);
         if (!match) continue;
 
-        parameters = { ...parameters, ...match.params };
+        parameters = { ...match.params };
       }
 
       // We either found a match or we reach our wildcard route that will be used for not found routes.
@@ -50,9 +54,17 @@ export const matchRoutes = (
   }
 
   // If the matchedRoute has redirect rules, we need to run them to determine a possible new location.
-  const redirectPath = matchedRoute.redirectRules?.(parameters);
+  const redirectPath = matchedRoute.redirectRules?.(
+    parameters,
+    searchParameters
+  );
 
   return redirectPath
     ? matchRoutes(routes, redirectPath)
-    : { location: locationToMatch, params: parameters, route: matchedRoute };
+    : {
+        location: locationToMatch,
+        params: parameters,
+        route: matchedRoute,
+        search: searchParameters,
+      };
 };

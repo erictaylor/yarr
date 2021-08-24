@@ -103,7 +103,7 @@ function prepareMatch(
   assistPreload = false,
   awaitPreload = false
 ) {
-  const { route, params, location } = match;
+  const { route, params, search, location } = match;
 
   const pathnameMatch = location.pathname === lastPreparedMatch.pathname;
   const parametersString = sortAndStringifySearchParameters(params);
@@ -126,6 +126,7 @@ function prepareMatch(
     component: route.component,
     location,
     params,
+    search,
   };
 
   if (assistPreload) {

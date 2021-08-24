@@ -17,6 +17,7 @@ describe('prepareMatch()', () => {
       route: {
         component: { load: jest.fn() },
       },
+      search: {},
     } as unknown as MatchedRoute;
 
     const preparedMatch = prepareMatch(match);
@@ -28,6 +29,7 @@ describe('prepareMatch()', () => {
       component: match.route.component,
       location: match.location,
       params: match.params,
+      search: match.search,
     });
   });
 
@@ -39,6 +41,7 @@ describe('prepareMatch()', () => {
         component: { load: jest.fn() },
         preload: jest.fn().mockReturnValue('prefetchedData'),
       },
+      search: { baz: 'qux' },
     } as unknown as MatchedRoute;
 
     const preparedMatch = prepareMatch(match);
@@ -53,6 +56,7 @@ describe('prepareMatch()', () => {
       location: match.location,
       params: match.params,
       preloaded: 'prefetchedData',
+      search: match.search,
     });
   });
 
@@ -63,6 +67,7 @@ describe('prepareMatch()', () => {
       route: {
         component: { load: jest.fn() },
       },
+      search: {},
     } as unknown as MatchedRoute;
 
     const preparedMatch = prepareMatch(match, true);
@@ -74,6 +79,7 @@ describe('prepareMatch()', () => {
       component: match.route.component,
       location: match.location,
       params: match.params,
+      search: match.search,
     });
   });
 
@@ -88,6 +94,7 @@ describe('prepareMatch()', () => {
           foo: () => 'preloadedFoo',
         }),
       },
+      search: { baz: 'qux' },
     } as unknown as MatchedRoute;
 
     const preparedMatch = prepareMatch(match, true);
@@ -117,6 +124,7 @@ describe('prepareMatch()', () => {
           },
         ],
       ]),
+      search: match.search,
     });
 
     expect(
@@ -144,6 +152,7 @@ describe('prepareMatch()', () => {
           foo: { data: () => 'preloadedFoo', defer: true },
         }),
       },
+      search: {},
     } as unknown as MatchedRoute;
 
     const preparedMatch = prepareMatch(match, true, true);
@@ -173,6 +182,7 @@ describe('prepareMatch()', () => {
           },
         ],
       ]),
+      search: match.search,
     });
 
     expect(
@@ -200,6 +210,7 @@ describe('prepareMatch()', () => {
           foo: { data: () => 'preloadedFoo', defer: true },
         }),
       },
+      search: { search: 'search' },
     } as unknown as MatchedRoute;
 
     const secondMatch = {
@@ -212,6 +223,7 @@ describe('prepareMatch()', () => {
           foo: { data: () => 'preloadedFoo', defer: true },
         }),
       },
+      search: { search: 'search' },
     } as unknown as MatchedRoute;
 
     const firstPreparedMatch = prepareMatch(firstMatch, true, true);
@@ -244,6 +256,7 @@ describe('prepareMatch()', () => {
           },
         ],
       ]),
+      search: firstMatch.search,
     });
 
     // Called only one is previous test.
