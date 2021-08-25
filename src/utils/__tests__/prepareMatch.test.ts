@@ -49,7 +49,10 @@ describe('prepareMatch()', () => {
     expect(match.route.component.load).toHaveBeenCalledTimes(1);
     expect(match.route.component.load).toHaveBeenCalledWith();
     expect(match.route.preload).toHaveBeenCalledTimes(1);
-    expect(match.route.preload).toHaveBeenCalledWith(match.params);
+    expect(match.route.preload).toHaveBeenCalledWith(
+      match.params,
+      match.search
+    );
 
     expect(preparedMatch).toEqual({
       component: match.route.component,
@@ -102,7 +105,10 @@ describe('prepareMatch()', () => {
     expect(match.route.component.load).toHaveBeenCalledTimes(1);
     expect(match.route.component.load).toHaveBeenCalledWith();
     expect(match.route.preload).toHaveBeenCalledTimes(1);
-    expect(match.route.preload).toHaveBeenCalledWith(match.params);
+    expect(match.route.preload).toHaveBeenCalledWith(
+      match.params,
+      match.search
+    );
 
     expect(preparedMatch).toEqual({
       component: match.route.component,
@@ -158,7 +164,10 @@ describe('prepareMatch()', () => {
     const preparedMatch = prepareMatch(match, true, true);
 
     expect(match.route.preload).toHaveBeenCalledTimes(1);
-    expect(match.route.preload).toHaveBeenCalledWith(match.params);
+    expect(match.route.preload).toHaveBeenCalledWith(
+      match.params,
+      match.search
+    );
     expect(match.route.component.load).toHaveBeenCalledTimes(1);
     expect(match.route.component.load).toHaveBeenCalledWith();
 
@@ -226,17 +235,17 @@ describe('prepareMatch()', () => {
       search: { search: 'search' },
     } as unknown as MatchedRoute;
 
-    const firstPreparedMatch = prepareMatch(firstMatch, true, true);
+    const firstPreparedEntry = prepareMatch(firstMatch, true, true);
 
     expect(firstMatch.route.preload).toHaveBeenCalledTimes(1);
     expect(firstMatch.route.component.load).toHaveBeenCalledTimes(1);
 
-    const secondPreparedMatch = prepareMatch(secondMatch, true, true);
+    const secondPreparedEntry = prepareMatch(secondMatch, true, true);
 
     expect(secondMatch.route.preload).not.toHaveBeenCalled();
     expect(secondMatch.route.component.load).not.toHaveBeenCalled();
 
-    expect(secondPreparedMatch).toEqual({
+    expect(secondPreparedEntry).toEqual({
       component: firstMatch.route.component,
       location: firstMatch.location,
       params: firstMatch.params,
@@ -261,16 +270,16 @@ describe('prepareMatch()', () => {
 
     // Called only one is previous test.
     expect(
-      firstPreparedMatch.preloaded?.get('bar')?.data.load
+      firstPreparedEntry.preloaded?.get('bar')?.data.load
     ).toHaveBeenCalledTimes(1);
     expect(
-      firstPreparedMatch.preloaded?.get('bar')?.data.load
+      firstPreparedEntry.preloaded?.get('bar')?.data.load
     ).toHaveBeenCalledWith();
     expect(
-      firstPreparedMatch.preloaded?.get('foo')?.data.load
+      firstPreparedEntry.preloaded?.get('foo')?.data.load
     ).toHaveBeenCalledTimes(1);
     expect(
-      firstPreparedMatch.preloaded?.get('foo')?.data.load
+      firstPreparedEntry.preloaded?.get('foo')?.data.load
     ).toHaveBeenCalledWith();
   });
 });

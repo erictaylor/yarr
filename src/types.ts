@@ -52,7 +52,8 @@ export interface PreloadedValue {
  */
 export interface RouteConfig<
   ParentPath extends string = string,
-  Path extends string = string
+  Path extends string = string,
+  Props extends PreparedRouteEntryProps = { params: {}; search: {} }
 > {
   /**
    * An array of child routes whose paths are relative to the parent path.
@@ -67,7 +68,7 @@ export interface RouteConfig<
    *
    * @example `() => import('./MyComponent').then(m => m.default)`
    */
-  component: () => Promise<ComponentType<{}>>;
+  component: () => Promise<ComponentType<Props>>;
   /**
    * A string that sets the pathname which the route will be matched against.
    *
@@ -90,7 +91,8 @@ export interface RouteConfig<
    * ```
    */
   preload?: (
-    routeParameters: RouteParameters<`${ParentPath}${Path}`>
+    routeParameters: RouteParameters<`${ParentPath}${Path}`>,
+    searchParameters: Record<string, string[] | string>
   ) => PreloadedValue;
   /**
    * A function where you can perform logic to conditionally determine
@@ -112,7 +114,7 @@ export interface RouteConfig<
 export type RoutesConfig = readonly RouteConfig[];
 
 export type RouteEntry = Omit<RouteConfig, 'component' | 'path'> & {
-  component: SuspenseResource<ComponentType>;
+  component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
 };
 
 export type RoutesEntryMap = Map<string, RouteEntry>;
@@ -152,7 +154,9 @@ export interface CreateRouterOptions<Routes extends RoutesConfig>
   history: History;
 }
 
-export type RouterSubscriptionCallback = (nextEntry: RouteEntry) => void;
+export type RouterSubscriptionCallback = (
+  nextEntry: PreparedEntryWithAssist | PreparedEntryWithoutAssist
+) => unknown;
 
 export type RouterSubscriptionDispose = () => void;
 
@@ -169,7 +173,7 @@ export interface RouterContextProps {
   /**
    * Returns the current route entry for the current history location.
    */
-  readonly get: () => RouteEntry;
+  readonly get: () => PreparedEntryWithAssist | PreparedEntryWithoutAssist;
   readonly history: BrowserHistory | HashHistory | MemoryHistory;
   /**
    * Returns true if the given pathname matches the current history location.
@@ -208,17 +212,28 @@ export type PreloadedMap = Map<
   { data: SuspenseResource<unknown>; defer: boolean }
 >;
 
-export interface PreparedMatchFragment {
-  component: SuspenseResource<ComponentType>;
+export interface PreparedEntryFragment {
+  component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
   location: LocationFragment;
   params: Record<string, string[] | string>;
   search: Record<string, string[] | string>;
 }
 
-export interface PreparedMatchWithAssist extends PreparedMatchFragment {
+export interface PreparedEntryWithAssist extends PreparedEntryFragment {
   preloaded?: PreloadedMap;
 }
 
-export interface PreparedMatchWithoutAssist extends PreparedMatchFragment {
+export interface PreparedEntryWithoutAssist extends PreparedEntryFragment {
   preloaded?: PreloadedValue;
+}
+
+export interface PreparedRouteEntryProps {
+  params: Record<string, string[] | string>;
+  preloaded?: PreloadedValue | Record<string, SuspenseResource<unknown>>;
+  search: Record<string, string[] | string>;
+}
+
+export interface PreparedRouteEntry {
+  component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
+  props: PreparedRouteEntryProps;
 }

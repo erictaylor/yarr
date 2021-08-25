@@ -1,4 +1,5 @@
 // Components
+export { RouteRenderer } from './components/RouteRenderer';
 export { RouterProvider } from './components/RouterProvider';
 
 // Hooks

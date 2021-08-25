@@ -3,10 +3,11 @@ import type {
   MatchedRoute,
   PreloadConfig,
   PreloadedMap,
+  PreloadedValue,
   PreloadFunction,
-  PreparedMatchFragment,
-  PreparedMatchWithAssist,
-  PreparedMatchWithoutAssist,
+  PreparedEntryFragment,
+  PreparedEntryWithAssist,
+  PreparedEntryWithoutAssist,
 } from '../types';
 import { SuspenseResource } from './SuspenseResource';
 import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';
@@ -17,10 +18,10 @@ import { sortAndStringifySearchParameters } from './sortAndStringifySearchParame
  *
  * Used so we don't avoid multiple network requests.
  */
-const lastPreparedMatch: {
+const lastPreparedEntry: {
   parametersString: string;
   pathname: string;
-  value: PreparedMatchWithAssist | null;
+  value: PreparedEntryWithAssist | null;
 } = {
   parametersString: '',
   pathname: '',
@@ -33,12 +34,24 @@ const isPreloadFunction = (
   return typeof preload === 'function';
 };
 
+export const isEntryPreloadedMap = (
+  preloaded: PreloadedMap | PreloadedValue | undefined
+): preloaded is PreloadedMap => {
+  return preloaded instanceof Map;
+};
+
+export const isAssistedPreparedEntry = (
+  entry: PreparedEntryWithAssist | PreparedEntryWithoutAssist
+): entry is PreparedEntryWithAssist => {
+  return isEntryPreloadedMap(entry.preloaded);
+};
+
 const prepareAssistPreloadMatch = (
-  { route, params }: MatchedRoute,
+  { route, params, search }: MatchedRoute,
   awaitPreload: boolean
 ): PreloadedMap => {
   const preloaded: PreloadedMap = new Map();
-  const preload = route.preload?.(params);
+  const preload = route.preload?.(params, search);
 
   for (const property in preload) {
     // Skip properties that are not explicitly defined on the preload object
@@ -87,17 +100,17 @@ function prepareMatch(
   match: MatchedRoute,
   assistPreload: true,
   awaitPreload?: boolean
-): PreparedMatchWithAssist;
+): PreparedEntryWithAssist;
 function prepareMatch(
   match: MatchedRoute,
   assistPreload?: false,
   awaitPreload?: boolean
-): PreparedMatchWithoutAssist;
+): PreparedEntryWithoutAssist;
 function prepareMatch(
   match: MatchedRoute,
   assistPreload?: boolean,
   awaitPreload?: boolean
-): PreparedMatchWithAssist | PreparedMatchWithoutAssist;
+): PreparedEntryWithAssist | PreparedEntryWithoutAssist;
 function prepareMatch(
   match: MatchedRoute,
   assistPreload = false,
@@ -105,7 +118,7 @@ function prepareMatch(
 ) {
   const { route, params, search, location } = match;
 
-  const pathnameMatch = location.pathname === lastPreparedMatch.pathname;
+  const pathnameMatch = location.pathname === lastPreparedEntry.pathname;
   const parametersString = sortAndStringifySearchParameters(params);
 
   // Check if requested match is same as last match. This is important because cached match holds
@@ -113,16 +126,16 @@ function prepareMatch(
   if (
     assistPreload &&
     pathnameMatch &&
-    parametersString === lastPreparedMatch.parametersString &&
-    lastPreparedMatch.value !== null
+    parametersString === lastPreparedEntry.parametersString &&
+    lastPreparedEntry.value !== null
   ) {
-    return lastPreparedMatch.value;
+    return lastPreparedEntry.value;
   }
 
   // Start loading the component code.
   void route.component.load();
 
-  const preparedMatchFragment: PreparedMatchFragment = {
+  const preparedMatchFragment: PreparedEntryFragment = {
     component: route.component,
     location,
     params,
@@ -133,25 +146,25 @@ function prepareMatch(
     const preloaded =
       route.preload && prepareAssistPreloadMatch(match, awaitPreload);
 
-    const preparedMatchWithAssist: PreparedMatchWithAssist = {
+    const preparedMatchWithAssist: PreparedEntryWithAssist = {
       ...preparedMatchFragment,
       preloaded,
     };
 
     if (preloaded) {
       // Cache the prepared match so we can reuse it for next match if the route is the same.
-      lastPreparedMatch.pathname = location.pathname ?? '';
-      lastPreparedMatch.parametersString =
+      lastPreparedEntry.pathname = location.pathname ?? '';
+      lastPreparedEntry.parametersString =
         sortAndStringifySearchParameters(params);
-      lastPreparedMatch.value = preparedMatchWithAssist;
+      lastPreparedEntry.value = preparedMatchWithAssist;
     }
 
     return preparedMatchWithAssist;
   }
 
-  const preparedMatchWithoutAssist: PreparedMatchWithoutAssist = {
+  const preparedMatchWithoutAssist: PreparedEntryWithoutAssist = {
     ...preparedMatchFragment,
-    preloaded: route.preload?.(params),
+    preloaded: route.preload?.(params, search),
   };
 
   return preparedMatchWithoutAssist;
