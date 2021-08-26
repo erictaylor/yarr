@@ -4,6 +4,7 @@
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
+    "target": "es6",
     "importHelpers": true,
     // output .d.ts declaration files for consumers
     "declaration": true,
@@ -33,8 +34,6 @@
     "skipLibCheck": true,
     // error out if import and file system have a casing mismatch. Recommended by TS
     "forceConsistentCasingInFileNames": true,
-    // `tsdx build` ignores this option, but it is commonly used when type-checking separately with `tsc`
-    "noEmit": true,
-    "downlevelIteration": true
+    "noEmit": true
   }
 }
