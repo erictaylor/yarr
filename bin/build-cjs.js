@@ -22,12 +22,6 @@ if (process.env.NODE_ENV === 'production') {
 `;
 
 const main = () => {
-  // First write the contents of the cjs index file.
-  fs.writeFileSync(
-    path.resolve(__dirname, '../dist/cjs', 'index.js'),
-    indexContent
-  );
-
   esbuild.buildSync({
     ...sharedConfig,
     outfile: './dist/cjs/yarr.cjs.production.min.js',
@@ -38,6 +32,11 @@ const main = () => {
     ...sharedConfig,
     outfile: './dist/cjs/yarr.cjs.development.js',
   });
+
+  fs.writeFileSync(
+    path.resolve(__dirname, '../dist/cjs', 'index.js'),
+    indexContent
+  );
 
   process.exit(0);
 };
