@@ -1,4 +1,5 @@
 // Components
+export { Link } from './components/Link';
 export { RouteRenderer } from './components/RouteRenderer';
 export { RouterProvider } from './components/RouterProvider';
 
