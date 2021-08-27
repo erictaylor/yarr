@@ -62,8 +62,7 @@ export const Link = forwardRef(
       activeClassName = 'is-active',
       children,
       className,
-      exact,
-      target,
+      exact = false,
       to,
       onClick,
       onFocus,
@@ -79,7 +78,7 @@ export const Link = forwardRef(
 
     const href: string = history.createHref(to);
 
-    const toIsActive = isActive(href, exact);
+    const toIsActive = isActive(to, exact);
 
     /**
      * Handles changing the route on user click.
@@ -96,12 +95,12 @@ export const Link = forwardRef(
         if (shouldNavigate(event)) {
           event.preventDefault();
 
-          const method = isActive(href, true) ? 'replace' : 'push';
+          const method = isActive(to, true) ? 'replace' : 'push';
 
           history[method](to);
         }
       },
-      [history, href, isActive, onClick, to]
+      [history, isActive, onClick, to]
     );
 
     /**
@@ -174,7 +173,6 @@ export const Link = forwardRef(
         onKeyDown={handleOnKeyDown}
         onMouseDown={handleOnMouseDown}
         onMouseEnter={handleOnMouseEnter}
-        target={target}
       >
         {children}
       </a>

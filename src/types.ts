@@ -183,7 +183,10 @@ export interface RouterContextProps {
    * Setting `exact` optional argument will take both
    * the location search query and hash into account in the comparison.
    */
-  readonly isActive: (path: string, exact?: boolean) => boolean;
+  readonly isActive: (
+    path: LocationFragment | string,
+    exact?: boolean
+  ) => boolean;
   /**
    * Preloads the component code for a given route.
    */
