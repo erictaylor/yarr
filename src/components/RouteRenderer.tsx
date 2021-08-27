@@ -1,11 +1,5 @@
 import type { ReactNode } from 'react';
-import React, {
-  useEffect,
-  useMemo,
-  useCallback,
-  useContext,
-  useReducer,
-} from 'react';
+import { useEffect, useMemo, useCallback, useContext, useReducer } from 'react';
 import { RouterContext } from '../context/RouterContext';
 import type {
   PreparedEntryWithAssist,

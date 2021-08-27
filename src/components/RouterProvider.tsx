@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import React from 'react';
 import { RouterContext } from '../context/RouterContext';
 import type { RouterContextProps } from '../types';
 

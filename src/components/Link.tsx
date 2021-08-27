@@ -6,7 +6,7 @@ import type {
   MouseEvent,
   Ref,
 } from 'react';
-import React, { useContext, forwardRef, useCallback } from 'react';
+import { useContext, forwardRef, useCallback } from 'react';
 import { RouterContext } from '../context/RouterContext';
 
 /**

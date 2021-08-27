@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-component-props */
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import React from 'react';
+import { createRef } from 'react';
 import { RouterContext } from '../../context/RouterContext';
 import { createMemoryRouter } from '../../utils/createMemoryRouter';
 import { Link } from '../Link';
@@ -55,7 +55,7 @@ describe('<Link />', () => {
     });
 
     it('should correctly forward ref', () => {
-      const ref = React.createRef<HTMLAnchorElement>();
+      const ref = createRef<HTMLAnchorElement>();
       render(
         <Link ref={ref} to="/about">
           To about

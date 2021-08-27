@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { RouterContext } from '../../context/RouterContext';
 import type { RouterContextProps } from '../../types';
 import { RouterProvider } from '../RouterProvider';

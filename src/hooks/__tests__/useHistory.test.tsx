@@ -1,5 +1,4 @@
 import { renderHook } from '@testing-library/react-hooks';
-import React from 'react';
 import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
 import type { RouterContextProps } from '../../types';
