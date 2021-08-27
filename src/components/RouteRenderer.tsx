@@ -36,14 +36,10 @@ const getInitialRouteEntry = (
     },
   };
 
-  // We capture entry.preloaded like this so TypeScript can infer the type from the if statement.
-  // Most likely not needed after 4.4.0.
-  const entryPreloaded = entry.preloaded;
-
-  if (isEntryPreloadedMap(entryPreloaded)) {
+  if (isEntryPreloadedMap(entry.preloaded)) {
     const preloaded: Record<string, SuspenseResource<unknown>> = {};
 
-    for (const [key, value] of entryPreloaded.entries()) {
+    for (const [key, value] of entry.preloaded.entries()) {
       preloaded[key] = value.data;
     }
 
@@ -55,7 +51,7 @@ const getInitialRouteEntry = (
 
   return {
     ...preparedEntry,
-    props: { ...preparedEntry.props, preloaded: entryPreloaded },
+    props: { ...preparedEntry.props, preloaded: entry.preloaded },
   };
 };
 
