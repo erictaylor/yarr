@@ -2,7 +2,8 @@ import type {
   RouterContextProps,
   CreateRouterOptions,
   RoutesConfig,
-  RouterSubscriptionCallback,
+  RouterSubscriptionHistoryCallback,
+  RouterSubscriptionTransitionCallback,
 } from '../types';
 import { locationsMatch } from './locationsMatch';
 import { matchRoutes } from './matchRoutes';
@@ -31,8 +32,14 @@ export const createRouter = <Routes extends RoutesConfig>({
     history.replace(entryMatch.location);
   }
 
-  let nextId = 0;
-  const subscribers: Map<number, RouterSubscriptionCallback> = new Map();
+  let subscriberId = 0;
+  const subscribers: Map<
+    number,
+    [
+      RouterSubscriptionHistoryCallback,
+      RouterSubscriptionTransitionCallback | undefined
+    ]
+  > = new Map();
 
   history.listen(({ location }) => {
     if (locationsMatch(currentEntry.location, location, true)) {
@@ -50,8 +57,12 @@ export const createRouter = <Routes extends RoutesConfig>({
     }
 
     currentEntry = nextEntry;
-    subscribers.forEach((historyCallback) => historyCallback(nextEntry));
+    subscribers.forEach(([historyCallback]) => historyCallback(nextEntry));
   });
+
+  const routeTransitionCompleted = () => {
+    subscribers.forEach(([, transitionCallback]) => transitionCallback?.());
+  };
 
   const context: RouterContextProps = {
     assistPreload,
@@ -66,14 +77,15 @@ export const createRouter = <Routes extends RoutesConfig>({
         void matchedRoute.route.component.load();
       }
     },
-    subscribe: (historyCallback) => {
-      const id = nextId++;
+    routeTransitionCompleted,
+    subscribe: (historyCallback, transitionCallback) => {
+      const id = subscriberId++;
 
       const dispose = () => {
         subscribers.delete(id);
       };
 
-      subscribers.set(id, historyCallback);
+      subscribers.set(id, [historyCallback, transitionCallback]);
 
       return dispose;
     },

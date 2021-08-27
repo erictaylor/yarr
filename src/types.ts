@@ -154,11 +154,13 @@ export interface CreateRouterOptions<Routes extends RoutesConfig>
   history: History;
 }
 
-export type RouterSubscriptionCallback = (
+export type RouterSubscriptionHistoryCallback = (
   nextEntry: PreparedEntryWithAssist | PreparedEntryWithoutAssist
 ) => unknown;
 
 export type RouterSubscriptionDispose = () => void;
+
+export type RouterSubscriptionTransitionCallback = () => unknown;
 
 export interface RouterContextProps {
   /**
@@ -187,11 +189,22 @@ export interface RouterContextProps {
    */
   readonly preloadCode: (pathname: string) => void;
   /**
-   * Function that allows you to subscribe to history location changes.
-   * Returns a function that you can call to unsubscribe from the history location changes.
+   * This function gets called when the route entry has changed
+   * and any assist preload data and component awaiting has finished.
+   */
+  readonly routeTransitionCompleted: () => void;
+  /**
+   * Allows you to subscribe to both history changes and transition completion.
+   *
+   * Returns a dispose function that you can call to unsubscribe from the events.
+   *
+   * NOTE: Just because the history has changed, doesn't mean the new route is rendered.
+   * In `awaitComponent` mode, the new route is rendered once the component is resolved.
+   * Likewise, in `awaitPreload` mode, the new route is rendered once the preload data is loaded.
    */
   readonly subscribe: (
-    callback: RouterSubscriptionCallback
+    historyChange: RouterSubscriptionHistoryCallback,
+    transitionComplete?: RouterSubscriptionTransitionCallback
   ) => RouterSubscriptionDispose;
   /**
    * Preloads both the component code and data for a given route.

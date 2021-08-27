@@ -132,6 +132,7 @@ describe('createRouter()', () => {
       history: defaultRouterOptions.history,
       isActive: expect.any(Function),
       preloadCode: expect.any(Function),
+      routeTransitionCompleted: expect.any(Function),
       subscribe: expect.any(Function),
       warmRoute: expect.any(Function),
     });
@@ -191,30 +192,41 @@ describe('createRouter()', () => {
     const history = createMemoryHistory();
     const router = createRouter({ ...defaultRouterOptions, history });
 
-    const mockSubscribeFunction = jest.fn();
+    const mockSubscribeHistoryFunction = jest.fn();
+    const mockSubscribeTransitionFunction = jest.fn();
 
     mockLocationsMatch.mockReturnValueOnce(false);
 
-    const dispose = router.subscribe(mockSubscribeFunction);
+    const dispose = router.subscribe(
+      mockSubscribeHistoryFunction,
+      mockSubscribeTransitionFunction
+    );
 
     expect(dispose).toEqual(expect.any(Function));
 
     history.push('/testing');
 
-    expect(mockSubscribeFunction).toHaveBeenCalledTimes(1);
-    expect(mockSubscribeFunction).toHaveBeenCalledWith({
+    expect(mockSubscribeHistoryFunction).toHaveBeenCalledTimes(1);
+    expect(mockSubscribeHistoryFunction).toHaveBeenCalledWith({
       component: { load: expect.any(Function) },
       location: 'preparedLocation',
     });
 
+    expect(mockSubscribeTransitionFunction).not.toHaveBeenCalled();
+
+    router.routeTransitionCompleted();
+
+    expect(mockSubscribeTransitionFunction).toHaveBeenCalledTimes(1);
+    expect(mockSubscribeTransitionFunction).toHaveBeenCalledWith();
+
     dispose();
 
-    mockSubscribeFunction.mockClear();
+    mockSubscribeHistoryFunction.mockClear();
     mockLocationsMatch.mockReturnValueOnce(false);
 
     history.push('/testing2');
 
-    expect(mockSubscribeFunction).not.toHaveBeenCalled();
+    expect(mockSubscribeHistoryFunction).not.toHaveBeenCalled();
   });
 
   it('should have expected behavior from returned `warmRoute` function', () => {
@@ -384,35 +396,53 @@ describe('createRouter()', () => {
       const history = createMemoryHistory();
       const router = createRouter({ ...defaultRouterOptions, history });
 
-      const firstSubscriber = jest.fn();
-      const secondSubscriber = jest.fn();
-      const thirdSubscriber = jest.fn();
+      const firstHistorySubscriber = jest.fn();
+      const secondHistorySubscriber = jest.fn();
+      const thirdHistorySubscriber = jest.fn();
 
-      router.subscribe(firstSubscriber);
-      router.subscribe(secondSubscriber);
-      router.subscribe(thirdSubscriber);
+      const firstTransitionSubscriber = jest.fn();
+      const secondTransitionSubscriber = jest.fn();
+      const thirdTransitionSubscriber = jest.fn();
+
+      router.subscribe(firstHistorySubscriber, firstTransitionSubscriber);
+      router.subscribe(secondHistorySubscriber, secondTransitionSubscriber);
+      router.subscribe(thirdHistorySubscriber, thirdTransitionSubscriber);
 
       mockLocationsMatch.mockReturnValueOnce(false);
 
       history.push('newLocation');
 
-      expect(firstSubscriber).toHaveBeenCalledTimes(1);
-      expect(firstSubscriber).toHaveBeenCalledWith({
+      expect(firstHistorySubscriber).toHaveBeenCalledTimes(1);
+      expect(firstHistorySubscriber).toHaveBeenCalledWith({
         component: { load: expect.any(Function) },
         location: 'preparedLocation',
       });
+      expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
-      expect(secondSubscriber).toHaveBeenCalledTimes(1);
-      expect(secondSubscriber).toHaveBeenCalledWith({
+      expect(secondHistorySubscriber).toHaveBeenCalledTimes(1);
+      expect(secondHistorySubscriber).toHaveBeenCalledWith({
         component: { load: expect.any(Function) },
         location: 'preparedLocation',
       });
+      expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
-      expect(thirdSubscriber).toHaveBeenCalledTimes(1);
-      expect(thirdSubscriber).toHaveBeenCalledWith({
+      expect(thirdHistorySubscriber).toHaveBeenCalledTimes(1);
+      expect(thirdHistorySubscriber).toHaveBeenCalledWith({
         component: { load: expect.any(Function) },
         location: 'preparedLocation',
       });
+      expect(firstTransitionSubscriber).not.toHaveBeenCalled();
+
+      router.routeTransitionCompleted();
+
+      expect(firstTransitionSubscriber).toHaveBeenCalledTimes(1);
+      expect(firstTransitionSubscriber).toHaveBeenCalledWith();
+
+      expect(secondTransitionSubscriber).toHaveBeenCalledTimes(1);
+      expect(secondTransitionSubscriber).toHaveBeenCalledWith();
+
+      expect(thirdTransitionSubscriber).toHaveBeenCalledTimes(1);
+      expect(thirdTransitionSubscriber).toHaveBeenCalledWith();
     });
   });
 });

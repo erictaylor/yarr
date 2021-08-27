@@ -36,6 +36,7 @@ const defaultContext: RouterContextProps = {
   },
   isActive: defaultFunction,
   preloadCode: defaultFunction,
+  routeTransitionCompleted: defaultFunction,
   subscribe: defaultFunction,
   warmRoute: defaultFunction,
 };

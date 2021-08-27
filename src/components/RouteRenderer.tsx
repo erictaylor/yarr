@@ -64,7 +64,8 @@ interface RouteRendererProps {
 }
 
 export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
-  const { awaitComponent, get, subscribe } = useContext(RouterContext);
+  const { awaitComponent, get, routeTransitionCompleted, subscribe } =
+    useContext(RouterContext);
 
   const [{ isTransitioning, routeEntry }, dispatch] = useReducer(reducer, {
     isTransitioning: false,
@@ -140,6 +141,11 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
 
     return () => dispose();
   }, [awaitComponent, subscribe, getPendingRouteEntry]);
+
+  // Call the `routeTransitionCompleted` router function when the Component is updated.
+  useEffect(() => {
+    routeTransitionCompleted();
+  }, [Component, routeTransitionCompleted]);
 
   return (
     <>
