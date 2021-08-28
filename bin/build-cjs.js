@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const esbuild = require('esbuild');
-const fs = require('fs');
+const fs = require('fs/promises');
 const path = require('path');
 
 const sharedConfig = {
@@ -21,24 +21,35 @@ if (process.env.NODE_ENV === 'production') {
 }
 `;
 
-const main = () => {
-  esbuild.buildSync({
-    ...sharedConfig,
-    outfile: './dist/cjs/yarr.cjs.production.min.js',
-    minify: true,
-  });
+(async () => {
+  try {
+    await Promise.all([
+      esbuild.build({
+        ...sharedConfig,
+        outfile: './dist/cjs/yarr.cjs.production.min.js',
+        minify: true,
+      }),
 
-  esbuild.buildSync({
-    ...sharedConfig,
-    outfile: './dist/cjs/yarr.cjs.development.js',
-  });
+      esbuild.build({
+        ...sharedConfig,
+        outfile: './dist/cjs/yarr.cjs.development.js',
+      }),
+    ]);
+  } catch (error) {
+    console.log('An error occured when building the bundled cjs files');
+    throw error;
+  }
 
-  fs.writeFileSync(
-    path.resolve(__dirname, '../dist/cjs', 'index.js'),
-    indexContent
-  );
+  try {
+    await fs.writeFile(
+      path.resolve(__dirname, '../dist/cjs', 'index.js'),
+      indexContent
+    );
+  } catch (error) {
+    console.log('There was an error writing the cjs index file');
+    console.log(error);
+    process.exit(1);
+  }
 
   process.exit(0);
-};
-
-main();
+})();
