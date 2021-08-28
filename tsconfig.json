@@ -4,7 +4,7 @@
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
-    "target": "es6",
+    "target": "es2019",
     "importHelpers": true,
     // output .d.ts declaration files for consumers
     "declaration": true,
