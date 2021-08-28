@@ -120,7 +120,11 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
         ? await getPendingRouteEntry(nextEntry)
         : {
             component: nextEntry.component,
-            props: { params: nextEntry.params, search: nextEntry.search },
+            props: {
+              params: nextEntry.params,
+              preloaded: nextEntry.preloaded,
+              search: nextEntry.search,
+            },
           };
 
       dispatch({
