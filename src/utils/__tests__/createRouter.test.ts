@@ -214,10 +214,18 @@ describe('createRouter()', () => {
 
     expect(mockSubscribeTransitionFunction).not.toHaveBeenCalled();
 
-    router.routeTransitionCompleted();
+    router.routeTransitionCompleted({
+      hash: '',
+      pathname: '/testing',
+      search: '',
+    });
 
     expect(mockSubscribeTransitionFunction).toHaveBeenCalledTimes(1);
-    expect(mockSubscribeTransitionFunction).toHaveBeenCalledWith();
+    expect(mockSubscribeTransitionFunction).toHaveBeenCalledWith({
+      hash: '',
+      pathname: '/testing',
+      search: '',
+    });
 
     dispose();
 
@@ -433,16 +441,32 @@ describe('createRouter()', () => {
       });
       expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
-      router.routeTransitionCompleted();
+      router.routeTransitionCompleted({
+        hash: '',
+        pathname: 'newLocation',
+        search: '',
+      });
 
       expect(firstTransitionSubscriber).toHaveBeenCalledTimes(1);
-      expect(firstTransitionSubscriber).toHaveBeenCalledWith();
+      expect(firstTransitionSubscriber).toHaveBeenCalledWith({
+        hash: '',
+        pathname: 'newLocation',
+        search: '',
+      });
 
       expect(secondTransitionSubscriber).toHaveBeenCalledTimes(1);
-      expect(secondTransitionSubscriber).toHaveBeenCalledWith();
+      expect(secondTransitionSubscriber).toHaveBeenCalledWith({
+        hash: '',
+        pathname: 'newLocation',
+        search: '',
+      });
 
       expect(thirdTransitionSubscriber).toHaveBeenCalledTimes(1);
-      expect(thirdTransitionSubscriber).toHaveBeenCalledWith();
+      expect(thirdTransitionSubscriber).toHaveBeenCalledWith({
+        hash: '',
+        pathname: 'newLocation',
+        search: '',
+      });
     });
   });
 });

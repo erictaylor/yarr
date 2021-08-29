@@ -1,3 +1,4 @@
+import type { Path } from 'history';
 import type {
   RouterContextProps,
   CreateRouterOptions,
@@ -60,8 +61,10 @@ export const createRouter = <Routes extends RoutesConfig>({
     subscribers.forEach(([historyCallback]) => historyCallback(nextEntry));
   });
 
-  const routeTransitionCompleted = () => {
-    subscribers.forEach(([, transitionCallback]) => transitionCallback?.());
+  const routeTransitionCompleted = (location: Path) => {
+    subscribers.forEach(([, transitionCallback]) =>
+      transitionCallback?.(location)
+    );
   };
 
   const context: RouterContextProps = {

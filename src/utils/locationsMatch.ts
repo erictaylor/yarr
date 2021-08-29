@@ -1,5 +1,5 @@
 import type { PartialPath } from 'history';
-import { pathToLocationFragment } from './pathToLocationFragment';
+import { pathStringToPath } from './pathStringToPath';
 import { queryStringToObject } from './queryStringToObject';
 import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';
 
@@ -8,8 +8,8 @@ export const locationsMatch = (
   rightLocation: PartialPath | string,
   exact = false
 ): boolean => {
-  const leftLocationFragment = pathToLocationFragment(leftLocation);
-  const rightLocationFragment = pathToLocationFragment(rightLocation);
+  const leftLocationFragment = pathStringToPath(leftLocation);
+  const rightLocationFragment = pathStringToPath(rightLocation);
 
   if (leftLocationFragment.pathname !== rightLocationFragment.pathname) {
     return false;

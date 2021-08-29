@@ -3,7 +3,9 @@ import type {
   HashHistory,
   History,
   MemoryHistory,
+  Path,
   PartialPath,
+  State,
 } from 'history';
 import type { ComponentType } from 'react';
 import type { SuspenseResource } from './utils/SuspenseResource';
@@ -160,9 +162,9 @@ export type RouterSubscriptionHistoryCallback = (
 
 export type RouterSubscriptionDispose = () => void;
 
-export type RouterSubscriptionTransitionCallback = () => unknown;
+export type RouterSubscriptionTransitionCallback = (location: Path) => unknown;
 
-export interface RouterContextProps {
+export interface RouterContextProps<S extends State = State> {
   /**
    * When true, tells the router that route preloads should be made into suspense resources.
    */
@@ -176,17 +178,14 @@ export interface RouterContextProps {
    * Returns the current route entry for the current history location.
    */
   readonly get: () => PreparedEntryWithAssist | PreparedEntryWithoutAssist;
-  readonly history: BrowserHistory | HashHistory | MemoryHistory;
+  readonly history: BrowserHistory<S> | HashHistory<S> | MemoryHistory<S>;
   /**
    * Returns true if the given pathname matches the current history location.
    *
    * Setting `exact` optional argument will take both
    * the location search query and hash into account in the comparison.
    */
-  readonly isActive: (
-    path: LocationFragment | string,
-    exact?: boolean
-  ) => boolean;
+  readonly isActive: (path: PartialPath | string, exact?: boolean) => boolean;
   /**
    * Preloads the component code for a given route.
    */
@@ -195,7 +194,7 @@ export interface RouterContextProps {
    * This function gets called when the route entry has changed
    * and any assist preload data and component awaiting has finished.
    */
-  readonly routeTransitionCompleted: () => void;
+  readonly routeTransitionCompleted: (location: Path) => void;
   /**
    * Allows you to subscribe to both history changes and transition completion.
    *
@@ -214,10 +213,8 @@ export interface RouterContextProps {
    */
   readonly warmRoute: (pathname: string) => void;
 }
-
-export type LocationFragment = PartialPath;
 export interface MatchedRoute {
-  location: LocationFragment;
+  location: Path;
   params: Record<string, string[] | string>;
   route: RouteEntry;
   search: Record<string, string[] | string>;
@@ -230,7 +227,7 @@ export type PreloadedMap = Map<
 
 export interface PreparedEntryFragment {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
-  location: LocationFragment;
+  location: Path;
   params: Record<string, string[] | string>;
   search: Record<string, string[] | string>;
 }
@@ -251,5 +248,6 @@ export interface PreparedRouteEntryProps {
 
 export interface PreparedRouteEntry {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
+  location: Path;
   props: PreparedRouteEntryProps;
 }

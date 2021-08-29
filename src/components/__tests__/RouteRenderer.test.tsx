@@ -29,6 +29,11 @@ const initialEntry = {
             )
       ),
   },
+  location: {
+    hash: '',
+    pathname: '/',
+    search: '',
+  },
   params: { baz: 'qux' },
   preloaded: { foo: 'bar' },
   search: { abc: '123' },
@@ -55,6 +60,11 @@ const newRouteEntry = {
               </div>
             )
       ),
+  },
+  location: {
+    hash: '',
+    pathname: '/new',
+    search: '',
   },
   params: { user: 'eric' },
   preloaded: { color: 'blue' },
@@ -355,11 +365,61 @@ describe('<RouteRenderer />', () => {
     renderRouteRenderer();
 
     expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
+    expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
+      hash: '',
+      pathname: '/',
+      search: '',
+    });
 
     await act(async () => {
       mockRouterSubscribe.mock.calls[0][0](newRouteEntry);
     });
 
     expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(2);
+    expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
+      hash: '',
+      pathname: '/new',
+      search: '',
+    });
+  });
+
+  it('should call routeTransitionCompleted only after suspense has finished', async () => {
+    expect.hasAssertions();
+    expect(mockRouteTransitionCompleted).not.toHaveBeenCalled();
+
+    const componentResource = new SuspenseResource(() => {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(() => <div>Hello world</div>), 100);
+      });
+    });
+
+    renderRouteRenderer({
+      get: () =>
+        ({
+          component: componentResource,
+          location: {
+            hash: '#test',
+            pathname: '/new-route',
+            search: '?test=foo',
+          },
+        } as unknown as PreparedEntryWithoutAssist),
+    });
+
+    expect(mockRouteTransitionCompleted).not.toHaveBeenCalled();
+    expect(screen.getByText('Suspense fallback...')).toBeInTheDocument();
+    expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText('Suspense fallback...')
+      ).not.toBeInTheDocument();
+      expect(screen.getByText('Hello world')).toBeInTheDocument();
+      expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
+      expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
+        hash: '#test',
+        pathname: '/new-route',
+        search: '?test=foo',
+      });
+    });
   });
 });

@@ -24,6 +24,7 @@ const getInitialRouteEntry = (
 ): PreparedRouteEntry => {
   const preparedEntry: PreparedRouteEntry = {
     component: entry.component,
+    location: entry.location,
     props: {
       params: entry.params,
       search: entry.search,
@@ -87,6 +88,7 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
 
       return {
         component: pendingRouteEntry.component,
+        location: pendingRouteEntry.location,
         props: {
           params: pendingRouteEntry.params,
           preloaded: pendingRouteEntry.preloaded && preloaded,
@@ -120,6 +122,7 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
         ? await getPendingRouteEntry(nextEntry)
         : {
             component: nextEntry.component,
+            location: nextEntry.location,
             props: {
               params: nextEntry.params,
               preloaded: nextEntry.preloaded,
@@ -138,8 +141,8 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
 
   // Call the `routeTransitionCompleted` router function when the Component is updated.
   useEffect(() => {
-    routeTransitionCompleted();
-  }, [Component, routeTransitionCompleted]);
+    routeTransitionCompleted(routeEntry.location);
+  }, [routeEntry, routeTransitionCompleted]);
 
   return (
     <>

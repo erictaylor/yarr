@@ -1,6 +1,7 @@
-import type { LocationFragment, MatchedRoute, RoutesEntryMap } from '../types';
+import type { Path } from 'history';
+import type { MatchedRoute, RoutesEntryMap } from '../types';
 import { matchRegexRoute } from './matchRegexRoute';
-import { pathToLocationFragment } from './pathToLocationFragment';
+import { pathStringToPath } from './pathStringToPath';
 import { queryStringToObject } from './queryStringToObject';
 
 /**
@@ -12,9 +13,9 @@ import { queryStringToObject } from './queryStringToObject';
  */
 export const matchRoutes = (
   routes: RoutesEntryMap,
-  requestedMatch: LocationFragment | string
+  requestedMatch: Path | string
 ): MatchedRoute => {
-  const locationToMatch = pathToLocationFragment(requestedMatch);
+  const locationToMatch = pathStringToPath(requestedMatch);
   const { pathname } = locationToMatch;
 
   let parameters: Record<string, string[] | string> = {};

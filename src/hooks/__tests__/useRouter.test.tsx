@@ -11,6 +11,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
         {
           isActive: 'mockIsActive',
           preloadCode: 'mockPreloadCode',
+          subscribe: 'mockSubscribe',
           warmRoute: 'mockWarmRoute',
         } as unknown as RouterContextProps
       }
@@ -37,6 +38,7 @@ describe('useRouter()', () => {
     expect(result.current).toEqual({
       isActive: 'mockIsActive',
       preloadCode: 'mockPreloadCode',
+      subscribe: 'mockSubscribe',
       warmRoute: 'mockWarmRoute',
     });
   });

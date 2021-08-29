@@ -27,7 +27,7 @@ describe('matchRoutes()', () => {
 
   it('should match pathname only', () => {
     expect(matchRoutes(routesEntryMap, '/user/transactions')).toEqual({
-      location: { pathname: '/user/transactions' },
+      location: { hash: '', pathname: '/user/transactions', search: '' },
       params: {},
       route: { component: 'TransactionsComponent' },
       search: {},
@@ -36,7 +36,11 @@ describe('matchRoutes()', () => {
 
   it('should match pathname with search parameters', () => {
     expect(matchRoutes(routesEntryMap, '/user/transactions?foo=bar')).toEqual({
-      location: { pathname: '/user/transactions', search: '?foo=bar' },
+      location: {
+        hash: '',
+        pathname: '/user/transactions',
+        search: '?foo=bar',
+      },
       params: {},
       route: { component: 'TransactionsComponent' },
       search: { foo: 'bar' },
@@ -45,7 +49,7 @@ describe('matchRoutes()', () => {
 
   it('should match pathname with hash', () => {
     expect(matchRoutes(routesEntryMap, '/user/transactions#abc')).toEqual({
-      location: { hash: '#abc', pathname: '/user/transactions' },
+      location: { hash: '#abc', pathname: '/user/transactions', search: '' },
       params: {},
       route: { component: 'TransactionsComponent' },
       search: {},
@@ -88,7 +92,7 @@ describe('matchRoutes()', () => {
 
   it('should match pathname with named parameters', () => {
     expect(matchRoutes(routesEntryMap, '/user/transactions/123')).toEqual({
-      location: { pathname: '/user/transactions/123' },
+      location: { hash: '', pathname: '/user/transactions/123', search: '' },
       params: { transactionId: '123' },
       route: { component: 'TransactionComponent' },
       search: {},
@@ -97,7 +101,7 @@ describe('matchRoutes()', () => {
 
   it('should apply redirect rules for match and return correct route', () => {
     expect(matchRoutes(routesEntryMap, '/user?foo=bar')).toEqual({
-      location: { pathname: '/login' },
+      location: { hash: '', pathname: '/login', search: '' },
       params: {},
       route: { component: 'LoginComponent' },
       search: {},
@@ -114,7 +118,7 @@ describe('matchRoutes()', () => {
 
   it('shoud match wildcard (*) route when pathname is not found', () => {
     expect(matchRoutes(routesEntryMap, '/foo')).toEqual({
-      location: { pathname: '/foo' },
+      location: { hash: '', pathname: '/foo', search: '' },
       params: {},
       route: { component: 'NotFoundComponent' },
       search: {},
