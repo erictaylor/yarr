@@ -13,9 +13,9 @@ _More info coming soon._
 Yarn requires React >=16.14.0.
 
 ```sh
-npm install yarr
+npm install yarr@alpha
 # or
-yarn add yarr
+yarn add yarr@alpha
 ```
 
 <!-- ## Docs
