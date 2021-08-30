@@ -8,7 +8,7 @@ const sharedConfig = {
   platform: 'node',
   sourcemap: true,
   bundle: true,
-  external: ['history', 'react'],
+  external: ['history', 'react', 'react-dom'],
   target: ['node12'],
 };
 
