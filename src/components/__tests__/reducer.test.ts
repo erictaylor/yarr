@@ -1,8 +1,19 @@
+import { Action } from 'history';
 import type { PreparedRouteEntry } from '../../types';
 import type { RouteRendererState } from '../reducer';
 import { reducer } from '../reducer';
 
 const initialState: RouteRendererState = {
+  historyUpdate: {
+    action: Action.Pop,
+    location: {
+      hash: '',
+      key: 'initialKey',
+      pathname: '/',
+      search: '',
+      state: null,
+    },
+  },
   isTransitioning: false,
   routeEntry: {} as PreparedRouteEntry,
 };
@@ -22,12 +33,34 @@ describe('reducer', () => {
       reducer(
         { ...initialState, isTransitioning: true },
         {
-          payload: newRoute,
+          payload: {
+            historyUpdate: {
+              action: Action.Push,
+              location: {
+                hash: '#test',
+                key: 'newKey',
+                pathname: '/newPath',
+                search: '?test=abc',
+                state: null,
+              },
+            },
+            routeEntry: newRoute,
+          },
           type: 'FINISH_ROUTE_TRANSITION',
         }
       )
     ).toEqual({
       ...initialState,
+      historyUpdate: {
+        action: Action.Push,
+        location: {
+          hash: '#test',
+          key: 'newKey',
+          pathname: '/newPath',
+          search: '?test=abc',
+          state: null,
+        },
+      },
       isTransitioning: false,
       routeEntry: newRoute,
     });

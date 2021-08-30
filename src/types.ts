@@ -6,6 +6,7 @@ import type {
   Path,
   PartialPath,
   State,
+  Update,
 } from 'history';
 import type { ComponentType } from 'react';
 import type { SuspenseResource } from './utils/SuspenseResource';
@@ -157,12 +158,15 @@ export interface CreateRouterOptions<Routes extends RoutesConfig>
 }
 
 export type RouterSubscriptionHistoryCallback = (
-  nextEntry: PreparedEntryWithAssist | PreparedEntryWithoutAssist
+  nextEntry: PreparedEntryWithAssist | PreparedEntryWithoutAssist,
+  locationUpdate: Update
 ) => unknown;
 
 export type RouterSubscriptionDispose = () => void;
 
-export type RouterSubscriptionTransitionCallback = (location: Path) => unknown;
+export type RouterSubscriptionTransitionCallback = (
+  historyUpdate: Update
+) => unknown;
 
 export interface RouterContextProps<S extends State = State> {
   /**
@@ -194,7 +198,7 @@ export interface RouterContextProps<S extends State = State> {
    * This function gets called when the route entry has changed
    * and any assist preload data and component awaiting has finished.
    */
-  readonly routeTransitionCompleted: (location: Path) => void;
+  readonly routeTransitionCompleted: (historyUpdate: Update) => void;
   /**
    * Allows you to subscribe to both history changes and transition completion.
    *

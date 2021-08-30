@@ -83,7 +83,7 @@ const mockRouter: RouterContextProps = {
   awaitComponent: false,
   get: mockRouterGet,
   history: {
-    action: Action.Push,
+    action: Action.Pop,
     back: jest.fn(),
     block: jest.fn(),
     createHref: jest.fn(),
@@ -366,20 +366,39 @@ describe('<RouteRenderer />', () => {
 
     expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
     expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
-      hash: '',
-      pathname: '/',
-      search: '',
+      action: 'POP',
+      location: {
+        hash: '',
+        key: 'historyKey',
+        pathname: 'historyLocation',
+        search: '',
+        state: null,
+      },
     });
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0](newRouteEntry);
+      mockRouterSubscribe.mock.calls[0][0](newRouteEntry, {
+        action: 'PUSH',
+        location: {
+          hash: 'test',
+          key: 'newLocation',
+          pathname: 'newLocation',
+          search: '',
+          state: null,
+        },
+      });
     });
 
     expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(2);
     expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
-      hash: '',
-      pathname: '/new',
-      search: '',
+      action: 'PUSH',
+      location: {
+        hash: 'test',
+        key: 'newLocation',
+        pathname: 'newLocation',
+        search: '',
+        state: null,
+      },
     });
   });
 
@@ -403,6 +422,16 @@ describe('<RouteRenderer />', () => {
             search: '?test=foo',
           },
         } as unknown as PreparedEntryWithoutAssist),
+      history: {
+        ...mockRouter.history,
+        location: {
+          hash: '#test',
+          key: 'test',
+          pathname: '/new-route',
+          search: '?test=foo',
+          state: null,
+        },
+      },
     });
 
     expect(mockRouteTransitionCompleted).not.toHaveBeenCalled();
@@ -416,9 +445,14 @@ describe('<RouteRenderer />', () => {
       expect(screen.getByText('Hello world')).toBeInTheDocument();
       expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
       expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
-        hash: '#test',
-        pathname: '/new-route',
-        search: '?test=foo',
+        action: 'POP',
+        location: {
+          hash: '#test',
+          key: 'test',
+          pathname: '/new-route',
+          search: '?test=foo',
+          state: null,
+        },
       });
     });
   });

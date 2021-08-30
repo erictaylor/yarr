@@ -55,13 +55,20 @@ interface RouteRendererProps {
 }
 
 export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
-  const { awaitComponent, get, routeTransitionCompleted, subscribe } =
+  const { awaitComponent, get, history, routeTransitionCompleted, subscribe } =
     useContext(RouterContext);
 
-  const [{ isTransitioning, routeEntry }, dispatch] = useReducer(reducer, {
-    isTransitioning: false,
-    routeEntry: getInitialRouteEntry(get()),
-  });
+  const [{ isTransitioning, historyUpdate, routeEntry }, dispatch] = useReducer(
+    reducer,
+    {
+      historyUpdate: {
+        action: history.action,
+        location: history.location,
+      },
+      isTransitioning: false,
+      routeEntry: getInitialRouteEntry(get()),
+    }
+  );
 
   const Component = useMemo(() => routeEntry.component.read(), [routeEntry]);
 
@@ -101,7 +108,7 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
 
   // Subscribe to route changes and update the route entry.
   useEffect(() => {
-    const dispose = subscribe(async (nextEntry) => {
+    const dispose = subscribe(async (nextEntry, update) => {
       dispatch({ type: 'START_ROUTE_TRANSITION' });
 
       // When `awaitComponent` is true, we await the new component to load before updating the route entry.
@@ -131,7 +138,7 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
           };
 
       dispatch({
-        payload: newRouteEntry,
+        payload: { historyUpdate: update, routeEntry: newRouteEntry },
         type: 'FINISH_ROUTE_TRANSITION',
       });
     });
@@ -139,10 +146,10 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
     return () => dispose();
   }, [awaitComponent, subscribe, getPendingRouteEntry]);
 
-  // Call the `routeTransitionCompleted` router function when the Component is updated.
+  // Call the `routeTransitionCompleted` with history update when the route transition is complete.
   useEffect(() => {
-    routeTransitionCompleted(routeEntry.location);
-  }, [routeEntry, routeTransitionCompleted]);
+    routeTransitionCompleted(historyUpdate);
+  }, [historyUpdate, routeTransitionCompleted]);
 
   return (
     <>

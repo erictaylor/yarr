@@ -207,24 +207,46 @@ describe('createRouter()', () => {
     history.push('/testing');
 
     expect(mockSubscribeHistoryFunction).toHaveBeenCalledTimes(1);
-    expect(mockSubscribeHistoryFunction).toHaveBeenCalledWith({
-      component: { load: expect.any(Function) },
-      location: 'preparedLocation',
-    });
+    expect(mockSubscribeHistoryFunction).toHaveBeenCalledWith(
+      {
+        component: { load: expect.any(Function) },
+        location: 'preparedLocation',
+      },
+      {
+        action: Action.Push,
+        location: {
+          hash: '',
+          key: expect.any(String),
+          pathname: '/testing',
+          search: '',
+          state: null,
+        },
+      }
+    );
 
     expect(mockSubscribeTransitionFunction).not.toHaveBeenCalled();
 
     router.routeTransitionCompleted({
-      hash: '',
-      pathname: '/testing',
-      search: '',
+      action: Action.Push,
+      location: {
+        hash: '',
+        key: 'testKey',
+        pathname: '/testing',
+        search: '',
+        state: null,
+      },
     });
 
     expect(mockSubscribeTransitionFunction).toHaveBeenCalledTimes(1);
     expect(mockSubscribeTransitionFunction).toHaveBeenCalledWith({
-      hash: '',
-      pathname: '/testing',
-      search: '',
+      action: Action.Push,
+      location: {
+        hash: '',
+        key: 'testKey',
+        pathname: '/testing',
+        search: '',
+        state: null,
+      },
     });
 
     dispose();
@@ -340,10 +362,22 @@ describe('createRouter()', () => {
       expect(history.replace).not.toHaveBeenCalled();
 
       expect(mockSubscribeFunction).toHaveBeenCalledTimes(1);
-      expect(mockSubscribeFunction).toHaveBeenCalledWith({
-        component: { load: expect.any(Function) },
-        location: 'preparedLocation',
-      });
+      expect(mockSubscribeFunction).toHaveBeenCalledWith(
+        {
+          component: { load: expect.any(Function) },
+          location: 'preparedLocation',
+        },
+        {
+          action: Action.Push,
+          location: {
+            hash: '',
+            key: expect.any(String),
+            pathname: '/newLocation',
+            search: '',
+            state: null,
+          },
+        }
+      );
     });
 
     it('should act as expected when second locationsMatch returns false (replaced location)', () => {
@@ -421,51 +455,107 @@ describe('createRouter()', () => {
       history.push('newLocation');
 
       expect(firstHistorySubscriber).toHaveBeenCalledTimes(1);
-      expect(firstHistorySubscriber).toHaveBeenCalledWith({
-        component: { load: expect.any(Function) },
-        location: 'preparedLocation',
-      });
+      expect(firstHistorySubscriber).toHaveBeenCalledWith(
+        {
+          component: { load: expect.any(Function) },
+          location: 'preparedLocation',
+        },
+        {
+          action: Action.Push,
+          location: {
+            hash: '',
+            key: expect.any(String),
+            pathname: 'newLocation',
+            search: '',
+            state: null,
+          },
+        }
+      );
       expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
       expect(secondHistorySubscriber).toHaveBeenCalledTimes(1);
-      expect(secondHistorySubscriber).toHaveBeenCalledWith({
-        component: { load: expect.any(Function) },
-        location: 'preparedLocation',
-      });
+      expect(secondHistorySubscriber).toHaveBeenCalledWith(
+        {
+          component: { load: expect.any(Function) },
+          location: 'preparedLocation',
+        },
+        {
+          action: Action.Push,
+          location: {
+            hash: '',
+            key: expect.any(String),
+            pathname: 'newLocation',
+            search: '',
+            state: null,
+          },
+        }
+      );
       expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
       expect(thirdHistorySubscriber).toHaveBeenCalledTimes(1);
-      expect(thirdHistorySubscriber).toHaveBeenCalledWith({
-        component: { load: expect.any(Function) },
-        location: 'preparedLocation',
-      });
+      expect(thirdHistorySubscriber).toHaveBeenCalledWith(
+        {
+          component: { load: expect.any(Function) },
+          location: 'preparedLocation',
+        },
+        {
+          action: Action.Push,
+          location: {
+            hash: '',
+            key: expect.any(String),
+            pathname: 'newLocation',
+            search: '',
+            state: null,
+          },
+        }
+      );
       expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
       router.routeTransitionCompleted({
-        hash: '',
-        pathname: 'newLocation',
-        search: '',
+        action: Action.Push,
+        location: {
+          hash: '',
+          key: 'newKey',
+          pathname: 'newLocation',
+          search: '',
+          state: null,
+        },
       });
 
       expect(firstTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(firstTransitionSubscriber).toHaveBeenCalledWith({
-        hash: '',
-        pathname: 'newLocation',
-        search: '',
+        action: Action.Push,
+        location: {
+          hash: '',
+          key: 'newKey',
+          pathname: 'newLocation',
+          search: '',
+          state: null,
+        },
       });
 
       expect(secondTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(secondTransitionSubscriber).toHaveBeenCalledWith({
-        hash: '',
-        pathname: 'newLocation',
-        search: '',
+        action: Action.Push,
+        location: {
+          hash: '',
+          key: 'newKey',
+          pathname: 'newLocation',
+          search: '',
+          state: null,
+        },
       });
 
       expect(thirdTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(thirdTransitionSubscriber).toHaveBeenCalledWith({
-        hash: '',
-        pathname: 'newLocation',
-        search: '',
+        action: Action.Push,
+        location: {
+          hash: '',
+          key: 'newKey',
+          pathname: 'newLocation',
+          search: '',
+          state: null,
+        },
       });
     });
   });

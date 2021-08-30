@@ -1,4 +1,4 @@
-import type { Path } from 'history';
+import type { Update } from 'history';
 import type {
   RouterContextProps,
   CreateRouterOptions,
@@ -42,7 +42,9 @@ export const createRouter = <Routes extends RoutesConfig>({
     ]
   > = new Map();
 
-  history.listen(({ location }) => {
+  history.listen((update) => {
+    const { location } = update;
+
     if (locationsMatch(currentEntry.location, location, true)) {
       // Still on same route.
       return;
@@ -58,12 +60,14 @@ export const createRouter = <Routes extends RoutesConfig>({
     }
 
     currentEntry = nextEntry;
-    subscribers.forEach(([historyCallback]) => historyCallback(nextEntry));
+    subscribers.forEach(([historyCallback]) =>
+      historyCallback(nextEntry, update)
+    );
   });
 
-  const routeTransitionCompleted = (location: Path) => {
+  const routeTransitionCompleted = (historyUpdate: Update) => {
     subscribers.forEach(([, transitionCallback]) =>
-      transitionCallback?.(location)
+      transitionCallback?.(historyUpdate)
     );
   };
 

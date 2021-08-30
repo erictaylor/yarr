@@ -1,13 +1,18 @@
+import type { Update } from 'history';
 import type { PreparedRouteEntry } from '../types';
 
 export interface RouteRendererState {
+  historyUpdate: Update;
   isTransitioning: boolean;
   routeEntry: PreparedRouteEntry;
 }
 
 type RouteRendererAction =
   | {
-      payload: PreparedRouteEntry;
+      payload: {
+        historyUpdate: Update;
+        routeEntry: PreparedRouteEntry;
+      };
       type: 'FINISH_ROUTE_TRANSITION';
     }
   | { type: 'START_ROUTE_TRANSITION' };
@@ -27,7 +32,7 @@ export const reducer = (
       return {
         ...state,
         isTransitioning: false,
-        routeEntry: action.payload,
+        ...action.payload,
       };
     }
     default: {
