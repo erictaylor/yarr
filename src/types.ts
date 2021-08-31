@@ -209,11 +209,10 @@ export interface RouterContextProps<S extends State = State> {
    * In `awaitComponent` mode, the new route is rendered once the component is resolved.
    * Likewise, in `awaitPreload` mode, the new route is rendered once the preload data is loaded.
    */
-  readonly subscribe: (
-    // TODO: Change this to an single argument object.
-    historyChange: RouterSubscriptionHistoryCallback,
-    transitionComplete?: RouterSubscriptionTransitionCallback
-  ) => RouterSubscriptionDispose;
+  readonly subscribe: (callbacks: {
+    onTransitionComplete?: RouterSubscriptionTransitionCallback;
+    onTransitionStart?: RouterSubscriptionHistoryCallback;
+  }) => RouterSubscriptionDispose;
   /**
    * Preloads both the component code and data for a given route.
    */

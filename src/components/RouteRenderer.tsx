@@ -108,39 +108,41 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
 
   // Subscribe to route changes and update the route entry.
   useEffect(() => {
-    const dispose = subscribe(async (nextEntry, update) => {
-      dispatch({ type: 'START_ROUTE_TRANSITION' });
+    const dispose = subscribe({
+      onTransitionStart: async (nextEntry, update) => {
+        dispatch({ type: 'START_ROUTE_TRANSITION' });
 
-      // When `awaitComponent` is true, we await the new component to load before updating the route entry.
-      // This effectively means that a route transition will not cause a suspense fallback to occur.
-      //
-      // NOTE: Any data preloading has already been initialized by this point.
-      // So there is no concern of waiting on the component to start the preloading process.
-      if (awaitComponent) {
-        await nextEntry.component.load();
-      }
+        // When `awaitComponent` is true, we await the new component to load before updating the route entry.
+        // This effectively means that a route transition will not cause a suspense fallback to occur.
+        //
+        // NOTE: Any data preloading has already been initialized by this point.
+        // So there is no concern of waiting on the component to start the preloading process.
+        if (awaitComponent) {
+          await nextEntry.component.load();
+        }
 
-      // When `assistPreload` is true, we need to re-map the `preloaded` object to suspense resources (via `getPendingRouteEntry`).
-      // Any resources that can not be deferred will cause us to continue rendering the current route entry.
-      // Otherwise, we will render the new route immediately, and let the component deal with loading states while preloading data.
-      const newRouteEntry: PreparedRouteEntry = isAssistedPreparedEntry(
-        nextEntry
-      )
-        ? await getPendingRouteEntry(nextEntry)
-        : {
-            component: nextEntry.component,
-            location: nextEntry.location,
-            props: {
-              params: nextEntry.params,
-              preloaded: nextEntry.preloaded,
-              search: nextEntry.search,
-            },
-          };
+        // When `assistPreload` is true, we need to re-map the `preloaded` object to suspense resources (via `getPendingRouteEntry`).
+        // Any resources that can not be deferred will cause us to continue rendering the current route entry.
+        // Otherwise, we will render the new route immediately, and let the component deal with loading states while preloading data.
+        const newRouteEntry: PreparedRouteEntry = isAssistedPreparedEntry(
+          nextEntry
+        )
+          ? await getPendingRouteEntry(nextEntry)
+          : {
+              component: nextEntry.component,
+              location: nextEntry.location,
+              props: {
+                params: nextEntry.params,
+                preloaded: nextEntry.preloaded,
+                search: nextEntry.search,
+              },
+            };
 
-      dispatch({
-        payload: { historyUpdate: update, routeEntry: newRouteEntry },
-        type: 'FINISH_ROUTE_TRANSITION',
-      });
+        dispatch({
+          payload: { historyUpdate: update, routeEntry: newRouteEntry },
+          type: 'FINISH_ROUTE_TRANSITION',
+        });
+      },
     });
 
     return () => dispose();

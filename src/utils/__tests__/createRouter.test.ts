@@ -207,10 +207,10 @@ describe('createRouter()', () => {
 
     mockLocationsMatch.mockReturnValueOnce(false);
 
-    const dispose = router.subscribe(
-      mockSubscribeHistoryFunction,
-      mockSubscribeTransitionFunction
-    );
+    const dispose = router.subscribe({
+      onTransitionComplete: mockSubscribeTransitionFunction,
+      onTransitionStart: mockSubscribeHistoryFunction,
+    });
 
     expect(dispose).toEqual(expect.any(Function));
 
@@ -303,7 +303,7 @@ describe('createRouter()', () => {
 
       const mockSubscribeFunction = jest.fn();
 
-      router.subscribe(mockSubscribeFunction);
+      router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
       history.push('/firstLocation');
 
@@ -334,7 +334,7 @@ describe('createRouter()', () => {
       const router = createRouter({ ...defaultRouterOptions, history });
 
       const mockSubscribeFunction = jest.fn();
-      router.subscribe(mockSubscribeFunction);
+      router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
       mockLocationsMatch.mockReturnValueOnce(false);
 
@@ -401,7 +401,7 @@ describe('createRouter()', () => {
       const router = createRouter({ ...defaultRouterOptions, history });
 
       const mockSubscribeFunction = jest.fn();
-      router.subscribe(mockSubscribeFunction);
+      router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
       mockLocationsMatch.mockReturnValueOnce(false).mockReturnValueOnce(false);
       expect(locationsMatch).toHaveBeenCalledTimes(1);
@@ -460,9 +460,18 @@ describe('createRouter()', () => {
       const secondTransitionSubscriber = jest.fn();
       const thirdTransitionSubscriber = jest.fn();
 
-      router.subscribe(firstHistorySubscriber, firstTransitionSubscriber);
-      router.subscribe(secondHistorySubscriber, secondTransitionSubscriber);
-      router.subscribe(thirdHistorySubscriber, thirdTransitionSubscriber);
+      router.subscribe({
+        onTransitionComplete: firstTransitionSubscriber,
+        onTransitionStart: firstHistorySubscriber,
+      });
+      router.subscribe({
+        onTransitionComplete: secondTransitionSubscriber,
+        onTransitionStart: secondHistorySubscriber,
+      });
+      router.subscribe({
+        onTransitionComplete: thirdTransitionSubscriber,
+        onTransitionStart: thirdHistorySubscriber,
+      });
 
       mockLocationsMatch.mockReturnValueOnce(false);
 

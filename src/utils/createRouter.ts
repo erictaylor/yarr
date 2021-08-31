@@ -39,7 +39,7 @@ export const createRouter = <Routes extends RoutesConfig>({
   const subscribers: Map<
     number,
     [
-      RouterSubscriptionHistoryCallback,
+      RouterSubscriptionHistoryCallback | undefined,
       RouterSubscriptionTransitionCallback | undefined
     ]
   > = new Map();
@@ -63,7 +63,7 @@ export const createRouter = <Routes extends RoutesConfig>({
 
     currentEntry = nextEntry;
     subscribers.forEach(([historyCallback]) =>
-      historyCallback(nextEntry, update)
+      historyCallback?.(nextEntry, update)
     );
   });
 
@@ -116,14 +116,14 @@ export const createRouter = <Routes extends RoutesConfig>({
       }
     },
     routeTransitionCompleted,
-    subscribe: (historyCallback, transitionCallback) => {
+    subscribe: ({ onTransitionStart, onTransitionComplete }) => {
       const id = subscriberId++;
 
       const dispose = () => {
         subscribers.delete(id);
       };
 
-      subscribers.set(id, [historyCallback, transitionCallback]);
+      subscribers.set(id, [onTransitionStart, onTransitionComplete]);
 
       return dispose;
     },

@@ -191,7 +191,7 @@ describe('<RouteRenderer />', () => {
     ).toBeInTheDocument();
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0](newRouteEntry);
+      mockRouterSubscribe.mock.calls[0][0].onTransitionStart(newRouteEntry);
     });
 
     expect(screen.queryByText('Pending indicator...')).not.toBeInTheDocument();
@@ -229,7 +229,9 @@ describe('<RouteRenderer />', () => {
     ).toBeInTheDocument();
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0](newRouteEntryWithAssistPreload);
+      mockRouterSubscribe.mock.calls[0][0].onTransitionStart(
+        newRouteEntryWithAssistPreload
+      );
     });
 
     expect(
@@ -268,7 +270,9 @@ describe('<RouteRenderer />', () => {
     expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0]({ component: newComponentResource });
+      mockRouterSubscribe.mock.calls[0][0].onTransitionStart({
+        component: newComponentResource,
+      });
     });
 
     expect(
@@ -337,7 +341,7 @@ describe('<RouteRenderer />', () => {
     expect(screen.queryByText('Pending indicator...')).not.toBeInTheDocument();
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0](testEntry);
+      mockRouterSubscribe.mock.calls[0][0].onTransitionStart(testEntry);
     });
 
     expect(
@@ -377,7 +381,7 @@ describe('<RouteRenderer />', () => {
     });
 
     await act(async () => {
-      mockRouterSubscribe.mock.calls[0][0](newRouteEntry, {
+      mockRouterSubscribe.mock.calls[0][0].onTransitionStart(newRouteEntry, {
         action: 'PUSH',
         location: {
           hash: 'test',
