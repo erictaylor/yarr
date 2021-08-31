@@ -188,7 +188,11 @@ describe('createRouter()', () => {
     router.preloadCode('baz');
 
     expect(matchRoutes).toHaveBeenCalledTimes(2);
-    expect(matchRoutes).toHaveBeenCalledWith('routesEntryMap', 'baz');
+    expect(matchRoutes).toHaveBeenCalledWith('routesEntryMap', {
+      hash: '',
+      pathname: 'baz',
+      search: '',
+    });
 
     expect(componentLoadMock).toHaveBeenCalledTimes(1);
     expect(componentLoadMock).toHaveBeenCalledWith();
@@ -273,7 +277,11 @@ describe('createRouter()', () => {
     router.warmRoute('testWarmRoute');
 
     expect(matchRoutes).toHaveBeenCalledTimes(2);
-    expect(matchRoutes).toHaveBeenCalledWith('routesEntryMap', 'testWarmRoute');
+    expect(matchRoutes).toHaveBeenCalledWith('routesEntryMap', {
+      hash: '',
+      pathname: 'testWarmRoute',
+      search: '',
+    });
 
     expect(prepareMatch).toHaveBeenCalledTimes(1);
     expect(prepareMatch).toHaveBeenCalledWith(

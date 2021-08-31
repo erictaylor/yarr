@@ -9,6 +9,7 @@ import type {
 } from '../types';
 import { locationsMatch } from './locationsMatch';
 import { matchRoutes } from './matchRoutes';
+import { pathStringToPath } from './pathStringToPath';
 import { prepareMatch } from './prepareMatch';
 import { routesToEntryMap } from './routesToEntryMap';
 
@@ -102,11 +103,16 @@ export const createRouter = <Routes extends RoutesConfig>({
         ),
     },
     isActive: (path, exact) => locationsMatch(history.location, path, exact),
-    preloadCode: (pathname) => {
-      const matchedRoute = matchRoutes(routesEntryMap, pathname);
+    preloadCode: (to) => {
+      const path = pathStringToPath(to);
+      try {
+        const matchedRoute = matchRoutes(routesEntryMap, path);
 
-      if (matchedRoute) {
-        void matchedRoute.route.component.load();
+        if (matchedRoute) {
+          void matchedRoute.route.component.load();
+        }
+      } catch {
+        // TODO: Send to logger.
       }
     },
     routeTransitionCompleted,
@@ -121,11 +127,16 @@ export const createRouter = <Routes extends RoutesConfig>({
 
       return dispose;
     },
-    warmRoute: (pathname) => {
-      const match = matchRoutes(routesEntryMap, pathname);
+    warmRoute: (to) => {
+      const path = pathStringToPath(to);
+      try {
+        const match = matchRoutes(routesEntryMap, path);
 
-      if (match) {
-        prepareMatch(match, assistPreload, awaitPreload);
+        if (match) {
+          prepareMatch(match, assistPreload, awaitPreload);
+        }
+      } catch {
+        // TODO: Send to logger.
       }
     },
   };

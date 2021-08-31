@@ -6,6 +6,7 @@ import type {
   Path,
   PartialPath,
   State,
+  To,
   Update,
 } from 'history';
 import type { ComponentType } from 'react';
@@ -193,7 +194,7 @@ export interface RouterContextProps<S extends State = State> {
   /**
    * Preloads the component code for a given route.
    */
-  readonly preloadCode: (pathname: string) => void;
+  readonly preloadCode: (to: To) => void;
   /**
    * This function gets called when the route entry has changed
    * and any assist preload data and component awaiting has finished.
@@ -209,13 +210,14 @@ export interface RouterContextProps<S extends State = State> {
    * Likewise, in `awaitPreload` mode, the new route is rendered once the preload data is loaded.
    */
   readonly subscribe: (
+    // TODO: Change this to an single argument object.
     historyChange: RouterSubscriptionHistoryCallback,
     transitionComplete?: RouterSubscriptionTransitionCallback
   ) => RouterSubscriptionDispose;
   /**
    * Preloads both the component code and data for a given route.
    */
-  readonly warmRoute: (pathname: string) => void;
+  readonly warmRoute: (to: To) => void;
 }
 export interface MatchedRoute {
   location: Path;
