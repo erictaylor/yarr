@@ -129,7 +129,13 @@ describe('createRouter()', () => {
       assistPreload: defaultRouterOptions.assistPreload,
       awaitComponent: defaultRouterOptions.awaitComponent,
       get: expect.any(Function),
-      history: defaultRouterOptions.history,
+      history: {
+        ...defaultRouterOptions.history,
+        // These functions explicitly expect any function because of issue:
+        // https://github.com/erictaylor/yarr/issues/4
+        push: expect.any(Function),
+        replace: expect.any(Function),
+      },
       isActive: expect.any(Function),
       preloadCode: expect.any(Function),
       routeTransitionCompleted: expect.any(Function),
