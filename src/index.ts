@@ -1,5 +1,6 @@
 // Components
 export { Link } from './components/Link';
+export { Redirect } from './components/Redirect';
 export { RouteRenderer } from './components/RouteRenderer';
 export { RouterProvider } from './components/RouterProvider';
 
