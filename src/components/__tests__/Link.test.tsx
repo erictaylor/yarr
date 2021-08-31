@@ -169,7 +169,34 @@ describe('<Link />', () => {
 
         expect(router.history.replace).not.toHaveBeenCalled();
         expect(router.history.push).toHaveBeenCalledTimes(1);
-        expect(router.history.push).toHaveBeenCalledWith('/about');
+        expect(router.history.push).toHaveBeenCalledWith('/about', undefined);
+      });
+
+      it('should pass link state to history push/replace when link is clicked and has state', () => {
+        spyIsActive.mockClear();
+        const mockOnClick = jest.fn();
+
+        render(
+          <Link onClick={mockOnClick} state={{ foo: 'bar' }} to="/anywhere">
+            To anywhere
+          </Link>,
+          { wrapper }
+        );
+
+        const link = screen.getByRole('link', { name: /to anywhere/i });
+
+        expect(mockOnClick).not.toHaveBeenCalled();
+
+        fireEvent.click(link);
+
+        expect(mockOnClick).toHaveBeenCalledTimes(1);
+        expect(mockOnClick).toHaveBeenCalledWith(expect.any(Object));
+
+        expect(router.history.replace).not.toHaveBeenCalled();
+        expect(router.history.push).toHaveBeenCalledTimes(1);
+        expect(router.history.push).toHaveBeenCalledWith('/anywhere', {
+          foo: 'bar',
+        });
       });
 
       it('should not not call history push or restore when onClick prop prevents default', () => {
@@ -228,7 +255,7 @@ describe('<Link />', () => {
 
         expect(router.history.replace).not.toHaveBeenCalled();
         expect(router.history.push).toHaveBeenCalledTimes(1);
-        expect(router.history.push).toHaveBeenCalledWith('/about');
+        expect(router.history.push).toHaveBeenCalledWith('/about', undefined);
       });
 
       it('should not call history push or replace when target is not `_self`', () => {
@@ -278,7 +305,10 @@ describe('<Link />', () => {
         fireEvent.click(link);
 
         expect(router.history.replace).toHaveBeenCalledTimes(1);
-        expect(router.history.replace).toHaveBeenCalledWith('/about');
+        expect(router.history.replace).toHaveBeenCalledWith(
+          '/about',
+          undefined
+        );
         expect(router.history.push).not.toHaveBeenCalled();
       });
 

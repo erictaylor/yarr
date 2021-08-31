@@ -1,4 +1,4 @@
-import type { To } from 'history';
+import type { State, To } from 'history';
 import type {
   ComponentPropsWithoutRef,
   FocusEvent,
@@ -35,7 +35,10 @@ const shouldNavigate = (event: MouseEvent<HTMLAnchorElement>): boolean => {
   );
 };
 
-export type LinkProps = Omit<ComponentPropsWithoutRef<'a'>, 'href'> & {
+export type LinkProps<S extends State = State> = Omit<
+  ComponentPropsWithoutRef<'a'>,
+  'href'
+> & {
   /**
    * The class name to use when the link is active.
    *
@@ -47,6 +50,10 @@ export type LinkProps = Omit<ComponentPropsWithoutRef<'a'>, 'href'> & {
    */
   exact?: boolean;
   /**
+   * Any location state to set.
+   */
+  state?: S;
+  /**
    * A string or partial path object that is the location to navigate to.
    */
   to: To;
@@ -57,12 +64,13 @@ export type LinkProps = Omit<ComponentPropsWithoutRef<'a'>, 'href'> & {
  * our custom RoutingContext.
  */
 export const Link = forwardRef(
-  (
+  <S extends State>(
     {
       activeClassName = 'is-active',
       children,
       className,
       exact = false,
+      state,
       to,
       onClick,
       onFocus,
@@ -70,7 +78,7 @@ export const Link = forwardRef(
       onMouseDown,
       onMouseEnter,
       ...props
-    }: LinkProps,
+    }: LinkProps<S>,
     ref: Ref<HTMLAnchorElement>
   ) => {
     const { history, isActive, preloadCode, warmRoute } =
@@ -97,10 +105,10 @@ export const Link = forwardRef(
 
           const method = isActive(to, true) ? 'replace' : 'push';
 
-          history[method](to);
+          history[method](to, state);
         }
       },
-      [history, isActive, onClick, to]
+      [history, isActive, onClick, state, to]
     );
 
     /**
