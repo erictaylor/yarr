@@ -168,3 +168,5 @@ export const RouteRenderer = ({
     </>
   );
 };
+
+RouteRenderer.displayName = 'RouteRenderer';

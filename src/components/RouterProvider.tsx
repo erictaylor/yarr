@@ -12,3 +12,5 @@ export const RouterProvider = ({ children, router }: RouterProviderProps) => {
     <RouterContext.Provider value={router}>{children}</RouterContext.Provider>
   );
 };
+
+RouterProvider.displayName = 'RouterProvider';

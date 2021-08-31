@@ -11,6 +11,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
         {
           history: {
             action: 'mockHistoryAction',
+            listen: 'mockHistoryListen',
             location: 'mockHistoryLocation',
           },
         } as unknown as RouterContextProps
@@ -37,6 +38,7 @@ describe('useHistory()', () => {
 
     expect(result.current).toEqual({
       action: 'mockHistoryAction',
+      listen: 'mockHistoryListen',
       location: 'mockHistoryLocation',
     });
   });

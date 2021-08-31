@@ -3,7 +3,10 @@ import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
 import type { RouterContextProps } from '../types';
 
-type UseHistory<S extends State> = Pick<History<S>, 'action' | 'location'>;
+type UseHistory<S extends State> = Pick<
+  History<S>,
+  'action' | 'listen' | 'location'
+>;
 
 export const useHistory = <S extends State = State>(): UseHistory<S> => {
   const context = useContext(RouterContext) as RouterContextProps<S>;
@@ -14,7 +17,7 @@ export const useHistory = <S extends State = State>(): UseHistory<S> => {
     );
   }
 
-  const { action, location } = context.history;
+  const { action, listen, location } = context.history;
 
-  return { action, location };
+  return { action, listen, location };
 };

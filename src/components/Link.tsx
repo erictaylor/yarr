@@ -179,3 +179,5 @@ export const Link = forwardRef(
     );
   }
 );
+
+Link.displayName = 'Link';
