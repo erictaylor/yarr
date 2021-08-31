@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useCallback, useContext, useReducer } from 'react';
 import { RouterContext } from '../context/RouterContext';
 import type {
@@ -52,9 +52,13 @@ const getInitialRouteEntry = (
 
 interface RouteRendererProps {
   pendingIndicator?: ReactNode;
+  routeWrapper?: (props: { Route: ReactElement }) => ReactElement;
 }
 
-export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
+export const RouteRenderer = ({
+  pendingIndicator,
+  routeWrapper,
+}: RouteRendererProps) => {
   const { awaitComponent, get, history, routeTransitionCompleted, subscribe } =
     useContext(RouterContext);
 
@@ -156,8 +160,11 @@ export const RouteRenderer = ({ pendingIndicator }: RouteRendererProps) => {
   return (
     <>
       {isTransitioning && pendingIndicator ? pendingIndicator : null}
-
-      <Component {...routeEntry.props} />
+      {routeWrapper ? (
+        routeWrapper({ Route: <Component {...routeEntry.props} /> })
+      ) : (
+        <Component {...routeEntry.props} />
+      )}
     </>
   );
 };
