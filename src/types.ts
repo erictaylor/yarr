@@ -256,3 +256,22 @@ export interface PreparedRouteEntry {
   location: Path;
   props: PreparedRouteEntryProps;
 }
+
+/**
+ * This is the type your route components should extend from.
+ *
+ * @example
+ * ```
+ * import type { RouteProps } from 'yarr';
+ *
+ * export interface MyRouteComponentProps extends RouteProps<'/some/path/:id'> {
+ *   preloaded: {
+ *     query: () => Promise<{ id: string }>;
+ *   };
+ * }
+ * ```
+ */
+export interface RouteProps<Path extends string>
+  extends PreparedRouteEntryProps {
+  params: RouteParameters<Path>;
+}

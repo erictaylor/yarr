@@ -15,3 +15,6 @@ export { createBrowserRouter } from './utils/createBrowserRouter';
 export { createHashRouter } from './utils/createHashRouter';
 export { createMemoryRouter } from './utils/createMemoryRouter';
 export { SuspenseResource } from './utils/SuspenseResource';
+
+// Types
+export * from './types';
