@@ -7,6 +7,7 @@ export { RouterProvider } from './components/RouterProvider';
 // Hooks
 export { useHistory } from './hooks/useHistory';
 export { useNavigation } from './hooks/useNavigation';
+export { useRouteProps } from './hooks/useRouteProps';
 export { useRouter } from './hooks/useRouter';
 
 // Utilities
