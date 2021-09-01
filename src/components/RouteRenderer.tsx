@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useCallback, useContext, useReducer } from 'react';
+import { RouteContext } from '../context/RouteContext';
 import { RouterContext } from '../context/RouterContext';
 import type {
   PreparedEntryWithAssist,
@@ -160,11 +161,13 @@ export const RouteRenderer = ({
   return (
     <>
       {isTransitioning && pendingIndicator ? pendingIndicator : null}
-      {routeWrapper ? (
-        routeWrapper({ Route: <Component {...routeEntry.props} /> })
-      ) : (
-        <Component {...routeEntry.props} />
-      )}
+      <RouteContext.Provider value={routeEntry.props}>
+        {routeWrapper ? (
+          routeWrapper({ Route: <Component {...routeEntry.props} /> })
+        ) : (
+          <Component {...routeEntry.props} />
+        )}
+      </RouteContext.Provider>
     </>
   );
 };
