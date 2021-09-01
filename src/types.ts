@@ -40,16 +40,19 @@ export type RouteParameters<Path extends string> = {
   [K in PathParameters<Path>]: string;
 };
 
-export type PreloadFunction = () => Promise<unknown>;
+export type AssistedPreloadFunction = () => Promise<unknown>;
 
-export interface PreloadConfig {
-  data: PreloadFunction;
+export interface AssistedPreloadConfig {
+  data: AssistedPreloadFunction;
   defer?: boolean;
 }
 
-export interface PreloadedValue {
-  [key: string]: PreloadConfig | PreloadFunction;
-}
+export type AssistedPreloadData = Record<
+  string,
+  AssistedPreloadConfig | AssistedPreloadFunction
+>;
+
+export type UnassistedPreloadData = Record<string, unknown>;
 
 /**
  * A single route configuration object.
@@ -57,7 +60,8 @@ export interface PreloadedValue {
 export interface RouteConfig<
   ParentPath extends string = string,
   Path extends string = string,
-  Props extends PreparedRouteEntryProps = { params: {}; search: {} }
+  Props extends PreparedRouteEntryProps = { params: {}; search: {} },
+  AssistMode extends boolean = boolean
 > {
   /**
    * An array of child routes whose paths are relative to the parent path.
@@ -97,7 +101,7 @@ export interface RouteConfig<
   preload?: (
     routeParameters: RouteParameters<`${ParentPath}${Path}`>,
     searchParameters: Record<string, string[] | string>
-  ) => PreloadedValue;
+  ) => AssistMode extends true ? AssistedPreloadData : UnassistedPreloadData;
   /**
    * A function where you can perform logic to conditionally determine
    * if the router should redirect the user to another route.
@@ -117,7 +121,10 @@ export interface RouteConfig<
 
 export type RoutesConfig = readonly RouteConfig[];
 
-export type RouteEntry = Omit<RouteConfig, 'component' | 'path'> & {
+export type RouteEntry<AssistMode extends boolean = boolean> = Omit<
+  RouteConfig<string, string, PreparedRouteEntryProps<AssistMode>, AssistMode>,
+  'component' | 'path'
+> & {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
 };
 
@@ -225,6 +232,10 @@ export interface MatchedRoute {
   search: Record<string, string[] | string>;
 }
 
+export interface AssistedMatchedRoute extends MatchedRoute {
+  route: RouteEntry<true>;
+}
+
 export type PreloadedMap = Map<
   string,
   { data: SuspenseResource<unknown>; defer: boolean }
@@ -242,12 +253,19 @@ export interface PreparedEntryWithAssist extends PreparedEntryFragment {
 }
 
 export interface PreparedEntryWithoutAssist extends PreparedEntryFragment {
-  preloaded?: PreloadedValue;
+  preloaded?: UnassistedPreloadData;
 }
 
-export interface PreparedRouteEntryProps {
+/* eslint-disable unicorn/prevent-abbreviations */
+export type AssistedPreloadedProp = Record<string, SuspenseResource<unknown>>;
+export type UnassistedPreloadedProp = Record<string, unknown>;
+/* eslint-enable unicorn/prevent-abbreviations */
+
+export interface PreparedRouteEntryProps<AssistMode extends boolean = boolean> {
   params: Record<string, string>;
-  preloaded?: PreloadedValue | Record<string, SuspenseResource<unknown>>;
+  preloaded?: AssistMode extends true
+    ? AssistedPreloadedProp
+    : UnassistedPreloadedProp;
   search: Record<string, string[] | string>;
 }
 
@@ -271,7 +289,9 @@ export interface PreparedRouteEntry {
  * }
  * ```
  */
-export interface RouteProps<Path extends string>
-  extends PreparedRouteEntryProps {
+export interface RouteProps<
+  Path extends string,
+  AssistMode extends boolean = false
+> extends PreparedRouteEntryProps<AssistMode> {
   params: RouteParameters<Path>;
 }

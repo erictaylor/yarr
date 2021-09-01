@@ -1,13 +1,14 @@
 /* eslint-disable func-style */
+import type { AssistedMatchedRoute } from '..';
 import type {
   MatchedRoute,
-  PreloadConfig,
+  AssistedPreloadConfig,
   PreloadedMap,
-  PreloadedValue,
-  PreloadFunction,
+  AssistedPreloadFunction,
   PreparedEntryFragment,
   PreparedEntryWithAssist,
   PreparedEntryWithoutAssist,
+  UnassistedPreloadData,
 } from '../types';
 import { SuspenseResource } from './SuspenseResource';
 import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';
@@ -29,13 +30,13 @@ const lastPreparedEntry: {
 };
 
 const isPreloadFunction = (
-  preload?: PreloadConfig | PreloadFunction
-): preload is PreloadFunction => {
+  preload: AssistedPreloadConfig | AssistedPreloadFunction
+): preload is AssistedPreloadFunction => {
   return typeof preload === 'function';
 };
 
 export const isEntryPreloadedMap = (
-  preloaded: PreloadedMap | PreloadedValue | undefined
+  preloaded: PreloadedMap | UnassistedPreloadData | undefined
 ): preloaded is PreloadedMap => {
   return preloaded instanceof Map;
 };
@@ -47,7 +48,7 @@ export const isAssistedPreparedEntry = (
 };
 
 const prepareAssistPreloadMatch = (
-  { route, params, search }: MatchedRoute,
+  { route, params, search }: AssistedMatchedRoute,
   awaitPreload: boolean
 ): PreloadedMap => {
   const preloaded: PreloadedMap = new Map();
@@ -67,7 +68,9 @@ const prepareAssistPreloadMatch = (
       continue;
     }
 
-    const fetchFunction: PreloadFunction = isPreloadFunction(preloadProperty)
+    const fetchFunction: AssistedPreloadFunction = isPreloadFunction(
+      preloadProperty
+    )
       ? preloadProperty
       : preloadProperty.data;
 
@@ -121,6 +124,8 @@ function prepareMatch(
   const pathnameMatch = location.pathname === lastPreparedEntry.pathname;
   const parametersString = sortAndStringifySearchParameters(params);
 
+  // TODO: Rewrite logic around asserting what type of `match` we are working with by using the `assistPreload` boolean.
+
   // Check if requested match is same as last match. This is important because cached match holds
   // generated resources for preload which we need to re-use to avoid multiple network requests
   if (
@@ -144,7 +149,8 @@ function prepareMatch(
 
   if (assistPreload) {
     const preloaded =
-      route.preload && prepareAssistPreloadMatch(match, awaitPreload);
+      route.preload &&
+      prepareAssistPreloadMatch(match as AssistedMatchedRoute, awaitPreload);
 
     const preparedMatchWithAssist: PreparedEntryWithAssist = {
       ...preparedMatchFragment,
