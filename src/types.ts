@@ -220,7 +220,7 @@ export interface RouterContextProps<S extends State = State> {
 }
 export interface MatchedRoute {
   location: Path;
-  params: Record<string, string[] | string>;
+  params: Record<string, string>;
   route: RouteEntry;
   search: Record<string, string[] | string>;
 }
@@ -233,7 +233,7 @@ export type PreloadedMap = Map<
 export interface PreparedEntryFragment {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
   location: Path;
-  params: Record<string, string[] | string>;
+  params: Record<string, string>;
   search: Record<string, string[] | string>;
 }
 
@@ -246,7 +246,7 @@ export interface PreparedEntryWithoutAssist extends PreparedEntryFragment {
 }
 
 export interface PreparedRouteEntryProps {
-  params: Record<string, string[] | string>;
+  params: Record<string, string>;
   preloaded?: PreloadedValue | Record<string, SuspenseResource<unknown>>;
   search: Record<string, string[] | string>;
 }

@@ -18,7 +18,7 @@ export const matchRoutes = (
   const locationToMatch = pathStringToPath(requestedMatch);
   const { pathname } = locationToMatch;
 
-  let parameters: Record<string, string[] | string> = {};
+  let parameters: Record<string, string> = {};
   const searchParameters = {
     ...queryStringToObject(locationToMatch.search ?? ''),
   };

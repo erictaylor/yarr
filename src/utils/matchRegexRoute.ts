@@ -1,10 +1,9 @@
-import { aggregateKeyValues } from './aggregateKeyValues';
 import { getCanonicalPath } from './getCanonicalPath';
 
 export const matchRegexRoute = <Path extends string>(
   routePath: Path,
   locationPathname: string
-): { params: Record<string, string[] | string> } | null => {
+): { params: Record<string, string> } | null => {
   const canonicalPathToMatch = getCanonicalPath(locationPathname);
 
   const parametersKeys: string[] = [];
@@ -26,12 +25,20 @@ export const matchRegexRoute = <Path extends string>(
 
   if (!match) return null;
 
-  const parameters = parametersKeys.reduce<Record<string, string[] | string>>(
+  const parameters = parametersKeys.reduce<Record<string, string>>(
     (collection, parameterKey, index) => {
       const value = match[index + 2];
-      const keyValue = aggregateKeyValues(collection, parameterKey, value);
 
-      collection[parameterKey] = keyValue;
+      // If parameter is already set in collection, keep first value and warn.
+      if (collection[parameterKey]) {
+        // TODO: Logger.
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Path '${routePath}' had multiple route parameters of same name '${parameterKey}'.`
+        );
+      } else {
+        collection[parameterKey] = decodeURIComponent(value ?? '');
+      }
 
       return collection;
     },
