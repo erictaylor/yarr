@@ -82,6 +82,7 @@ const mockRouter: RouterContextProps = {
   assistPreload: false,
   awaitComponent: false,
   get: mockRouterGet,
+  getCurrentRouteKey: jest.fn(),
   history: {
     action: Action.Pop,
     back: jest.fn(),

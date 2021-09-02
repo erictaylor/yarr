@@ -129,6 +129,7 @@ describe('createRouter()', () => {
       assistPreload: defaultRouterOptions.assistPreload,
       awaitComponent: defaultRouterOptions.awaitComponent,
       get: expect.any(Function),
+      getCurrentRouteKey: expect.any(Function),
       history: {
         ...defaultRouterOptions.history,
         // These functions explicitly expect any function because of issue:

@@ -29,6 +29,7 @@ export const matchRoutes = (
 
   // First we try to match the pathname without regex (applies to routes without named parameters or wildcards)
   let matchedRoute = routes.has(pathname) && routes.get(pathname);
+  let routeKey: string = pathname;
 
   if (!matchedRoute) {
     // If we didn't find a direct match, we try to match the pathname with regex
@@ -42,6 +43,7 @@ export const matchRoutes = (
       }
 
       // We either found a match or we reach our wildcard route that will be used for not found routes.
+      routeKey = path;
       matchedRoute = route;
       break;
     }
@@ -63,6 +65,7 @@ export const matchRoutes = (
   return redirectPath
     ? matchRoutes(routes, redirectPath)
     : {
+        key: routeKey,
         location: locationToMatch,
         params: parameters,
         route: matchedRoute,

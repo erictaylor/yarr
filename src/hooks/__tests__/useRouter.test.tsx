@@ -9,6 +9,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
     <RouterProvider
       router={
         {
+          getCurrentRouteKey: 'mockGetCurrentRouteKey',
           isActive: 'mockIsActive',
           preloadCode: 'mockPreloadCode',
           subscribe: 'mockSubscribe',
@@ -36,6 +37,7 @@ describe('useRouter()', () => {
     });
 
     expect(result.current).toEqual({
+      getCurrentRouteKey: 'mockGetCurrentRouteKey',
       isActive: 'mockIsActive',
       preloadCode: 'mockPreloadCode',
       subscribe: 'mockSubscribe',

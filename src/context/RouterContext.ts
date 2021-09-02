@@ -16,6 +16,7 @@ const defaultContext: RouterContextProps = {
   assistPreload: false,
   awaitComponent: false,
   get: defaultFunction,
+  getCurrentRouteKey: defaultFunction,
   history: {
     action: Action.Push,
     back: defaultFunction,

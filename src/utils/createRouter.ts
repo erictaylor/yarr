@@ -28,6 +28,7 @@ export const createRouter = <Routes extends RoutesConfig>({
   const routesEntryMap = routesToEntryMap(routes);
 
   const entryMatch = matchRoutes(routesEntryMap, history.location);
+  let currentRouteKey = entryMatch.key;
   let currentEntry = prepareMatch(entryMatch, assistPreload, awaitPreload);
 
   if (!locationsMatch(entryMatch.location, history.location, true)) {
@@ -61,6 +62,7 @@ export const createRouter = <Routes extends RoutesConfig>({
       return;
     }
 
+    currentRouteKey = match.key;
     currentEntry = nextEntry;
     subscribers.forEach(([historyCallback]) =>
       historyCallback?.(nextEntry, update)
@@ -77,6 +79,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     assistPreload,
     awaitComponent,
     get: () => currentEntry,
+    getCurrentRouteKey: () => currentRouteKey,
     history,
     isActive: (path, exact) => locationsMatch(history.location, path, exact),
     preloadCode: (to) => {

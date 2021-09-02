@@ -4,7 +4,7 @@ import type { RouterContextProps } from '../types';
 
 type UseRouter = Pick<
   RouterContextProps,
-  'isActive' | 'preloadCode' | 'subscribe' | 'warmRoute'
+  'getCurrentRouteKey' | 'isActive' | 'preloadCode' | 'subscribe' | 'warmRoute'
 >;
 
 export const useRouter = (): UseRouter => {
@@ -14,7 +14,8 @@ export const useRouter = (): UseRouter => {
     throw new Error('`useRouter` can not be used outside of `RouterProvider`.');
   }
 
-  const { isActive, preloadCode, subscribe, warmRoute } = context;
+  const { getCurrentRouteKey, isActive, preloadCode, subscribe, warmRoute } =
+    context;
 
-  return { isActive, preloadCode, subscribe, warmRoute };
+  return { getCurrentRouteKey, isActive, preloadCode, subscribe, warmRoute };
 };

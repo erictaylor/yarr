@@ -190,6 +190,14 @@ export interface RouterContextProps<S extends State = State> {
    * Returns the current route entry for the current history location.
    */
   readonly get: () => PreparedEntryWithAssist | PreparedEntryWithoutAssist;
+  /**
+   * Returns the current matched route key.
+   *
+   * This is equivalent to the full canonical path pattern string.
+   *
+   * @example `/users/:id`
+   */
+  readonly getCurrentRouteKey: () => string;
   readonly history: BrowserHistory<S> | HashHistory<S> | MemoryHistory<S>;
   /**
    * Returns true if the given pathname matches the current history location.
@@ -226,6 +234,10 @@ export interface RouterContextProps<S extends State = State> {
   readonly warmRoute: (to: To) => void;
 }
 export interface MatchedRoute {
+  /**
+   * Represents the route pattern that was matched.
+   */
+  key: string;
   location: Path;
   params: Record<string, string>;
   route: RouteEntry;
