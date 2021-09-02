@@ -11,6 +11,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
         {
           history: {
             back: 'mockHistoryBack',
+            block: 'mockHistoryBlock',
             forward: 'mockHistoryForward',
             go: 'mockHistoryGo',
             push: 'mockHistoryPush',
@@ -40,6 +41,7 @@ describe('useNavigation()', () => {
 
     expect(result.current).toEqual({
       back: 'mockHistoryBack',
+      block: 'mockHistoryBlock',
       forward: 'mockHistoryForward',
       go: 'mockHistoryGo',
       push: 'mockHistoryPush',

@@ -1,14 +1,15 @@
 import type { History, State } from 'history';
 import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
+import type { RouterContextProps } from '../types';
 
 type UseNavigation<S extends State> = Pick<
   History<S>,
-  'back' | 'forward' | 'go' | 'push' | 'replace'
+  'back' | 'block' | 'forward' | 'go' | 'push' | 'replace'
 >;
 
 export const useNavigation = <S extends State = State>(): UseNavigation<S> => {
-  const context = useContext(RouterContext);
+  const context = useContext(RouterContext) as RouterContextProps<S>;
 
   if (!isRouterContext(context)) {
     throw new Error(
@@ -16,7 +17,7 @@ export const useNavigation = <S extends State = State>(): UseNavigation<S> => {
     );
   }
 
-  const { back, forward, go, push, replace } = context.history;
+  const { back, block, forward, go, push, replace } = context.history;
 
-  return { back, forward, go, push, replace };
+  return { back, block, forward, go, push, replace };
 };
