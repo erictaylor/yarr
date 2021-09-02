@@ -1,8 +1,8 @@
 /* eslint-disable func-style */
-import type { AssistedMatchedRoute } from '..';
 import type {
   MatchedRoute,
   AssistedPreloadConfig,
+  AssistedMatchedRoute,
   PreloadedMap,
   AssistedPreloadFunction,
   PreparedEntryFragment,
