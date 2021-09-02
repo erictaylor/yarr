@@ -4,7 +4,9 @@ import { createMemoryRouter } from '../createMemoryRouter';
 import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
-  createMemoryHistory: jest.fn(() => 'MemoryHistory'),
+  createMemoryHistory: jest.fn(() => ({
+    type: 'MemoryHistory',
+  })),
 }));
 jest.mock('../createRouter');
 
@@ -45,7 +47,12 @@ describe('createMemoryRouter', () => {
       assistPreload: false,
       awaitComponent: false,
       awaitPreload: false,
-      history: 'MemoryHistory',
+      history: {
+        // These are here because of the overwritten fix being applied.
+        push: expect.any(Function),
+        replace: expect.any(Function),
+        type: 'MemoryHistory',
+      },
       routes,
     });
   });

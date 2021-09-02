@@ -4,7 +4,7 @@ import { createBrowserRouter } from '../createBrowserRouter';
 import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
-  createBrowserHistory: jest.fn(() => 'BrowserHistory'),
+  createBrowserHistory: jest.fn(() => ({ type: 'BrowserHistory' })),
 }));
 jest.mock('../createRouter');
 
@@ -41,7 +41,12 @@ describe('createBrowserRouter', () => {
       assistPreload: false,
       awaitComponent: false,
       awaitPreload: false,
-      history: 'BrowserHistory',
+      history: {
+        // These are here because of the overwritten fix being applied.
+        push: expect.any(Function),
+        replace: expect.any(Function),
+        type: 'BrowserHistory',
+      },
       routes,
     });
   });

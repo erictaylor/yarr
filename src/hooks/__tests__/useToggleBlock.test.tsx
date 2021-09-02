@@ -48,9 +48,7 @@ describe('useToggleBlock()', () => {
 
     router.history.push('/about');
 
-    setTimeout(() => {
-      expect(router.history.location.pathname).toBe('/about');
-    }, 100);
+    expect(router.history.location.pathname).toBe('/about');
 
     result.current();
   });

@@ -1,5 +1,5 @@
 import type { Update } from 'history';
-import { parsePath } from 'history';
+// import { parsePath } from 'history';
 import type {
   RouterContextProps,
   CreateRouterOptions,
@@ -77,31 +77,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     assistPreload,
     awaitComponent,
     get: () => currentEntry,
-    history: {
-      ...history,
-      // This functions are overwritten because of bug in History v5 where
-      // if a string `to` argument is passed in, location search and location hash
-      // are not cleared but will use the existing locations search and hash.
-      // See: https://github.com/erictaylor/yarr/issues/4
-      push: (to, state) =>
-        history.push(
-          {
-            hash: '',
-            search: '',
-            ...(typeof to === 'string' ? parsePath(to) : to),
-          },
-          state
-        ),
-      replace: (to, state) =>
-        history.replace(
-          {
-            hash: '',
-            search: '',
-            ...(typeof to === 'string' ? parsePath(to) : to),
-          },
-          state
-        ),
-    },
+    history,
     isActive: (path, exact) => locationsMatch(history.location, path, exact),
     preloadCode: (to) => {
       const path = pathStringToPath(to);

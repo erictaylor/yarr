@@ -4,7 +4,9 @@ import { createHashRouter } from '../createHashRouter';
 import { createRouter } from '../createRouter';
 
 jest.mock('history', () => ({
-  createHashHistory: jest.fn(() => 'HashHistory'),
+  createHashHistory: jest.fn(() => ({
+    type: 'HashHistory',
+  })),
 }));
 jest.mock('../createRouter');
 
@@ -41,7 +43,12 @@ describe('createHashRouter', () => {
       assistPreload: false,
       awaitComponent: false,
       awaitPreload: false,
-      history: 'HashHistory',
+      history: {
+        // These are here because of the overwritten fix being applied.
+        push: expect.any(Function),
+        replace: expect.any(Function),
+        type: 'HashHistory',
+      },
       routes,
     });
   });
