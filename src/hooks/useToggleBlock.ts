@@ -28,6 +28,7 @@ type UseToggleBlockUnblockCallback = () => void;
  *
  * @see https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md
  *
+ * @param options - Options for the useToggleBlock hook
  * @param options.blocker - A function that will be called when the blocker is triggered
  * @param options.toggle - A boolean that will trigger the blocker if true. Default: `true`
  *
