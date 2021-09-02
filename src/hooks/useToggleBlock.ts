@@ -29,7 +29,7 @@ type UseToggleBlockUnblockCallback = () => void;
  * @see https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md
  *
  * @param options.blocker - A function that will be called when the blocker is triggered
- * @param options.toggle - A boolean that will trigger the blocker if true
+ * @param options.toggle - A boolean that will trigger the blocker if true. Default: `true`
  *
  * @returns A function that will unblock the blocker
  *
@@ -49,7 +49,7 @@ type UseToggleBlockUnblockCallback = () => void;
 export const useToggleBlock = <S extends State>({
   blocker,
   toggle = true,
-}: UseToggleBlockOptions<S>): UseToggleBlockUnblockCallback => {
+}: UseToggleBlockOptions<S> = {}): UseToggleBlockUnblockCallback => {
   const {
     history: { block },
   } = useContext(RouterContext) as RouterContextProps<S>;
