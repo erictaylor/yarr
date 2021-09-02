@@ -10,6 +10,7 @@ const sharedConfig = {
   bundle: true,
   external: ['history', 'react', 'react-dom'],
   target: ['node12'],
+  inject: ['./bin/util/react-shim.js'],
 };
 
 const indexContent = `'use strict'
