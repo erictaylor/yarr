@@ -7,6 +7,7 @@ import type {
   RouterSubscriptionHistoryCallback,
   RouterSubscriptionTransitionCallback,
 } from '../types';
+import { createHref } from './createHref';
 import { locationsMatch } from './locationsMatch';
 import { matchRoutes } from './matchRoutes';
 import { pathStringToPath } from './pathStringToPath';
@@ -74,6 +75,9 @@ export const createRouter = <Routes extends RoutesConfig>({
       transitionCallback?.(historyUpdate)
     );
   };
+
+  // PATCH History `createHref` with our own version.
+  history.createHref = createHref;
 
   const context: RouterContextProps = {
     assistPreload,
