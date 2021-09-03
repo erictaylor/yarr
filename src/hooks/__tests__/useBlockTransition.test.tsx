@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
 import { createMemoryRouter } from '../../utils/createMemoryRouter';
-import { useToggleBlock } from '../useToggleBlock';
+import { useBlockTransition } from '../useBlockTransition';
 
 const router = createMemoryRouter({
   routes: [
@@ -30,7 +30,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
   return <RouterProvider router={router}>{children}</RouterProvider>;
 };
 
-describe('useToggleBlock()', () => {
+describe('useBlockTransition()', () => {
   beforeEach(() => {
     router.history.push('/');
     jest.clearAllMocks();
@@ -39,7 +39,7 @@ describe('useToggleBlock()', () => {
   it('should not block navigation when `toggle` is false', () => {
     expect(router.history.location.pathname).toBe('/');
 
-    const { result } = renderHook(() => useToggleBlock({ toggle: false }), {
+    const { result } = renderHook(() => useBlockTransition({ toggle: false }), {
       wrapper: ContextWrapper,
     });
 
@@ -56,7 +56,7 @@ describe('useToggleBlock()', () => {
   it('should block navigation when `toggle` is true', () => {
     expect(router.history.location.pathname).toBe('/');
 
-    const { result } = renderHook(() => useToggleBlock({ toggle: true }), {
+    const { result } = renderHook(() => useBlockTransition({ toggle: true }), {
       wrapper: ContextWrapper,
     });
 
@@ -74,7 +74,7 @@ describe('useToggleBlock()', () => {
   it('should use default blocker if no `blocker` is provided', () => {
     expect(router.history.location.pathname).toBe('/');
 
-    const { result } = renderHook(() => useToggleBlock({ toggle: true }), {
+    const { result } = renderHook(() => useBlockTransition({ toggle: true }), {
       wrapper: ContextWrapper,
     });
 
@@ -104,7 +104,7 @@ describe('useToggleBlock()', () => {
     const blockerMock = jest.fn();
 
     const { result } = renderHook(
-      () => useToggleBlock({ blocker: blockerMock, toggle: true }),
+      () => useBlockTransition({ blocker: blockerMock, toggle: true }),
       {
         wrapper: ContextWrapper,
       }
@@ -130,7 +130,7 @@ describe('useToggleBlock()', () => {
   it('should call unblock ref on unmount', () => {
     expect(router.history.location.pathname).toBe('/');
 
-    const { result, unmount } = renderHook(() => useToggleBlock(), {
+    const { result, unmount } = renderHook(() => useBlockTransition(), {
       wrapper: ContextWrapper,
     });
 

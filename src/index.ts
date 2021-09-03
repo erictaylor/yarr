@@ -9,7 +9,7 @@ export { useHistory } from './hooks/useHistory';
 export { useNavigation } from './hooks/useNavigation';
 export { useRouteProps } from './hooks/useRouteProps';
 export { useRouter } from './hooks/useRouter';
-export { useToggleBlock } from './hooks/useToggleBlock';
+export { useBlockTransition } from './hooks/useBlockTransition';
 
 // Utilities
 export { createBrowserRouter } from './utils/createBrowserRouter';

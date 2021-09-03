@@ -3,12 +3,12 @@ import { useCallback, useContext, useEffect, useRef } from 'react';
 import type { RouterContextProps } from '..';
 import { RouterContext } from '../context/RouterContext';
 
-interface UseToggleBlockOptions<S extends State> {
+interface UseBlockTransitionOptions<S extends State> {
   blocker?: Blocker<S>;
   toggle?: boolean;
 }
 
-type UseToggleBlockUnblockCallback = () => void;
+type UseBlockTransitionUnblockCallback = () => void;
 
 /**
  * Calls a `blocker` callback if `toggle` is true when one of the following
@@ -28,7 +28,7 @@ type UseToggleBlockUnblockCallback = () => void;
  *
  * @see https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md
  *
- * @param options - Options for the useToggleBlock hook
+ * @param options - Options for the useBlockTransition hook
  * @param options.blocker - A function that will be called when the blocker is triggered
  * @param options.toggle - A boolean that will trigger the blocker if true. Default: `true`
  *
@@ -36,7 +36,7 @@ type UseToggleBlockUnblockCallback = () => void;
  *
  * @example
  * ```ts
- * const unblock = useToggleBlock({
+ * const unblock = useBlockTransition({
  *   blocker: ({ retry }) => {
  *     if (window.confirm('Are you sure you want to leave?')) {
  *       unblock();
@@ -47,15 +47,15 @@ type UseToggleBlockUnblockCallback = () => void;
  * });
  * ```
  */
-export const useToggleBlock = <S extends State>({
+export const useBlockTransition = <S extends State>({
   blocker,
   toggle = true,
-}: UseToggleBlockOptions<S> = {}): UseToggleBlockUnblockCallback => {
+}: UseBlockTransitionOptions<S> = {}): UseBlockTransitionUnblockCallback => {
   const {
     history: { block },
   } = useContext(RouterContext) as RouterContextProps<S>;
 
-  const unblockRef = useRef<UseToggleBlockUnblockCallback>(() => {});
+  const unblockRef = useRef<UseBlockTransitionUnblockCallback>(() => {});
 
   const blockerCallback = useCallback<Blocker<S>>(() => {
     if (blocker) return blocker;
