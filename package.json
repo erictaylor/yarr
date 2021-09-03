@@ -14,8 +14,7 @@
     "default": "./dist/esm/index.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=12"
