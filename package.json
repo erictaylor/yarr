@@ -1,6 +1,6 @@
 {
   "name": "yarr",
-  "version": "2.0.0-alpha.19",
+  "version": "2.0.0-alpha.20",
   "license": "MIT",
   "author": "Eric Taylor <eric@daxos.com>",
   "description": "Yet another React Router.",
