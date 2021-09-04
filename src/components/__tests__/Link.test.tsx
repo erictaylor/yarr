@@ -54,6 +54,29 @@ describe('<Link />', () => {
       expect(link).not.toHaveClass();
     });
 
+    it('should render a link with expected href from to object', () => {
+      render(
+        <Link
+          to={{
+            hash: 'missingHash',
+            pathname: '/about',
+            search: 'doesNotStartWithQuestionMark=test',
+          }}
+        >
+          To about
+        </Link>,
+        { wrapper }
+      );
+
+      const link = screen.getByRole('link', { name: /to about/i });
+
+      expect(link).toHaveTextContent('To about');
+      expect(link).toHaveAttribute(
+        'href',
+        '/about?doesNotStartWithQuestionMark=test#missingHash'
+      );
+    });
+
     it('should correctly forward ref', () => {
       const ref = createRef<HTMLAnchorElement>();
       render(

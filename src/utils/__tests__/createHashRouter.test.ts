@@ -45,6 +45,7 @@ describe('createHashRouter', () => {
       awaitPreload: false,
       history: {
         // These are here because of the overwritten fix being applied.
+        createHref: expect.any(Function),
         push: expect.any(Function),
         replace: expect.any(Function),
         type: 'HashHistory',
