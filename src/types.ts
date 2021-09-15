@@ -155,10 +155,21 @@ export interface RouterOptions<Routes extends RoutesConfig> {
    */
   awaitPreload?: boolean;
   /**
+   * A function that is called with logging information from the router.
+   */
+  logger?: LoggerFunction;
+  /**
    * An array of route configuration objects
    */
   routes: Routes;
 }
+
+export type LoggerFunction = (details: {
+  context?: object;
+  level: 10 | 20 | 30 | 40 | 50;
+  message: string;
+  scope: string;
+}) => void;
 
 export interface CreateRouterOptions<Routes extends RoutesConfig>
   extends RouterOptions<Routes> {
@@ -206,6 +217,10 @@ export interface RouterContextProps<S extends State = State> {
    * the location search query and hash into account in the comparison.
    */
   readonly isActive: (path: PartialPath | string, exact?: boolean) => boolean;
+  /**
+   * The logger function that is called with logging information from the router.
+   */
+  readonly logger: LoggerFunction;
   /**
    * Preloads the component code for a given route.
    */

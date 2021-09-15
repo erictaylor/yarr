@@ -102,6 +102,7 @@ const mockRouter: RouterContextProps = {
     replace: jest.fn(),
   },
   isActive: jest.fn(),
+  logger: jest.fn(),
   preloadCode: jest.fn(),
   routeTransitionCompleted: mockRouteTransitionCompleted,
   subscribe: mockRouterSubscribe,

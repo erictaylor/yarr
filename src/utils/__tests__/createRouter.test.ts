@@ -138,6 +138,7 @@ describe('createRouter()', () => {
         replace: expect.any(Function),
       },
       isActive: expect.any(Function),
+      logger: expect.any(Function),
       preloadCode: expect.any(Function),
       routeTransitionCompleted: expect.any(Function),
       subscribe: expect.any(Function),

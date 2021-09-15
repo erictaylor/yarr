@@ -61,8 +61,14 @@ export const RouteRenderer = ({
   pendingIndicator,
   routeWrapper,
 }: RouteRendererProps) => {
-  const { awaitComponent, get, history, routeTransitionCompleted, subscribe } =
-    useContext(RouterContext);
+  const {
+    awaitComponent,
+    get,
+    history,
+    logger,
+    routeTransitionCompleted,
+    subscribe,
+  } = useContext(RouterContext);
 
   const [isPending, startTransition] = useTransition();
 
@@ -114,8 +120,23 @@ export const RouteRenderer = ({
 
   // Subscribe to route changes and update the route entry.
   useEffect(() => {
+    logger({
+      level: 20,
+      message: 'RouteRenderer setting up subscription to router',
+      scope: 'RouteRenderer',
+    });
+
     const dispose = subscribe({
       onTransitionStart: async (nextEntry, update) => {
+        logger({
+          context: {
+            update,
+          },
+          level: 30,
+          message: `Starting route transition for next entry`,
+          scope: 'RouteRenderer:onTransitionStart',
+        });
+
         dispatch({ type: 'START_ROUTE_TRANSITION' });
 
         // When `awaitComponent` is true, we await the new component to load before updating the route entry.
@@ -124,7 +145,19 @@ export const RouteRenderer = ({
         // NOTE: Any data preloading has already been initialized by this point.
         // So there is no concern of waiting on the component to start the preloading process.
         if (awaitComponent) {
+          logger({
+            level: 10,
+            message: `Awaiting component code for next route entry.`,
+            scope: 'RouteRenderer:onTransitionStart',
+          });
+
           await nextEntry.component.load();
+
+          logger({
+            level: 10,
+            message: `Completed loading of next entry component code resource.`,
+            scope: 'RouteRenderer:onTransitionStart',
+          });
         }
 
         // When `assistPreload` is true, we need to re-map the `preloaded` object to suspense resources (via `getPendingRouteEntry`).
@@ -145,6 +178,15 @@ export const RouteRenderer = ({
             };
 
         startTransition(() => {
+          logger({
+            context: {
+              update,
+            },
+            level: 30,
+            message: `Finalizing route transition for next entry`,
+            scope: 'RouteRenderer:onTransitionStart',
+          });
+
           dispatch({
             payload: { historyUpdate: update, routeEntry: newRouteEntry },
             type: 'FINISH_ROUTE_TRANSITION',
@@ -153,13 +195,36 @@ export const RouteRenderer = ({
       },
     });
 
-    return () => dispose();
-  }, [awaitComponent, getPendingRouteEntry, startTransition, subscribe]);
+    return () => {
+      logger({
+        level: 10,
+        message: 'RouteRenderer disposing subscription to router',
+        scope: 'RouteRenderer',
+      });
+
+      dispose();
+    };
+  }, [
+    awaitComponent,
+    getPendingRouteEntry,
+    logger,
+    startTransition,
+    subscribe,
+  ]);
 
   // Call the `routeTransitionCompleted` with history update when the route transition is complete.
   useEffect(() => {
+    logger({
+      context: {
+        update: historyUpdate,
+      },
+      level: 10,
+      message: `Calling 'routeTransitionComplete' for new history update. New route is rendered.`,
+      scope: 'RouteRenderer',
+    });
+
     routeTransitionCompleted(historyUpdate);
-  }, [historyUpdate, routeTransitionCompleted]);
+  }, [historyUpdate, logger, routeTransitionCompleted]);
 
   const isTransitioning = isPendingTransition || isPending;
 

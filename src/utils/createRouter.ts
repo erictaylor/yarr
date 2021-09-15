@@ -23,8 +23,16 @@ export const createRouter = <Routes extends RoutesConfig>({
   awaitComponent = false,
   awaitPreload = false,
   history,
+  logger = () => {},
   routes,
 }: CreateRouterOptions<Routes>): RouterContextProps => {
+  logger({
+    context: { assistPreload, awaitComponent, awaitPreload },
+    level: 30,
+    message: 'Router initalizing',
+    scope: 'router',
+  });
+
   const routesEntryMap = routesToEntryMap(routes);
 
   const entryMatch = matchRoutes(routesEntryMap, history.location);
@@ -33,6 +41,13 @@ export const createRouter = <Routes extends RoutesConfig>({
 
   if (!locationsMatch(entryMatch.location, history.location, true)) {
     // Entry path has redirected, update history
+    logger({
+      level: 30,
+      message:
+        'Initial router entry match does not match current history location. Replacing history location.',
+      scope: 'router',
+    });
+
     history.replace(entryMatch.location);
   }
 
@@ -45,12 +60,22 @@ export const createRouter = <Routes extends RoutesConfig>({
     ]
   > = new Map();
 
-  // TODO: Investigate "redirect" issue.
   history.listen((update) => {
     const { location } = update;
 
     if (locationsMatch(currentEntry.location, location, true)) {
       // Still on same route.
+      logger({
+        context: {
+          currentEntryLocation: currentEntry.location,
+          location,
+        },
+        level: 20,
+        message:
+          'New history location matches existing route entry. Ignoring event. Subscribers will not be notified.',
+        scope: 'router:listen',
+      });
+
       return;
     }
 
@@ -58,6 +83,17 @@ export const createRouter = <Routes extends RoutesConfig>({
     const nextEntry = prepareMatch(match, assistPreload, awaitPreload);
 
     if (!locationsMatch(match.location, location, true)) {
+      logger({
+        context: {
+          location,
+          matchLocation: match.location,
+        },
+        level: 20,
+        message:
+          'Matched location and history location do not match, replacing history state',
+        scope: 'router:listen',
+      });
+
       history.replace(match.location);
 
       return;
@@ -65,12 +101,28 @@ export const createRouter = <Routes extends RoutesConfig>({
 
     currentRouteKey = match.key;
     currentEntry = nextEntry;
+
+    logger({
+      level: 20,
+      message: `Next route entry is set for match key ${currentRouteKey}, notifying subscribers`,
+      scope: 'router:listen',
+    });
+
     subscribers.forEach(([historyCallback]) =>
       historyCallback?.(nextEntry, update)
     );
   });
 
   const routeTransitionCompleted = (historyUpdate: Update) => {
+    logger({
+      context: {
+        update: historyUpdate,
+      },
+      level: 20,
+      message: 'Route transition completed. Notifying subscribers',
+      scope: 'router',
+    });
+
     subscribers.forEach(([, transitionCallback]) =>
       transitionCallback?.(historyUpdate)
     );
@@ -83,16 +135,34 @@ export const createRouter = <Routes extends RoutesConfig>({
     getCurrentRouteKey: () => currentRouteKey,
     history,
     isActive: (path, exact) => locationsMatch(history.location, path, exact),
+    logger,
     preloadCode: (to) => {
       const path = pathStringToPath(to);
+
+      logger({
+        context: {
+          to,
+        },
+        level: 20,
+        message: `Preloading code for '${path.pathname}' path`,
+        scope: 'router:preloadCode',
+      });
+
       try {
         const matchedRoute = matchRoutes(routesEntryMap, path);
 
         if (matchedRoute) {
           void matchedRoute.route.component.load();
         }
-      } catch {
-        // TODO: Send to logger.
+      } catch (error) {
+        logger({
+          context: {
+            error,
+          },
+          level: 50,
+          message: `Error when preloading code for '${path.pathname}' path. See context for error.`,
+          scope: 'router:preloadCode',
+        });
       }
     },
     routeTransitionCompleted,
@@ -109,14 +179,31 @@ export const createRouter = <Routes extends RoutesConfig>({
     },
     warmRoute: (to) => {
       const path = pathStringToPath(to);
+
+      logger({
+        context: {
+          to,
+        },
+        level: 20,
+        message: `Warming route for '${path.pathname}' path`,
+        scope: 'router:warmRoute',
+      });
+
       try {
         const match = matchRoutes(routesEntryMap, path);
 
         if (match) {
           prepareMatch(match, assistPreload, awaitPreload);
         }
-      } catch {
-        // TODO: Send to logger.
+      } catch (error) {
+        logger({
+          context: {
+            error,
+          },
+          level: 50,
+          message: `Error when warming route for '${path.pathname}' path. See context for error.`,
+          scope: 'router:warmRoute',
+        });
       }
     },
   };
