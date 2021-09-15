@@ -166,7 +166,7 @@ export interface RouterOptions<Routes extends RoutesConfig> {
 
 export type LoggerFunction = (details: {
   context?: object;
-  level: 10 | 20 | 30 | 40 | 50;
+  level: 'debug' | 'error' | 'info' | 'trace' | 'warn';
   message: string;
   scope: string;
 }) => void;

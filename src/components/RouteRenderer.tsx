@@ -121,7 +121,7 @@ export const RouteRenderer = ({
   // Subscribe to route changes and update the route entry.
   useEffect(() => {
     logger({
-      level: 20,
+      level: 'debug',
       message: 'RouteRenderer setting up subscription to router',
       scope: 'RouteRenderer',
     });
@@ -132,7 +132,7 @@ export const RouteRenderer = ({
           context: {
             update,
           },
-          level: 30,
+          level: 'info',
           message: `Starting route transition for next entry`,
           scope: 'RouteRenderer:onTransitionStart',
         });
@@ -146,7 +146,7 @@ export const RouteRenderer = ({
         // So there is no concern of waiting on the component to start the preloading process.
         if (awaitComponent) {
           logger({
-            level: 10,
+            level: 'trace',
             message: `Awaiting component code for next route entry.`,
             scope: 'RouteRenderer:onTransitionStart',
           });
@@ -154,7 +154,7 @@ export const RouteRenderer = ({
           await nextEntry.component.load();
 
           logger({
-            level: 10,
+            level: 'trace',
             message: `Completed loading of next entry component code resource.`,
             scope: 'RouteRenderer:onTransitionStart',
           });
@@ -182,7 +182,7 @@ export const RouteRenderer = ({
             context: {
               update,
             },
-            level: 30,
+            level: 'info',
             message: `Finalizing route transition for next entry`,
             scope: 'RouteRenderer:onTransitionStart',
           });
@@ -197,7 +197,7 @@ export const RouteRenderer = ({
 
     return () => {
       logger({
-        level: 10,
+        level: 'trace',
         message: 'RouteRenderer disposing subscription to router',
         scope: 'RouteRenderer',
       });
@@ -218,7 +218,7 @@ export const RouteRenderer = ({
       context: {
         update: historyUpdate,
       },
-      level: 10,
+      level: 'trace',
       message: `Calling 'routeTransitionComplete' for new history update. New route is rendered.`,
       scope: 'RouteRenderer',
     });
