@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useCallback, useContext, useReducer } from 'react';
 import { RouteContext } from '../context/RouteContext';
 import { RouterContext } from '../context/RouterContext';
+import { useTransition } from '../hooks/useTransition';
 import type {
   PreparedEntryWithAssist,
   PreparedEntryWithoutAssist,
@@ -63,17 +64,17 @@ export const RouteRenderer = ({
   const { awaitComponent, get, history, routeTransitionCompleted, subscribe } =
     useContext(RouterContext);
 
-  const [{ isTransitioning, historyUpdate, routeEntry }, dispatch] = useReducer(
-    reducer,
-    {
+  const [isPending, startTransition] = useTransition();
+
+  const [{ isPendingTransition, historyUpdate, routeEntry }, dispatch] =
+    useReducer(reducer, {
       historyUpdate: {
         action: history.action,
         location: history.location,
       },
-      isTransitioning: false,
+      isPendingTransition: false,
       routeEntry: getInitialRouteEntry(get()),
-    }
-  );
+    });
 
   const Component = useMemo(() => routeEntry.component.read(), [routeEntry]);
 
@@ -143,20 +144,24 @@ export const RouteRenderer = ({
               },
             };
 
-        dispatch({
-          payload: { historyUpdate: update, routeEntry: newRouteEntry },
-          type: 'FINISH_ROUTE_TRANSITION',
+        startTransition(() => {
+          dispatch({
+            payload: { historyUpdate: update, routeEntry: newRouteEntry },
+            type: 'FINISH_ROUTE_TRANSITION',
+          });
         });
       },
     });
 
     return () => dispose();
-  }, [awaitComponent, subscribe, getPendingRouteEntry]);
+  }, [awaitComponent, getPendingRouteEntry, startTransition, subscribe]);
 
   // Call the `routeTransitionCompleted` with history update when the route transition is complete.
   useEffect(() => {
     routeTransitionCompleted(historyUpdate);
   }, [historyUpdate, routeTransitionCompleted]);
+
+  const isTransitioning = isPendingTransition || isPending;
 
   return (
     <>

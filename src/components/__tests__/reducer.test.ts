@@ -14,7 +14,7 @@ const initialState: RouteRendererState = {
       state: null,
     },
   },
-  isTransitioning: false,
+  isPendingTransition: false,
   routeEntry: {} as PreparedRouteEntry,
 };
 
@@ -22,7 +22,7 @@ describe('reducer', () => {
   it('should return the correct state for START_ROUTE_TRANSITION action', () => {
     expect(reducer(initialState, { type: 'START_ROUTE_TRANSITION' })).toEqual({
       ...initialState,
-      isTransitioning: true,
+      isPendingTransition: true,
     });
   });
 
@@ -31,7 +31,7 @@ describe('reducer', () => {
 
     expect(
       reducer(
-        { ...initialState, isTransitioning: true },
+        { ...initialState, isPendingTransition: true },
         {
           payload: {
             historyUpdate: {
@@ -61,7 +61,7 @@ describe('reducer', () => {
           state: null,
         },
       },
-      isTransitioning: false,
+      isPendingTransition: false,
       routeEntry: newRoute,
     });
   });

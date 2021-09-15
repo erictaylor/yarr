@@ -3,7 +3,7 @@ import type { PreparedRouteEntry } from '../types';
 
 export interface RouteRendererState {
   historyUpdate: Update;
-  isTransitioning: boolean;
+  isPendingTransition: boolean;
   routeEntry: PreparedRouteEntry;
 }
 
@@ -25,13 +25,13 @@ export const reducer = (
     case 'START_ROUTE_TRANSITION': {
       return {
         ...state,
-        isTransitioning: true,
+        isPendingTransition: true,
       };
     }
     case 'FINISH_ROUTE_TRANSITION': {
       return {
         ...state,
-        isTransitioning: false,
+        isPendingTransition: false,
         ...action.payload,
       };
     }
