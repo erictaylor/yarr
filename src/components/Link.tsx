@@ -1,4 +1,3 @@
-import type { State, To } from 'history';
 import type {
   ComponentPropsWithoutRef,
   FocusEvent,
@@ -8,6 +7,7 @@ import type {
 } from 'react';
 import { useContext, forwardRef, useCallback } from 'react';
 import { RouterContext } from '../context/RouterContext';
+import type { State, To } from '../types';
 
 /**
  * The number representing the primary mouse button in a MouseEvent.button.
@@ -50,13 +50,9 @@ export type LinkProps<S extends State = State> = Omit<
    */
   exact?: boolean;
   /**
-   * Any location state to set.
-   */
-  state?: S;
-  /**
    * A string or partial path object that is the location to navigate to.
    */
-  to: To;
+  to: To<S>;
 };
 
 /**
@@ -70,7 +66,6 @@ export const Link = forwardRef(
       children,
       className,
       exact = false,
-      state,
       to,
       onClick,
       onFocus,
@@ -84,7 +79,7 @@ export const Link = forwardRef(
     const { history, isActive, preloadCode, warmRoute } =
       useContext(RouterContext);
 
-    const href: string = history.createHref(to);
+    const href: string = typeof to === 'string' ? to : history.createHref(to);
 
     const toIsActive = isActive(to, exact);
 
@@ -105,10 +100,10 @@ export const Link = forwardRef(
 
           const method = isActive(to, true) ? 'replace' : 'push';
 
-          history[method](to, state);
+          history[method](to);
         }
       },
-      [history, isActive, onClick, state, to]
+      [history, isActive, onClick, to]
     );
 
     /**

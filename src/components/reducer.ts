@@ -1,5 +1,4 @@
-import type { Update } from 'history';
-import type { PreparedRouteEntry } from '../types';
+import type { PreparedRouteEntry, Update } from '../types';
 
 export interface RouteRendererState {
   historyUpdate: Update;

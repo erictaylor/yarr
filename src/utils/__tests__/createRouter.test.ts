@@ -1,5 +1,5 @@
-import { Action, createMemoryHistory } from 'history';
-import type { CreateRouterOptions, RoutesConfig } from '../../types';
+import { createMemoryHistory } from 'history';
+import type { CreateRouterOptions, RoutesConfig, State } from '../../types';
 import { createRouter } from '../createRouter';
 import { locationsMatch } from '../locationsMatch';
 import { matchRoutes } from '../matchRoutes';
@@ -42,19 +42,20 @@ describe('createRouter()', () => {
     awaitComponent: true,
     awaitPreload: false,
     history: {
-      action: Action.Push,
-      back: jest.fn(),
+      action: 'PUSH',
       block: jest.fn(),
       createHref: jest.fn(),
-      forward: jest.fn(),
       go: jest.fn(),
+      goBack: jest.fn(),
+      goForward: jest.fn(),
+      length: 0,
       listen: jest.fn(),
       location: {
         hash: '',
         key: 'historyKey',
         pathname: 'historyLocation',
         search: '',
-        state: null,
+        state: undefined,
       },
       push: jest.fn(),
       replace: jest.fn(),
@@ -201,7 +202,7 @@ describe('createRouter()', () => {
   });
 
   it('should have expected behavior from returned `subscribe` function', () => {
-    const history = createMemoryHistory();
+    const history = createMemoryHistory<State>();
     const router = createRouter({ ...defaultRouterOptions, history });
 
     const mockSubscribeHistoryFunction = jest.fn();
@@ -225,13 +226,13 @@ describe('createRouter()', () => {
         location: 'preparedLocation',
       },
       {
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '',
           key: expect.any(String),
           pathname: '/testing',
           search: '',
-          state: null,
+          state: undefined,
         },
       }
     );
@@ -239,25 +240,25 @@ describe('createRouter()', () => {
     expect(mockSubscribeTransitionFunction).not.toHaveBeenCalled();
 
     router.routeTransitionCompleted({
-      action: Action.Push,
+      action: 'PUSH',
       location: {
         hash: '',
         key: 'testKey',
         pathname: '/testing',
         search: '',
-        state: null,
+        state: undefined,
       },
     });
 
     expect(mockSubscribeTransitionFunction).toHaveBeenCalledTimes(1);
     expect(mockSubscribeTransitionFunction).toHaveBeenCalledWith({
-      action: Action.Push,
+      action: 'PUSH',
       location: {
         hash: '',
         key: 'testKey',
         pathname: '/testing',
         search: '',
-        state: null,
+        state: undefined,
       },
     });
 
@@ -298,7 +299,7 @@ describe('createRouter()', () => {
 
   describe('history listener logic', () => {
     it('should do nothing when locationsMatch returns true', () => {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory<State>();
       jest.spyOn(history, 'replace');
 
       const router = createRouter({ ...defaultRouterOptions, history });
@@ -317,7 +318,7 @@ describe('createRouter()', () => {
           key: expect.any(String),
           pathname: '/firstLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
         true
       );
@@ -330,7 +331,7 @@ describe('createRouter()', () => {
     });
 
     it('should act as expected when first locationsMatch returns false (new location)', () => {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory<State>();
       jest.spyOn(history, 'replace');
 
       const router = createRouter({ ...defaultRouterOptions, history });
@@ -351,7 +352,7 @@ describe('createRouter()', () => {
           key: expect.any(String),
           pathname: '/newLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
         true
       );
@@ -362,7 +363,7 @@ describe('createRouter()', () => {
         key: expect.any(String),
         pathname: '/newLocation',
         search: '',
-        state: null,
+        state: undefined,
       });
 
       expect(prepareMatch).toHaveBeenCalledTimes(2);
@@ -384,20 +385,20 @@ describe('createRouter()', () => {
           location: 'preparedLocation',
         },
         {
-          action: Action.Push,
+          action: 'PUSH',
           location: {
             hash: '',
             key: expect.any(String),
             pathname: '/newLocation',
             search: '',
-            state: null,
+            state: undefined,
           },
         }
       );
     });
 
     it('should act as expected when second locationsMatch returns false (replaced location)', () => {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory<State>();
       jest.spyOn(history, 'replace');
 
       const router = createRouter({ ...defaultRouterOptions, history });
@@ -428,7 +429,7 @@ describe('createRouter()', () => {
     });
 
     it('should update the currentEntry with a new location', () => {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory<State>();
       const router = createRouter({ ...defaultRouterOptions, history });
 
       expect(router.get()).toEqual({
@@ -451,7 +452,7 @@ describe('createRouter()', () => {
     });
 
     it('should notify all subscribers of changes', () => {
-      const history = createMemoryHistory();
+      const history = createMemoryHistory<State>();
       const router = createRouter({ ...defaultRouterOptions, history });
 
       const firstHistorySubscriber = jest.fn();
@@ -486,13 +487,13 @@ describe('createRouter()', () => {
           location: 'preparedLocation',
         },
         {
-          action: Action.Push,
+          action: 'PUSH',
           location: {
             hash: '',
             key: expect.any(String),
-            pathname: 'newLocation',
+            pathname: '/newLocation',
             search: '',
-            state: null,
+            state: undefined,
           },
         }
       );
@@ -505,13 +506,13 @@ describe('createRouter()', () => {
           location: 'preparedLocation',
         },
         {
-          action: Action.Push,
+          action: 'PUSH',
           location: {
             hash: '',
             key: expect.any(String),
-            pathname: 'newLocation',
+            pathname: '/newLocation',
             search: '',
-            state: null,
+            state: undefined,
           },
         }
       );
@@ -524,62 +525,62 @@ describe('createRouter()', () => {
           location: 'preparedLocation',
         },
         {
-          action: Action.Push,
+          action: 'PUSH',
           location: {
             hash: '',
             key: expect.any(String),
-            pathname: 'newLocation',
+            pathname: '/newLocation',
             search: '',
-            state: null,
+            state: undefined,
           },
         }
       );
       expect(firstTransitionSubscriber).not.toHaveBeenCalled();
 
       router.routeTransitionCompleted({
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '',
           key: 'newKey',
           pathname: 'newLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
       });
 
       expect(firstTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(firstTransitionSubscriber).toHaveBeenCalledWith({
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '',
           key: 'newKey',
           pathname: 'newLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
       });
 
       expect(secondTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(secondTransitionSubscriber).toHaveBeenCalledWith({
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '',
           key: 'newKey',
           pathname: 'newLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
       });
 
       expect(thirdTransitionSubscriber).toHaveBeenCalledTimes(1);
       expect(thirdTransitionSubscriber).toHaveBeenCalledWith({
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '',
           key: 'newKey',
           pathname: 'newLocation',
           search: '',
-          state: null,
+          state: undefined,
         },
       });
     });

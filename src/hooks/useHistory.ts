@@ -1,7 +1,7 @@
-import type { History, State } from 'history';
+import type { History } from 'history';
 import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
-import type { RouterContextProps } from '../types';
+import type { RouterContextProps, State } from '../types';
 
 type UseHistory<S extends State> = Pick<
   History<S>,

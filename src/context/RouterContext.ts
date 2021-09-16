@@ -1,4 +1,3 @@
-import { Action } from 'history';
 import { createContext } from 'react';
 import type { RouterContextProps } from '../types';
 
@@ -18,19 +17,20 @@ const defaultContext: RouterContextProps = {
   get: defaultFunction,
   getCurrentRouteKey: defaultFunction,
   history: {
-    action: Action.Push,
-    back: defaultFunction,
+    action: 'PUSH',
     block: defaultFunction,
     createHref: defaultFunction,
-    forward: defaultFunction,
     go: defaultFunction,
+    goBack: defaultFunction,
+    goForward: defaultFunction,
+    length: 0,
     listen: defaultFunction,
     location: {
       hash: '',
       key: '',
       pathname: '',
       search: '',
-      state: null,
+      state: undefined,
     },
     push: defaultFunction,
     replace: defaultFunction,

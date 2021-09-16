@@ -1,4 +1,4 @@
-import type { PartialPath } from 'history';
+import type { PartialPath } from '../types';
 import { pathStringToPath } from './pathStringToPath';
 import { queryStringToObject } from './queryStringToObject';
 import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';

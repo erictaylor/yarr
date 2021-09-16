@@ -1,10 +1,10 @@
-import type { Update } from 'history';
 import type {
   RouterProps,
   CreateRouterOptions,
   RoutesConfig,
   RouterSubscriptionHistoryCallback,
   RouterSubscriptionTransitionCallback,
+  Update,
 } from '../types';
 import { locationsMatch } from './locationsMatch';
 import { matchRoutes } from './matchRoutes';
@@ -59,9 +59,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     ]
   > = new Map();
 
-  history.listen((update) => {
-    const { location } = update;
-
+  history.listen((location, action) => {
     if (locationsMatch(currentEntry.location, location, true)) {
       // Still on same route.
       logger({
@@ -108,7 +106,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     });
 
     subscribers.forEach(([historyCallback]) =>
-      historyCallback?.(nextEntry, update)
+      historyCallback?.(nextEntry, { action, location })
     );
   });
 

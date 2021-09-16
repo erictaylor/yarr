@@ -1,11 +1,10 @@
-import { Action } from 'history';
 import type { PreparedRouteEntry } from '../../types';
 import type { RouteRendererState } from '../reducer';
 import { reducer } from '../reducer';
 
 const initialState: RouteRendererState = {
   historyUpdate: {
-    action: Action.Pop,
+    action: 'POP',
     location: {
       hash: '',
       key: 'initialKey',
@@ -35,7 +34,7 @@ describe('reducer', () => {
         {
           payload: {
             historyUpdate: {
-              action: Action.Push,
+              action: 'PUSH',
               location: {
                 hash: '#test',
                 key: 'newKey',
@@ -52,7 +51,7 @@ describe('reducer', () => {
     ).toEqual({
       ...initialState,
       historyUpdate: {
-        action: Action.Push,
+        action: 'PUSH',
         location: {
           hash: '#test',
           key: 'newKey',

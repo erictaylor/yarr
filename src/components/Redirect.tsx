@@ -1,12 +1,11 @@
-import type { State, To } from 'history';
 import { useContext, useEffect } from 'react';
 import { RouterContext } from '../context/RouterContext';
+import type { State, To } from '../types';
 
 interface RedirectProps<S extends State = State> {
   exact?: boolean;
   push?: boolean;
-  state?: S;
-  to: To;
+  to: To<S>;
 }
 
 /**
@@ -20,7 +19,6 @@ export const Redirect = <S extends State>({
   exact,
   push,
   to,
-  state,
 }: RedirectProps<S>) => {
   const { history, isActive, rendererInitialized } = useContext(RouterContext);
 
@@ -28,9 +26,9 @@ export const Redirect = <S extends State>({
     if (rendererInitialized && !isActive(to, exact)) {
       const replaceMethod = push ? 'push' : 'replace';
 
-      history[replaceMethod](to, state);
+      history[replaceMethod](to);
     }
-  }, [exact, history, isActive, push, rendererInitialized, state, to]);
+  }, [exact, history, isActive, push, rendererInitialized, to]);
 
   return null;
 };

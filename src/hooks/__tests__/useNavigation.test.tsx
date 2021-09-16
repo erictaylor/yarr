@@ -10,10 +10,10 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => {
       router={
         {
           history: {
-            back: 'mockHistoryBack',
             block: 'mockHistoryBlock',
-            forward: 'mockHistoryForward',
             go: 'mockHistoryGo',
+            goBack: 'mockHistoryBack',
+            goForward: 'mockHistoryForward',
             push: 'mockHistoryPush',
             replace: 'mockHistoryReplace',
           },

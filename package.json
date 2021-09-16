@@ -84,7 +84,8 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "history": "^5.0.1",
+    "@types/history": "^4.7.9",
+    "history": "^4.10.1",
     "tslib": "^2.3.1"
   }
 }

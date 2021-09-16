@@ -29,23 +29,17 @@ describe('createBrowserRouter', () => {
         awaitPreload: false,
         routes: routes as unknown as RoutesConfig,
       },
-      {
-        window: 'iframe' as unknown as Window,
-      }
+      { basename: '/' }
     );
 
     expect(createBrowserHistory).toHaveBeenCalledTimes(1);
-    expect(createBrowserHistory).toHaveBeenCalledWith({ window: 'iframe' });
+    expect(createBrowserHistory).toHaveBeenCalledWith({ basename: '/' });
     expect(createRouter).toHaveBeenCalledTimes(1);
     expect(createRouter).toHaveBeenCalledWith({
       assistPreload: false,
       awaitComponent: false,
       awaitPreload: false,
       history: {
-        // These are here because of the overwritten fix being applied.
-        createHref: expect.any(Function),
-        push: expect.any(Function),
-        replace: expect.any(Function),
         type: 'BrowserHistory',
       },
       routes,

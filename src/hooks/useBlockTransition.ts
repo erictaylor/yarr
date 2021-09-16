@@ -1,14 +1,15 @@
-import type { Blocker, State } from 'history';
-import { useCallback, useContext, useEffect, useRef } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import type { RouterContextProps } from '..';
 import { RouterContext } from '../context/RouterContext';
+import type { Update } from '../types';
 
-interface UseBlockTransitionOptions<S extends State> {
-  blocker?: Blocker<S>;
-  toggle?: boolean;
+const DEFAULT_PROMPT_MESSAGE = 'Are you sure you want to leave without saving?';
+
+interface UseBlockTransitionOptions {
+  message?: string;
+  toggle?: boolean | ((update?: Update) => boolean);
+  unload?: boolean;
 }
-
-type UseBlockTransitionUnblockCallback = () => void;
 
 /**
  * Calls a `blocker` callback if `toggle` is true when one of the following
@@ -29,70 +30,81 @@ type UseBlockTransitionUnblockCallback = () => void;
  * @see https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md
  *
  * @param options - Options for the useBlockTransition hook
- * @param options.blocker - A function that will be called when the blocker is triggered
- * @param options.toggle - A boolean that will trigger the blocker if true. Default: `true`
- *
- * @returns A function that will unblock the blocker
- *
- * @example
- * ```ts
- * const unblock = useBlockTransition({
- *   blocker: ({ retry }) => {
- *     if (window.confirm('Are you sure you want to leave?')) {
- *       unblock();
- *       retry();
- *     }
- *  },
- *  toggle: true,
- * });
- * ```
+ * @param options.message - Message string to display in the blocker (ie window.confirm).
+ * @param options.toggle - A boolean or function that returns a boolean that will trigger the blocker if true. Default: `false`
+ * @param options.unload - A boolean that will trigger the blocker on 'beforeunload' if true. Default: `true`
  */
-export const useBlockTransition = <S extends State>({
-  blocker,
-  toggle = true,
-}: UseBlockTransitionOptions<S> = {}): UseBlockTransitionUnblockCallback => {
+export const useBlockTransition = ({
+  message = DEFAULT_PROMPT_MESSAGE,
+  toggle,
+  unload = true,
+}: UseBlockTransitionOptions = {}): void => {
   const {
     history: { block },
-  } = useContext(RouterContext) as RouterContextProps<S>;
+  } = useContext(RouterContext) as RouterContextProps;
 
-  const unblockRef = useRef<UseBlockTransitionUnblockCallback>(() => {});
+  const resolvePrompt = useCallback(
+    (update?: Update) =>
+      typeof toggle === 'function' ? toggle(update) : toggle,
+    [toggle]
+  );
 
-  const blockerCallback = useCallback<Blocker<S>>(() => {
-    if (blocker) return blocker;
-
-    // Default blocker implementation
-    const defaultBlocker: Blocker<S> = ({ location, retry }) => {
-      const url = location.pathname;
-
-      if (window) {
-        if (
-          // eslint-disable-next-line no-alert
-          window.confirm(`Are you sure you want to go navigate to '${url}'?`)
-        ) {
-          unblockRef.current();
-          retry();
-        }
-      } else {
-        // If not in browser, just unblock
-        unblockRef.current();
-        retry();
+  /**
+   * This implementation is contingent on history@^4 being used.
+   * In the event of us upgrading to v5/beyond, this implementation will
+   * likely break. - @lmulvey
+   *
+   * See: https://github.com/ReactTraining/history/blob/v4/docs/Blocking.md [v4 signature]
+   * See: https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md [v5 transition]
+   */
+  const handleHistoryBlock = useCallback(
+    (location, action) => {
+      const shouldShowPrompt = resolvePrompt({ action, location });
+      if (shouldShowPrompt) {
+        // show a browser prompt and warn the user of unsaved changes
+        return message;
       }
-    };
 
-    return defaultBlocker;
-  }, [blocker]);
+      // returning undefined allows history to continue as it should
+      return undefined;
+    },
+    [resolvePrompt, message]
+  );
+
+  // handles browserunload events
+  const handleUnload = useCallback(
+    (event: BeforeUnloadEvent) => {
+      const shouldShowPrompt = resolvePrompt();
+
+      if (shouldShowPrompt) {
+        event.preventDefault();
+        const returnValue = event.defaultPrevented
+          ? undefined
+          : event.returnValue;
+        event.returnValue = returnValue;
+
+        return event.returnValue;
+      }
+
+      return true;
+    },
+    [resolvePrompt]
+  );
 
   useEffect(() => {
-    if (toggle) {
-      unblockRef.current = block(blockerCallback);
-    } else {
-      unblockRef.current = () => {};
+    const unblock = block(handleHistoryBlock);
+
+    if (window && unload) {
+      window.addEventListener('beforeunload', handleUnload);
     }
 
     return () => {
-      unblockRef.current();
-    };
-  }, [block, blockerCallback, toggle]);
+      if (window && unload) {
+        window.removeEventListener('beforeunload', handleUnload);
+      }
 
-  return unblockRef.current;
+      // ensure the block is cleared
+      unblock();
+    };
+  }, [block, handleUnload, handleHistoryBlock, unload]);
 };

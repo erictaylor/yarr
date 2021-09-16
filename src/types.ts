@@ -1,16 +1,44 @@
 import type {
-  BrowserHistory,
-  HashHistory,
+  Action,
+  // BrowserHistory,
+  // HashHistory,
   History,
+  Location,
+  LocationDescriptor,
+  LocationDescriptorObject,
   MemoryHistory,
-  Path,
-  PartialPath,
-  State,
-  To,
-  Update,
+  // Path,
+  // PartialPath,
+  // State,
+  // To,
+  // Update,
 } from 'history';
 import type { ComponentType } from 'react';
 import type { SuspenseResource } from './utils/SuspenseResource';
+
+// HISTORY TYPES
+// --------------------------------------------------
+
+// In v5, State is `object | null`, not `undefined`.
+export type State = object | undefined;
+
+export type BrowserHistory<S extends State = State> = History<S>;
+export type HashHistory<S extends State = State> = History<S>;
+
+// In History v5 this is just called "Path".
+export interface HistoryPath {
+  hash: string;
+  pathname: string;
+  search: string;
+}
+
+export type PartialPath = LocationDescriptorObject;
+
+export interface Update {
+  action: Action;
+  location: Location;
+}
+export type To<S extends State = State> = LocationDescriptor<S>;
 
 /**
  * This type takes a given path and returns a union containing the path parameters.
@@ -173,7 +201,7 @@ export type LoggerFunction = (details: {
 
 export interface CreateRouterOptions<Routes extends RoutesConfig>
   extends RouterOptions<Routes> {
-  history: History;
+  history: History<State>;
 }
 
 export type RouterSubscriptionHistoryCallback = (
@@ -259,7 +287,7 @@ export interface MatchedRoute {
    * Represents the route pattern that was matched.
    */
   key: string;
-  location: Path;
+  location: HistoryPath;
   params: Record<string, string>;
   route: RouteEntry;
   search: Record<string, string[] | string>;
@@ -276,7 +304,7 @@ export type PreloadedMap = Map<
 
 export interface PreparedEntryFragment {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
-  location: Path;
+  location: HistoryPath;
   params: Record<string, string>;
   search: Record<string, string[] | string>;
 }
@@ -304,7 +332,7 @@ export interface PreparedRouteEntryProps<AssistMode extends boolean = boolean> {
 
 export interface PreparedRouteEntry {
   component: SuspenseResource<ComponentType<PreparedRouteEntryProps>>;
-  location: Path;
+  location: HistoryPath;
   props: PreparedRouteEntryProps;
 }
 

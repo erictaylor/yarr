@@ -1,12 +1,16 @@
-import type { History, State } from 'history';
+import type { History } from 'history';
 import { useContext } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
-import type { RouterContextProps } from '../types';
+import type { RouterContextProps, State } from '../types';
 
 type UseNavigation<S extends State> = Pick<
   History<S>,
-  'back' | 'block' | 'forward' | 'go' | 'push' | 'replace'
->;
+  'block' | 'go' | 'push' | 'replace'
+> & {
+  // These would come from history v5, but in v4 we are renaming them
+  back: () => void;
+  forward: () => void;
+};
 
 export const useNavigation = <S extends State = State>(): UseNavigation<S> => {
   const context = useContext(RouterContext) as RouterContextProps<S>;
@@ -17,7 +21,7 @@ export const useNavigation = <S extends State = State>(): UseNavigation<S> => {
     );
   }
 
-  const { back, block, forward, go, push, replace } = context.history;
+  const { goBack, block, goForward, go, push, replace } = context.history;
 
-  return { back, block, forward, go, push, replace };
+  return { back: goBack, block, forward: goForward, go, push, replace };
 };

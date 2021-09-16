@@ -200,7 +200,7 @@ describe('<Link />', () => {
 
         expect(router.history.replace).not.toHaveBeenCalled();
         expect(router.history.push).toHaveBeenCalledTimes(1);
-        expect(router.history.push).toHaveBeenCalledWith('/about', undefined);
+        expect(router.history.push).toHaveBeenCalledWith('/about');
       });
 
       it('should pass link state to history push/replace when link is clicked and has state', () => {
@@ -208,7 +208,10 @@ describe('<Link />', () => {
         const mockOnClick = jest.fn();
 
         render(
-          <Link onClick={mockOnClick} state={{ foo: 'bar' }} to="/anywhere">
+          <Link
+            onClick={mockOnClick}
+            to={{ pathname: '/anywhere', state: { foo: 'bar' } }}
+          >
             To anywhere
           </Link>,
           { wrapper }
@@ -225,8 +228,9 @@ describe('<Link />', () => {
 
         expect(router.history.replace).not.toHaveBeenCalled();
         expect(router.history.push).toHaveBeenCalledTimes(1);
-        expect(router.history.push).toHaveBeenCalledWith('/anywhere', {
-          foo: 'bar',
+        expect(router.history.push).toHaveBeenCalledWith({
+          pathname: '/anywhere',
+          state: { foo: 'bar' },
         });
       });
 
@@ -286,7 +290,7 @@ describe('<Link />', () => {
 
         expect(router.history.replace).not.toHaveBeenCalled();
         expect(router.history.push).toHaveBeenCalledTimes(1);
-        expect(router.history.push).toHaveBeenCalledWith('/about', undefined);
+        expect(router.history.push).toHaveBeenCalledWith('/about');
       });
 
       it('should not call history push or replace when target is not `_self`', () => {
@@ -336,10 +340,7 @@ describe('<Link />', () => {
         fireEvent.click(link);
 
         expect(router.history.replace).toHaveBeenCalledTimes(1);
-        expect(router.history.replace).toHaveBeenCalledWith(
-          '/about',
-          undefined
-        );
+        expect(router.history.replace).toHaveBeenCalledWith('/about');
         expect(router.history.push).not.toHaveBeenCalled();
       });
 

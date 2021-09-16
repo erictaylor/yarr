@@ -1,5 +1,4 @@
-import type { Path } from 'history';
-import type { MatchedRoute, RoutesEntryMap } from '../types';
+import type { HistoryPath, MatchedRoute, RoutesEntryMap } from '../types';
 import { matchRegexRoute } from './matchRegexRoute';
 import { pathStringToPath } from './pathStringToPath';
 import { queryStringToObject } from './queryStringToObject';
@@ -13,7 +12,7 @@ import { queryStringToObject } from './queryStringToObject';
  */
 export const matchRoutes = (
   routes: RoutesEntryMap,
-  requestedMatch: Path | string
+  requestedMatch: HistoryPath | string
 ): MatchedRoute => {
   const locationToMatch = pathStringToPath(requestedMatch);
   const { pathname } = locationToMatch;

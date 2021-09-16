@@ -1,5 +1,4 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
-import { Action } from 'history';
 import { Suspense } from 'react';
 import { RouterContext } from '../../context/RouterContext';
 import type {
@@ -84,19 +83,20 @@ const mockRouter: RouterContextProps = {
   get: mockRouterGet,
   getCurrentRouteKey: jest.fn(),
   history: {
-    action: Action.Pop,
-    back: jest.fn(),
+    action: 'PUSH',
     block: jest.fn(),
     createHref: jest.fn(),
-    forward: jest.fn(),
     go: jest.fn(),
+    goBack: jest.fn(),
+    goForward: jest.fn(),
+    length: 0,
     listen: jest.fn(),
     location: {
       hash: '',
       key: 'historyKey',
       pathname: 'historyLocation',
       search: '',
-      state: null,
+      state: undefined,
     },
     push: jest.fn(),
     replace: jest.fn(),
@@ -374,13 +374,13 @@ describe('<RouteRenderer />', () => {
 
     expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
     expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
-      action: 'POP',
+      action: 'PUSH',
       location: {
         hash: '',
         key: 'historyKey',
         pathname: 'historyLocation',
         search: '',
-        state: null,
+        state: undefined,
       },
     });
 
@@ -437,7 +437,7 @@ describe('<RouteRenderer />', () => {
           key: 'test',
           pathname: '/new-route',
           search: '?test=foo',
-          state: null,
+          state: undefined,
         },
       },
     });
@@ -453,13 +453,13 @@ describe('<RouteRenderer />', () => {
       expect(screen.getByText('Hello world')).toBeInTheDocument();
       expect(mockRouteTransitionCompleted).toHaveBeenCalledTimes(1);
       expect(mockRouteTransitionCompleted).toHaveBeenCalledWith({
-        action: 'POP',
+        action: 'PUSH',
         location: {
           hash: '#test',
           key: 'test',
           pathname: '/new-route',
           search: '?test=foo',
-          state: null,
+          state: undefined,
         },
       });
     });

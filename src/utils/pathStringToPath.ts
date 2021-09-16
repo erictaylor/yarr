@@ -1,7 +1,7 @@
-import type { PartialPath, Path } from 'history';
 import { parsePath } from 'history';
+import type { PartialPath, HistoryPath } from '../types';
 
-export const pathStringToPath = (path: PartialPath | string): Path => {
+export const pathStringToPath = (path: PartialPath | string): HistoryPath => {
   return {
     hash: '',
     pathname: '',
