@@ -67,6 +67,7 @@ export const RouteRenderer = ({
     history,
     logger,
     routeTransitionCompleted,
+    setRendererInitialized,
     subscribe,
   } = useContext(RouterContext);
 
@@ -195,6 +196,8 @@ export const RouteRenderer = ({
       },
     });
 
+    setRendererInitialized(true);
+
     return () => {
       logger({
         level: 'trace',
@@ -208,6 +211,7 @@ export const RouteRenderer = ({
     awaitComponent,
     getPendingRouteEntry,
     logger,
+    setRendererInitialized,
     startTransition,
     subscribe,
   ]);

@@ -35,7 +35,15 @@ const spyIsActive = router.isActive as unknown as jest.Mock<
 >;
 
 const wrapper = ({ children }: { children?: ReactNode }) => (
-  <RouterContext.Provider value={router}>{children}</RouterContext.Provider>
+  <RouterContext.Provider
+    value={{
+      ...router,
+      rendererInitialized: true,
+      setRendererInitialized: () => {},
+    }}
+  >
+    {children}
+  </RouterContext.Provider>
 );
 
 describe('<Link />', () => {

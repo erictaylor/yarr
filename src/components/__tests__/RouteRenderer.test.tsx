@@ -104,7 +104,9 @@ const mockRouter: RouterContextProps = {
   isActive: jest.fn(),
   logger: jest.fn(),
   preloadCode: jest.fn(),
+  rendererInitialized: false,
   routeTransitionCompleted: mockRouteTransitionCompleted,
+  setRendererInitialized: jest.fn(),
   subscribe: mockRouterSubscribe,
   warmRoute: jest.fn(),
 };

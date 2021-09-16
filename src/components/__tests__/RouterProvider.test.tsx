@@ -1,21 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import { RouterContext } from '../../context/RouterContext';
-import type { RouterContextProps } from '../../types';
+import type { RouterProps } from '../../types';
 import { RouterProvider } from '../RouterProvider';
 import '@testing-library/jest-dom';
 
 describe('<RouterProvider />', () => {
   it('should render children with access to router context', () => {
-    const router = 'mockedRouter' as unknown as RouterContextProps;
+    const router = { mockedRouter: 'mockedRouter' } as unknown as RouterProps;
 
     render(
       <RouterProvider router={router}>
         <RouterContext.Consumer>
-          {(value) => <div>{value}</div>}
+          {(value) => <div>{JSON.stringify(value)}</div>}
         </RouterContext.Consumer>
       </RouterProvider>
     );
 
-    expect(screen.getByText('mockedRouter')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        JSON.stringify({ ...router, rendererInitialized: false })
+      )
+    ).toBeInTheDocument();
   });
 });

@@ -1,7 +1,6 @@
 import type { Update } from 'history';
-// import { parsePath } from 'history';
 import type {
-  RouterContextProps,
+  RouterProps,
   CreateRouterOptions,
   RoutesConfig,
   RouterSubscriptionHistoryCallback,
@@ -25,7 +24,7 @@ export const createRouter = <Routes extends RoutesConfig>({
   history,
   logger = () => {},
   routes,
-}: CreateRouterOptions<Routes>): RouterContextProps => {
+}: CreateRouterOptions<Routes>): RouterProps => {
   logger({
     context: { assistPreload, awaitComponent, awaitPreload },
     level: 'info',
@@ -128,7 +127,7 @@ export const createRouter = <Routes extends RoutesConfig>({
     );
   };
 
-  const context: RouterContextProps = {
+  const context: RouterProps = {
     assistPreload,
     awaitComponent,
     get: () => currentEntry,

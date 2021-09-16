@@ -187,7 +187,7 @@ export type RouterSubscriptionTransitionCallback = (
   historyUpdate: Update
 ) => unknown;
 
-export interface RouterContextProps<S extends State = State> {
+export interface RouterProps<S extends State = State> {
   /**
    * When true, tells the router that route preloads should be made into suspense resources.
    */
@@ -247,6 +247,12 @@ export interface RouterContextProps<S extends State = State> {
    * Preloads both the component code and data for a given route.
    */
   readonly warmRoute: (to: To) => void;
+}
+
+export interface RouterContextProps<S extends State = State>
+  extends RouterProps<S> {
+  rendererInitialized: boolean;
+  setRendererInitialized: (value: boolean) => void;
 }
 export interface MatchedRoute {
   /**

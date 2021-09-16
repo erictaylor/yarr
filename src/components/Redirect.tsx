@@ -22,15 +22,15 @@ export const Redirect = <S extends State>({
   to,
   state,
 }: RedirectProps<S>) => {
-  const { history, isActive } = useContext(RouterContext);
+  const { history, isActive, rendererInitialized } = useContext(RouterContext);
 
   useEffect(() => {
-    if (!isActive(to, exact)) {
+    if (rendererInitialized && !isActive(to, exact)) {
       const replaceMethod = push ? 'push' : 'replace';
 
       history[replaceMethod](to, state);
     }
-  }, [exact, history, isActive, push, state, to]);
+  }, [exact, history, isActive, push, rendererInitialized, state, to]);
 
   return null;
 };
