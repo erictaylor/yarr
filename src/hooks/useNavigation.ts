@@ -1,5 +1,5 @@
 import type { History } from 'history';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { isRouterContext, RouterContext } from '../context/RouterContext';
 import type { RouterContextProps, State } from '../types';
 
@@ -23,5 +23,8 @@ export const useNavigation = <S extends State = State>(): UseNavigation<S> => {
 
   const { goBack, block, goForward, go, push, replace } = context.history;
 
-  return { back: goBack, block, forward: goForward, go, push, replace };
+  return useMemo(
+    () => ({ back: goBack, block, forward: goForward, go, push, replace }),
+    [goBack, block, goForward, go, push, replace]
+  );
 };

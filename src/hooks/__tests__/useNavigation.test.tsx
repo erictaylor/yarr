@@ -4,19 +4,27 @@ import { RouterProvider } from '../../components/RouterProvider';
 import type { RouterContextProps } from '../../types';
 import { useNavigation } from '../useNavigation';
 
-const ContextWrapper = ({ children }: { children: ReactNode }) => {
+const defaultMockHistory = {
+  block: 'mockHistoryBlock',
+  go: 'mockHistoryGo',
+  goBack: 'mockHistoryBack',
+  goForward: 'mockHistoryForward',
+  push: 'mockHistoryPush',
+  replace: 'mockHistoryReplace',
+};
+
+const ContextWrapper = ({
+  children,
+  history = defaultMockHistory,
+}: {
+  children?: ReactNode;
+  history?: unknown;
+}) => {
   return (
     <RouterProvider
       router={
         {
-          history: {
-            block: 'mockHistoryBlock',
-            go: 'mockHistoryGo',
-            goBack: 'mockHistoryBack',
-            goForward: 'mockHistoryForward',
-            push: 'mockHistoryPush',
-            replace: 'mockHistoryReplace',
-          },
+          history,
         } as unknown as RouterContextProps
       }
     >
@@ -47,5 +55,34 @@ describe('useNavigation()', () => {
       push: 'mockHistoryPush',
       replace: 'mockHistoryReplace',
     });
+  });
+
+  it('should return memoized function', () => {
+    const { result, rerender } = renderHook(() => useNavigation(), {
+      wrapper: ContextWrapper,
+    });
+
+    const firstResult = result.current;
+
+    rerender();
+
+    expect(firstResult).toEqual(result.current);
+  });
+
+  it('should mutate navigation if history object changes', () => {
+    const { result, rerender } = renderHook(() => useNavigation(), {
+      wrapper: ContextWrapper,
+    });
+
+    const firstResult = result.current;
+
+    rerender({
+      history: {
+        ...defaultMockHistory,
+        block: 'foo',
+      },
+    });
+
+    expect(firstResult).not.toEqual(result.current);
   });
 });
