@@ -18,9 +18,9 @@ npm install yarr
 yarn add yarr
 ```
 
-<!-- ## Docs
+## Docs
 
-To read the documentation, please visit [yarr.dev](https://yarr.dev).
+Read the detailed docs [here](/docs/README.md).
 
 ## Contributing
 
