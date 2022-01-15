@@ -51,4 +51,4 @@ The Link component additionally handles "intent" preloading. A mouseover on a li
 
 The `RouteRenderer` component is responsible for rendering a component matching the path. It uses the `routes` array configuration and renders the component which matches the URL. 
 
-Example usage is [here](/docs/getting-started/step-by-step-guide).
+Example usage is [here](/docs/guides/1-step-by-step-guide.md).

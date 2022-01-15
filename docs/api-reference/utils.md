@@ -35,7 +35,7 @@ HashHistory is useful when large apps are joined together and are managed indepe
 
 The above utils take in `assistPreload`,  `awaitComponent`, `awaitPreload`, and `logger` as optional properties.  
 
-`awaitComponent` and `awaitPreload` is discussed in detail in the [performance section](/docs/advanced/performance-and-ux).
+`awaitComponent` and `awaitPreload` is discussed in detail in the [performance section](/docs/advanced/performance-and-ux.md).
 
 ---
 ** Note:** Documentation for SuspenseResource is WIP.
