@@ -10,7 +10,6 @@ A React router library enabling the render-as-you-fetch concurrent UI pattern.
 * [Getting Started](#getting-started)
 * [Usage Examples](#usage-examples)
 * [API reference](#api-reference)
-* [Contributing](#contributing)
 * [License](#license)
 
 ## Overview
@@ -37,10 +36,6 @@ Yarr was originally developed for use with [Relay](https://relay.dev) (_formally
 - [Components](/docs/api-reference/components.md)
 - [Hooks](/docs/api-reference/hooks.md)
 - [Utils](/docs/api-reference/utils.md)
-
-## Contributing
-
-[Contributing](/.github/CONTRIBUTING.md)
 
 ## License
 
