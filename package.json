@@ -6,7 +6,7 @@
     "Eric Taylor <eric.taylor@contra.com>"
   ],
   "description": "Yet another React Router.",
-  "repository": "https://github.com/erictaylor/yarr",
+  "repository": "https://github.com/contra/yarr",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
