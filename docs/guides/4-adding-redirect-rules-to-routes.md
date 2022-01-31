@@ -8,7 +8,10 @@ Redirection at the route config level is super easy with Yarr. The code sandbox 
 
 ## Always redirect from one path to another path
 
-There are scenarios where we want to avoid a user from ever landing on a path. It could be for the following reasons - Feature at the page is deprecated - Page now has a new location
+There are scenarios where we want to avoid a user from ever landing on a path. It could be for the following reasons
+
+- Feature at the page is deprecated
+- Page now has a new location
 
 It is handy in this case to supply a redirection rule at the route level. It can be done with yarr like so.
 
