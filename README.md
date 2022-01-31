@@ -6,11 +6,11 @@
 
 A React router library enabling the render-as-you-fetch concurrent UI pattern.
 
-* [Overview](#overview)
-* [Getting Started](#getting-started)
-* [Usage Examples](#usage-examples)
-* [API reference](#api-reference)
-* [License](#license)
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+- [Usage Examples](#usage-examples)
+- [API reference](#api-reference)
+- [License](#license)
 
 ## Overview
 
@@ -26,10 +26,11 @@ Yarr was originally developed for use with [Relay](https://relay.dev) (_formally
 
 - [Parameterized Routing example](/docs/guides/2-parameterized-routing.md)
 - [Preloading data with Relay example](/docs/guides/3-preloading-data-with-relay.md)
+- [Redirect Rules](/docs/guides/4-adding-redirect-rules-to-routes.md)
 
 ## Advanced
 
-- [Performance and UX with Yarr](/docs/advanced/performance-and-ux.md) 
+- [Performance and UX with Yarr](/docs/advanced/performance-and-ux.md)
 
 ## API Reference
 
