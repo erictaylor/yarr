@@ -23,6 +23,8 @@ const routes = [{...},
 , {...}]
 ```
 
+### Demo
+
 In the sandbox linked above, try going to the `Old Users` page linked in the navbar. It will take the user back to the `Users` page as it has been configured to redirect from `/old-users` to `/users` in the routes file. So,
 
 ### What is the `redirectRules` field?
