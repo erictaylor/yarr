@@ -1,8 +1,19 @@
-# Redirect Rules
+# Redirect Rules for routes
 
-The Routes configuration object allows a user to specify a redirection from a route. It also allows redirection to be conditional.
+Redirection at the route config level is super easy with Yarr. The Routes configuration object allows a user to specify a redirection from a route. It also allows redirection to be conditional.
 
-Redirection at the route config level is super easy with Yarr. The code sandbox below covers various redirection examples mentioned in this guide. ⬇️
+### What is the `redirectRules` field and why use it?
+
+`redirectRules` is a field in Yarr's route configuration object which
+
+- is run before any preload logic or component render.
+- takes a function where you can perform logic to conditionally determine if the router should redirect the user to another route.
+  - The function should return the full `pathname` of the route to redirect to, or `null` if no redirect should occur.
+  - Since this function executes before any preloading occurs, it helps avoid unnecessary data/component preloading in the case of redirection which is a big performance win.
+
+**NOTE**: redirect rules apply to children routes unless overridden.
+
+The code sandbox below covers various redirection examples mentioned in this guide. ⬇️
 
 [Open Codesandbox](https://codesandbox.io/embed/typescript-react-yarr-redirectrules-example-m1nyu?fontsize=14&hidenavigation=1&theme=dark)
 
@@ -30,20 +41,11 @@ const routes = [{...},
 
 In the sandbox linked above, try going to the `Old Users` page linked in the navbar. It will take the user back to the `Users` page as it has been configured to redirect from `/old-users` to `/users` in the routes file. So,
 
-### What is the `redirectRules` field?
-
-`redirectRules` is a field in Yarr's route configuration object which
-
-- takes a function where you can perform logic to conditionally determine if the router should redirect the user to another route.
-- is run before any preload logic or component render.
-
-The function should return the full `pathname` of the route to redirect to, or `null` if no redirect should occur.
-
-**NOTE**: redirect rules apply to children routes unless overridden.
-
 ## Redirect conditionally
 
 Sometimes the user should be redirected away from a page in certain conditions only.
+
+### Authentication example
 
 - For eg: There is an authenticated page in the app and we only want a user to enter the page if the user has the `id` of the page and has a `password` to it.
 - If the user has both values, allow access and continue preloading the component file and the data needed for the page and render the page.
