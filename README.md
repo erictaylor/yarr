@@ -22,6 +22,11 @@ Yarr was originally developed for use with [Relay](https://relay.dev) (_formally
 
 - [Step-by-step guide](/docs/guides/1-step-by-step-guide.md)
 
+Community articles:
+
+- [Getting started with Yarr!](https://medium.com/nerd-for-tech/getting-started-with-yarr-7d864266b9d1)
+- [Yarr (yet another react router) | Let’s get started | Great react routing library](https://suneetbansal.medium.com/yarr-yet-another-react-router-lets-get-started-great-react-routing-library-3e550c0834d7)
+
 ## Usage Examples
 
 - [Parameterized Routing example](/docs/guides/2-parameterized-routing.md)
