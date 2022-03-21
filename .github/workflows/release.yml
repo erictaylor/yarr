@@ -1,4 +1,4 @@
-name: Release
+  name: Release
 on:
   push:
     branches:
@@ -38,5 +38,5 @@ jobs:
       - name: 🚀 Releasing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}k
         run: yarn semantic-release
