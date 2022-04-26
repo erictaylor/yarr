@@ -151,7 +151,7 @@ the responsibility of the implementation. This only handles browser/history even
 
 ### Basic usage example
 
-For eg; here is a basic example of useBlockTransition. [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/silly-panna-f7o8i0?file=/src/App.js:23-855)
+For eg; here is a basic example of useBlockTransition. [![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](https://codesandbox.io/s/quirky-fast-t0otlc?file=/src/index.tsx)
 
 ```jsx
 import { useState } from 'react';
