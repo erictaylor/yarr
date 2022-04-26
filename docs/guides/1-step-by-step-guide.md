@@ -29,10 +29,10 @@ export const HomePage = () => <h1> Home </h1>;
 
 ```jsx
 export const AboutPage = () => (
-  <>
+  <div>
     <h1> About Us </h1>
     <p> Lorem ipsum </p>
-  </>
+  </div>
 );
 ```
 
@@ -133,10 +133,10 @@ import { RouteRenderer } from 'yarr';
 <RouteRenderer
   pendingIndicator={<p>...pending loading </p>}
   routeWrapper={({ Route }) => (
-     <>
+     <div>
          <Navbar />
          <div className="route">{Route}</div>
-     </>
+     </div>
    )}
 />
 ```
@@ -159,10 +159,10 @@ export default function App() {
       <RouteRenderer
         pendingIndicator={<p>...pending loading </p>}
         routeWrapper={({ Route }) => (
-          <>
+          <div>
             <Navbar />
             <div className="route">{Route}</div>
-          </>
+          </div>
         )}
       />
     </Suspense>
