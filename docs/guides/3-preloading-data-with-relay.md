@@ -56,4 +56,4 @@ export function ContinentsPage({ preloaded }) {
 
 Yarr makes working with Relay a breeze. Checkout the full example below. ⬇️
 
-[Open Codesandbox](https://codesandbox.io/embed/flamboyant-cache-u1bn4?fontsize=14&hidenavigation=1&theme=dark)
+[Open Codesandbox](https://codesandbox.io/embed/yarr-preloading-data-typescript-4ro4ej?fontsize=14&hidenavigation=1&theme=dark)
