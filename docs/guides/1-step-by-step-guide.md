@@ -2,7 +2,7 @@
 
 This guide will walk you through all the steps to quickly setup and get started with Yarr.  However, if you want to check out the code of the completed guide first, you can do so here ⬇️.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/react-fk8j42?file=src/App.tsx)
+[Open in Codesandbox](https://codesandbox.io/embed/yarr-1-basic-yarr-starter-completed-c8rkuw?fontsize=14&hidenavigation=1&theme=dark)
 
 
 
@@ -10,7 +10,7 @@ This guide will walk you through all the steps to quickly setup and get started 
 
 For this guide, we'll start with a create-react-app from here ⬇️. 
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/react-jbqeqg?file=src/App.tsx)
+[Open in Codesandbox](https://codesandbox.io/embed/yarr-1-basic-yarr-starter-starting-point-t5zl0v?fontsize=14&hidenavigation=1&theme=dark)
 
 
 ## Step 2. Create your route pages
@@ -172,7 +172,7 @@ export default function App() {
 
 Check out the app here! ⬇️
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/react-fk8j42?file=src/App.tsx)
+[Open in Codesandbox](https://codesandbox.io/embed/yarr-1-basic-yarr-starter-completed-c8rkuw?fontsize=14&hidenavigation=1&theme=dark)
 
 ---
 
