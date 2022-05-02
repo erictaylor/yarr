@@ -19,4 +19,4 @@ To check out how parameterized and nested routes work, check out this example.
 Checkout the example below!
 
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/react-eqqxfn?file=src/App.tsx)
+[Open in Codesandbox](https://codesandbox.io/embed/yarr-2-parameterized-routing-jgh364?fontsize=14&hidenavigation=1&theme=dark)
