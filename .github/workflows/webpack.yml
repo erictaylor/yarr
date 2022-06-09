@@ -26,3 +26,5 @@ jobs:
       run: |
         npm install
         npx webpack
+- name: Setup Node.js environment
+  uses: actions/setup-node@v3.3.0
