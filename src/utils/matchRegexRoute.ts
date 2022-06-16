@@ -17,7 +17,7 @@ export const matchRegexRoute = <Path extends string>(
     .replace(/:(\w+)|(.\*)/g, (_, parameterKey = '$rest') => {
       parametersKeys.push(parameterKey);
 
-      return `([^${parameterKey === '$rest' ? ':(w+)|(.*)' : '\\/'}]+)`;
+      return `([^${parameterKey === '$rest' ? ':*' : '\\/'}]+)`;
     })})\\/?$`;
 
   const matcher = new RegExp(matcherPattern);
