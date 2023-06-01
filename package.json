@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "license": "MIT",
   "contributors": [
-    "Eric Taylor <eric.taylor@contra.com>"
+    "Eric Taylor <eric@daxos.com> (https://github.com/erictaylor)"
   ],
   "description": "Yet another React Router.",
-  "repository": "https://github.com/contra/yarr",
+  "repository": "https://github.com/erictaylor/yarr",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
