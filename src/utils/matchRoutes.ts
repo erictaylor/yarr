@@ -36,7 +36,9 @@ export const matchRoutes = (
 		for (const [path, route] of routes.entries()) {
 			if (path !== '/*') {
 				const match = matchRegexRoute(path, pathname);
-				if (!match) continue;
+				if (!match) {
+					continue;
+				}
 
 				parameters = { ...match.params };
 			}

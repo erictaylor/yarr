@@ -27,10 +27,14 @@ export class SuspenseResource<Result> {
 	 */
 	public async load(): Promise<Result> {
 		// We already have the result, nothing left to do, return the result.
-		if (this.result !== null) return this.result;
+		if (this.result !== null) {
+			return this.result;
+		}
 
 		// If promise is already set, return it.
-		if (this.promise !== null) return this.promise;
+		if (this.promise !== null) {
+			return this.promise;
+		}
 
 		this.promise = this.loader();
 
@@ -54,9 +58,15 @@ export class SuspenseResource<Result> {
 	 */
 	public read(): Result {
 		/* eslint-disable @typescript-eslint/no-throw-literal */
-		if (this.result !== null) return this.result;
-		if (this.error !== null) throw this.error;
-		if (this.promise !== null) throw this.promise;
+		if (this.result !== null) {
+			return this.result;
+		}
+		if (this.error !== null) {
+			throw this.error;
+		}
+		if (this.promise !== null) {
+			throw this.promise;
+		}
 
 		// This line should never be reached, but just in case.
 		throw this.load();

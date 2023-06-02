@@ -100,7 +100,9 @@ export const RouteRenderer = ({
 
 			if (pendingRouteEntry.preloaded) {
 				for (const [property, value] of pendingRouteEntry.preloaded.entries()) {
-					if (!value.defer) await value.data.load();
+					if (!value.defer) {
+						await value.data.load();
+					}
 
 					preloaded[property] = value.data;
 				}
@@ -120,6 +122,7 @@ export const RouteRenderer = ({
 	);
 
 	// Subscribe to route changes and update the route entry.
+	// rome-ignore lint/nursery/useExhaustiveDependencies: `dispatch` is a stable reference from `useReducer`.
 	useEffect(() => {
 		logger({
 			level: 'debug',
@@ -134,7 +137,7 @@ export const RouteRenderer = ({
 						update,
 					},
 					level: 'info',
-					message: `Starting route transition for next entry`,
+					message: 'Starting route transition for next entry',
 					scope: 'RouteRenderer:onTransitionStart',
 				});
 
@@ -148,7 +151,7 @@ export const RouteRenderer = ({
 				if (awaitComponent) {
 					logger({
 						level: 'trace',
-						message: `Awaiting component code for next route entry.`,
+						message: 'Awaiting component code for next route entry.',
 						scope: 'RouteRenderer:onTransitionStart',
 					});
 
@@ -156,7 +159,7 @@ export const RouteRenderer = ({
 
 					logger({
 						level: 'trace',
-						message: `Completed loading of next entry component code resource.`,
+						message: 'Completed loading of next entry component code resource.',
 						scope: 'RouteRenderer:onTransitionStart',
 					});
 				}
@@ -184,7 +187,7 @@ export const RouteRenderer = ({
 							update,
 						},
 						level: 'info',
-						message: `Finalizing route transition for next entry`,
+						message: 'Finalizing route transition for next entry',
 						scope: 'RouteRenderer:onTransitionStart',
 					});
 
@@ -212,7 +215,6 @@ export const RouteRenderer = ({
 		getPendingRouteEntry,
 		logger,
 		setRendererInitialized,
-		startTransition,
 		subscribe,
 	]);
 

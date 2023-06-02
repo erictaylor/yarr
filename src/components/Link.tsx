@@ -163,6 +163,7 @@ export const Link = forwardRef(
 		);
 
 		return (
+			// rome-ignore lint/a11y/useValidAnchor: Custom link logic for router.
 			<a
 				ref={ref}
 				{...props}

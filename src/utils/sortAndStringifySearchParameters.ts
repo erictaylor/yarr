@@ -7,7 +7,9 @@ export const sortAndStringifySearchParameters = (
 	const parametersArray: string[] = [];
 
 	for (const parameter in parameters) {
-		if (!Object.prototype.hasOwnProperty.call(parameters, parameter)) continue;
+		if (!Object.prototype.hasOwnProperty.call(parameters, parameter)) {
+			continue;
+		}
 
 		parametersArray.push(parameter);
 	}
@@ -17,7 +19,9 @@ export const sortAndStringifySearchParameters = (
 		.reduce((identifier, parameterValue) => {
 			const rawValue = parameters[parameterValue];
 
-			if (!rawValue) return identifier;
+			if (!rawValue) {
+				return identifier;
+			}
 
 			const value = Array.isArray(rawValue)
 				? rawValue

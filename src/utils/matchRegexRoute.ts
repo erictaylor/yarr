@@ -23,7 +23,9 @@ export const matchRegexRoute = <Path extends string>(
 	const matcher = new RegExp(matcherPattern);
 	const match = matcher.exec(canonicalPathToMatch);
 
-	if (!match) return null;
+	if (!match) {
+		return null;
+	}
 
 	const parameters = parametersKeys.reduce<Record<string, string>>(
 		(collection, parameterKey, index) => {

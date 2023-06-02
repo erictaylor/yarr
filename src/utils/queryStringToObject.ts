@@ -6,7 +6,9 @@ import { aggregateKeyValues } from './aggregateKeyValues';
 export const queryStringToObject = (
 	search: string,
 ): Record<string, string[] | string> => {
-	if (!search) return {};
+	if (!search) {
+		return {};
+	}
 
 	// TODO: Should we just use URLSearchParams here?
 
