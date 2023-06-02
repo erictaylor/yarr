@@ -94,6 +94,33 @@ describe('matchRegexRoute()', () => {
 			2,
 			"Path '/:foo/*/*' had multiple route parameters of same name '$rest'.",
 		);
-		/* eslint-enable no-console */
+	});
+
+	it('should match with expected $rest param', () => {
+		expect(
+			matchRegexRoute(
+				'/:companySlug/assessment/:slug/code/tree/*',
+				'/acme/assessment/repo/code/tree/.eslintrc',
+			),
+		).toEqual({
+			params: {
+				companySlug: 'acme',
+				slug: 'repo',
+				$rest: '.eslintrc',
+			},
+		});
+
+		expect(
+			matchRegexRoute(
+				'/:companySlug/assessment/:slug/code/tree/*',
+				'/acme/assessment/repo/code/tree/src/some-deep/file.js',
+			),
+		).toEqual({
+			params: {
+				companySlug: 'acme',
+				slug: 'repo',
+				$rest: 'src/some-deep/file.js',
+			},
+		});
 	});
 });
