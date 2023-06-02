@@ -14,7 +14,6 @@
  */
 import React, { useCallback } from 'react';
 
-// @ts-expect-error - useTransition is only available in React v18, which is not yet released.
 const { useTransition: builtInAPI } = React;
 
 let didWarnOfShimUsage = false;
@@ -22,28 +21,28 @@ let didWarnOfShimUsage = false;
 type TransitionFunction = () => void;
 
 const useTransitionShim = (): [
-  isPending: boolean,
-  startTransition: (callback: TransitionFunction) => void
+	isPending: boolean,
+	startTransition: (callback: TransitionFunction) => void,
 ] => {
-  if (process.env['NODE_ENV'] !== 'production' && !didWarnOfShimUsage) {
-    didWarnOfShimUsage = true;
-    // eslint-disable-next-line no-console
-    console.warn(
-      'You are using a version of React without useTransition support.' +
-        'While yarr will still work, yarr will not be able to keep' +
-        'new routes with preloaded data that causes suspension from transitioning' +
-        'until the data has loaded.'
-    );
-  }
+	if (!didWarnOfShimUsage) {
+		didWarnOfShimUsage = true;
+		// eslint-disable-next-line no-console
+		console.warn(
+			'You are using a version of React without useTransition support.' +
+				'While yarr will still work, yarr will not be able to keep' +
+				'new routes with preloaded data that causes suspension from transitioning' +
+				'until the data has loaded.',
+		);
+	}
 
-  const startTransition = useCallback(
-    (transitionFunction: TransitionFunction) => {
-      transitionFunction();
-    },
-    []
-  );
+	const startTransition = useCallback(
+		(transitionFunction: TransitionFunction) => {
+			transitionFunction();
+		},
+		[],
+	);
 
-  return [false, startTransition];
+	return [false, startTransition];
 };
 
 /**
@@ -51,4 +50,4 @@ const useTransitionShim = (): [
  * This hook is only intended to be used internally by the RouteRenderer component.
  */
 export const useTransition =
-  builtInAPI === undefined ? useTransitionShim : builtInAPI;
+	builtInAPI === undefined ? useTransitionShim : builtInAPI;

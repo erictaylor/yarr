@@ -14,15 +14,24 @@
 	},
 	"homepage": "https://github.com/erictaylor/yarr#readme",
 	"bugs": "https://github.com/erictaylor/yarr/issues",
-	"main": "dist/cjs/index.js",
-	"module": "dist/esm/index.js",
-	"types": "dist/esm/index.d.ts",
 	"exports": {
-		"require": "./dist/cjs/index.js",
-		"import": "./dist/esm/index.js",
-		"default": "./dist/esm/index.js"
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
 	},
-	"files": ["dist"],
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/*.mjs",
+		"dist/*.mjs.map",
+		"dist/*.js",
+		"dist/*.js.map",
+		"dist/*.d.ts"
+	],
 	"engines": {
 		"node": ">=16"
 	},
@@ -39,15 +48,17 @@
 		"render-as-you-fetch"
 	],
 	"scripts": {
-		"analyze": "size-limit --why",
-		"build": "yarn build:esm && yarn build:cjs",
-		"build:cjs": "node ./bin/build-cjs.js",
-		"build:esm": "yarn tsc --project tsconfig.build.json",
+		"build": "pnpm run build:lib && pnpm run build:dts",
+		"build:dts": "tsc --project tsconfig.dts.json",
+		"build:lib": "node scripts/build.mjs",
 		"format": "rome format --write ./",
 		"lint": "rome check ./",
+		"prepublishOnly": "pnpm run build",
 		"size": "size-limit",
+		"size:analyze": "size-limit --why",
 		"test": "jest",
-		"test:rome": "rome ci ./src"
+		"test:rome": "rome ci ./src",
+		"test:tsc": "tsc --noEmit"
 	},
 	"peerDependencies": {
 		"react": ">=16.14.0"
@@ -72,6 +83,7 @@
 		"@testing-library/react-hooks": "^8.0.1",
 		"@testing-library/user-event": "^14.4.3",
 		"@types/jest": "^29.5.2",
+		"@types/node": "^20.2.5",
 		"@types/react": "^18.2.8",
 		"@types/react-dom": "^18.2.4",
 		"esbuild": "^0.17.19",
