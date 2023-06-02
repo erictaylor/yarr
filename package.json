@@ -65,11 +65,11 @@
 	},
 	"size-limit": [
 		{
-			"path": "dist/esm/index.js",
+			"path": "dist/index.js",
 			"limit": "10 kB"
 		},
 		{
-			"path": "dist/cjs/yarr.cjs.production.min.js",
+			"path": "dist/index.mjs",
 			"limit": "10 kB"
 		}
 	],
