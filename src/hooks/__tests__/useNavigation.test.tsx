@@ -1,88 +1,89 @@
-import { renderHook } from '@testing-library/react-hooks';
-import type { ReactNode } from 'react';
 import { RouterProvider } from '../../components/RouterProvider';
 import type { RouterContextProps } from '../../types';
 import { useNavigation } from '../useNavigation';
+import { renderHook } from '@testing-library/react-hooks';
+import type { ReactNode } from 'react';
+import { describe, expect, it } from 'vitest';
 
 const defaultMockHistory = {
-  block: 'mockHistoryBlock',
-  go: 'mockHistoryGo',
-  goBack: 'mockHistoryBack',
-  goForward: 'mockHistoryForward',
-  push: 'mockHistoryPush',
-  replace: 'mockHistoryReplace',
+	block: 'mockHistoryBlock',
+	go: 'mockHistoryGo',
+	goBack: 'mockHistoryBack',
+	goForward: 'mockHistoryForward',
+	push: 'mockHistoryPush',
+	replace: 'mockHistoryReplace',
 };
 
 const ContextWrapper = ({
-  children,
-  history = defaultMockHistory,
+	children,
+	history = defaultMockHistory,
 }: {
-  children?: ReactNode;
-  history?: unknown;
+	children?: ReactNode;
+	history?: unknown;
 }) => {
-  return (
-    <RouterProvider
-      router={
-        {
-          history,
-        } as unknown as RouterContextProps
-      }
-    >
-      {children}
-    </RouterProvider>
-  );
+	return (
+		<RouterProvider
+			router={
+				{
+					history,
+				} as unknown as RouterContextProps
+			}
+		>
+			{children}
+		</RouterProvider>
+	);
 };
 
 describe('useNavigation()', () => {
-  it('should throw an error when called outside of provider', () => {
-    const { result } = renderHook(() => useNavigation());
+	it('should throw an error when called outside of provider', () => {
+		const { result } = renderHook(() => useNavigation());
 
-    expect(result.error?.message).toBe(
-      '`useNavigation` can not be used outside of `RouterProvider`.'
-    );
-  });
+		expect(result.error?.message).toBe(
+			'`useNavigation` can not be used outside of `RouterProvider`.',
+		);
+	});
 
-  it('should return expected router object', () => {
-    const { result } = renderHook(() => useNavigation(), {
-      wrapper: ContextWrapper,
-    });
+	it('should return expected router object', () => {
+		const { result } = renderHook(() => useNavigation(), {
+			wrapper: ContextWrapper,
+		});
 
-    expect(result.current).toEqual({
-      back: 'mockHistoryBack',
-      block: 'mockHistoryBlock',
-      forward: 'mockHistoryForward',
-      go: 'mockHistoryGo',
-      push: 'mockHistoryPush',
-      replace: 'mockHistoryReplace',
-    });
-  });
+		expect(result.current).toEqual({
+			back: 'mockHistoryBack',
+			block: 'mockHistoryBlock',
+			forward: 'mockHistoryForward',
+			go: 'mockHistoryGo',
+			push: 'mockHistoryPush',
+			replace: 'mockHistoryReplace',
+		});
+	});
 
-  it('should return memoized function', () => {
-    const { result, rerender } = renderHook(() => useNavigation(), {
-      wrapper: ContextWrapper,
-    });
+	it('should return memoized function', () => {
+		const { result, rerender } = renderHook(() => useNavigation(), {
+			wrapper: ContextWrapper,
+		});
 
-    const firstResult = result.current;
+		const firstResult = result.current;
 
-    rerender();
+		rerender();
 
-    expect(firstResult).toEqual(result.current);
-  });
+		expect(firstResult).toEqual(result.current);
+	});
 
-  it('should mutate navigation if history object changes', () => {
-    const { result, rerender } = renderHook(() => useNavigation(), {
-      wrapper: ContextWrapper,
-    });
+	it('should mutate navigation if history object changes', () => {
+		const { result, rerender } = renderHook(() => useNavigation(), {
+			wrapper: ContextWrapper,
+		});
 
-    const firstResult = result.current;
+		const firstResult = result.current;
 
-    rerender({
-      history: {
-        ...defaultMockHistory,
-        block: 'foo',
-      },
-    });
+		rerender({
+			history: {
+				...defaultMockHistory,
+				block: 'foo',
+			},
+		});
 
-    expect(firstResult).not.toEqual(result.current);
-  });
+		expect(firstResult).not.toEqual(result.current);
+	});
 });

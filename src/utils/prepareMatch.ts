@@ -1,14 +1,14 @@
 /* eslint-disable func-style */
 import type {
-  MatchedRoute,
-  AssistedPreloadConfig,
-  AssistedMatchedRoute,
-  PreloadedMap,
-  AssistedPreloadFunction,
-  PreparedEntryFragment,
-  PreparedEntryWithAssist,
-  PreparedEntryWithoutAssist,
-  UnassistedPreloadData,
+	AssistedMatchedRoute,
+	AssistedPreloadConfig,
+	AssistedPreloadFunction,
+	MatchedRoute,
+	PreloadedMap,
+	PreparedEntryFragment,
+	PreparedEntryWithAssist,
+	PreparedEntryWithoutAssist,
+	UnassistedPreloadData,
 } from '../types';
 import { SuspenseResource } from './SuspenseResource';
 import { sortAndStringifySearchParameters } from './sortAndStringifySearchParameters';
@@ -20,77 +20,77 @@ import { sortAndStringifySearchParameters } from './sortAndStringifySearchParame
  * Used so we don't avoid multiple network requests.
  */
 const lastPreparedEntry: {
-  parametersString: string;
-  pathname: string;
-  value: PreparedEntryWithAssist | null;
+	parametersString: string;
+	pathname: string;
+	value: PreparedEntryWithAssist | null;
 } = {
-  parametersString: '',
-  pathname: '',
-  value: null,
+	parametersString: '',
+	pathname: '',
+	value: null,
 };
 
 const isPreloadFunction = (
-  preload: AssistedPreloadConfig | AssistedPreloadFunction
+	preload: AssistedPreloadConfig | AssistedPreloadFunction,
 ): preload is AssistedPreloadFunction => {
-  return typeof preload === 'function';
+	return typeof preload === 'function';
 };
 
 export const isEntryPreloadedMap = (
-  preloaded: PreloadedMap | UnassistedPreloadData | undefined
+	preloaded: PreloadedMap | UnassistedPreloadData | undefined,
 ): preloaded is PreloadedMap => {
-  return preloaded instanceof Map;
+	return preloaded instanceof Map;
 };
 
 export const isAssistedPreparedEntry = (
-  entry: PreparedEntryWithAssist | PreparedEntryWithoutAssist
+	entry: PreparedEntryWithAssist | PreparedEntryWithoutAssist,
 ): entry is PreparedEntryWithAssist => {
-  return isEntryPreloadedMap(entry.preloaded);
+	return isEntryPreloadedMap(entry.preloaded);
 };
 
 const prepareAssistPreloadMatch = (
-  { route, params, search }: AssistedMatchedRoute,
-  awaitPreload: boolean
+	{ route, params, search }: AssistedMatchedRoute,
+	awaitPreload: boolean,
 ): PreloadedMap => {
-  const preloaded: PreloadedMap = new Map();
-  const preload = route.preload?.(params, search);
+	const preloaded: PreloadedMap = new Map();
+	const preload = route.preload?.(params, search);
 
-  for (const property in preload) {
-    // Skip properties that are not explicitly defined on the preload object
-    if (!Object.prototype.hasOwnProperty.call(preload, property)) {
-      continue;
-    }
+	for (const property in preload) {
+		// Skip properties that are not explicitly defined on the preload object
+		if (!Object.prototype.hasOwnProperty.call(preload, property)) {
+			continue;
+		}
 
-    const preloadProperty = preload[property];
+		const preloadProperty = preload[property];
 
-    // NOTE: This shouldn't happen given the above hasOwnProperty check,
-    // but satisfies TypeScript 'noUncheckedIndexedAccess' option (safe).
-    if (preloadProperty === undefined) {
-      continue;
-    }
+		// NOTE: This shouldn't happen given the above hasOwnProperty check,
+		// but satisfies TypeScript 'noUncheckedIndexedAccess' option (safe).
+		if (preloadProperty === undefined) {
+			continue;
+		}
 
-    const fetchFunction: AssistedPreloadFunction = isPreloadFunction(
-      preloadProperty
-    )
-      ? preloadProperty
-      : preloadProperty.data;
+		const fetchFunction: AssistedPreloadFunction = isPreloadFunction(
+			preloadProperty,
+		)
+			? preloadProperty
+			: preloadProperty.data;
 
-    const fetchResource = new SuspenseResource(fetchFunction);
+		const fetchResource = new SuspenseResource(fetchFunction);
 
-    // Start the network request for this resource.
-    void fetchResource.load();
+		// Start the network request for this resource.
+		void fetchResource.load();
 
-    // Set the entry preloaded property that will be used by RouteRenderer
-    preloaded.set(property, {
-      data: fetchResource,
-      defer:
-        !isPreloadFunction(preloadProperty) &&
-        preloadProperty.defer !== undefined
-          ? preloadProperty.defer
-          : !awaitPreload,
-    });
-  }
+		// Set the entry preloaded property that will be used by RouteRenderer
+		preloaded.set(property, {
+			data: fetchResource,
+			defer:
+				!isPreloadFunction(preloadProperty) &&
+				preloadProperty.defer !== undefined
+					? preloadProperty.defer
+					: !awaitPreload,
+		});
+	}
 
-  return preloaded;
+	return preloaded;
 };
 
 /**
@@ -100,80 +100,80 @@ const prepareAssistPreloadMatch = (
  * If `assistPreload` is true, we build suspense resources for all the requested preload data.
  */
 function prepareMatch(
-  match: MatchedRoute,
-  assistPreload: true,
-  awaitPreload?: boolean
+	match: MatchedRoute,
+	assistPreload: true,
+	awaitPreload?: boolean,
 ): PreparedEntryWithAssist;
 function prepareMatch(
-  match: MatchedRoute,
-  assistPreload?: false,
-  awaitPreload?: boolean
+	match: MatchedRoute,
+	assistPreload?: false,
+	awaitPreload?: boolean,
 ): PreparedEntryWithoutAssist;
 function prepareMatch(
-  match: MatchedRoute,
-  assistPreload?: boolean,
-  awaitPreload?: boolean
+	match: MatchedRoute,
+	assistPreload?: boolean,
+	awaitPreload?: boolean,
 ): PreparedEntryWithAssist | PreparedEntryWithoutAssist;
 function prepareMatch(
-  match: MatchedRoute,
-  assistPreload = false,
-  awaitPreload = false
+	match: MatchedRoute,
+	assistPreload = false,
+	awaitPreload = false,
 ) {
-  const { route, params, search, location } = match;
+	const { route, params, search, location } = match;
 
-  const pathnameMatch = location.pathname === lastPreparedEntry.pathname;
-  const parametersString = sortAndStringifySearchParameters(params);
+	const pathnameMatch = location.pathname === lastPreparedEntry.pathname;
+	const parametersString = sortAndStringifySearchParameters(params);
 
-  // TODO: Rewrite logic around asserting what type of `match` we are working with by using the `assistPreload` boolean.
+	// TODO: Rewrite logic around asserting what type of `match` we are working with by using the `assistPreload` boolean.
 
-  // Check if requested match is same as last match. This is important because cached match holds
-  // generated resources for preload which we need to re-use to avoid multiple network requests
-  if (
-    assistPreload &&
-    pathnameMatch &&
-    parametersString === lastPreparedEntry.parametersString &&
-    lastPreparedEntry.value !== null
-  ) {
-    return lastPreparedEntry.value;
-  }
+	// Check if requested match is same as last match. This is important because cached match holds
+	// generated resources for preload which we need to re-use to avoid multiple network requests
+	if (
+		assistPreload &&
+		pathnameMatch &&
+		parametersString === lastPreparedEntry.parametersString &&
+		lastPreparedEntry.value !== null
+	) {
+		return lastPreparedEntry.value;
+	}
 
-  // Start loading the component code.
-  void route.component.load();
+	// Start loading the component code.
+	void route.component.load();
 
-  const preparedMatchFragment: PreparedEntryFragment = {
-    component: route.component,
-    location,
-    params,
-    search,
-  };
+	const preparedMatchFragment: PreparedEntryFragment = {
+		component: route.component,
+		location,
+		params,
+		search,
+	};
 
-  if (assistPreload) {
-    const preloaded =
-      route.preload &&
-      prepareAssistPreloadMatch(match as AssistedMatchedRoute, awaitPreload);
+	if (assistPreload) {
+		const preloaded =
+			route.preload &&
+			prepareAssistPreloadMatch(match as AssistedMatchedRoute, awaitPreload);
 
-    const preparedMatchWithAssist: PreparedEntryWithAssist = {
-      ...preparedMatchFragment,
-      preloaded,
-    };
+		const preparedMatchWithAssist: PreparedEntryWithAssist = {
+			...preparedMatchFragment,
+			preloaded,
+		};
 
-    if (preloaded) {
-      // Cache the prepared match so we can reuse it for next match if the route is the same.
-      lastPreparedEntry.pathname = location.pathname ?? '';
-      lastPreparedEntry.parametersString =
-        sortAndStringifySearchParameters(params);
-      lastPreparedEntry.value = preparedMatchWithAssist;
-    }
+		if (preloaded) {
+			// Cache the prepared match so we can reuse it for next match if the route is the same.
+			lastPreparedEntry.pathname = location.pathname ?? '';
+			lastPreparedEntry.parametersString =
+				sortAndStringifySearchParameters(params);
+			lastPreparedEntry.value = preparedMatchWithAssist;
+		}
 
-    return preparedMatchWithAssist;
-  }
+		return preparedMatchWithAssist;
+	}
 
-  const preparedMatchWithoutAssist: PreparedEntryWithoutAssist = {
-    ...preparedMatchFragment,
-    preloaded: route.preload?.(params, search),
-  };
+	const preparedMatchWithoutAssist: PreparedEntryWithoutAssist = {
+		...preparedMatchFragment,
+		preloaded: route.preload?.(params, search),
+	};
 
-  return preparedMatchWithoutAssist;
+	return preparedMatchWithoutAssist;
 }
 
 export { prepareMatch };
