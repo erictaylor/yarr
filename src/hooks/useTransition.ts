@@ -26,7 +26,7 @@ const useTransitionShim = (): [
 ] => {
 	if (!didWarnOfShimUsage) {
 		didWarnOfShimUsage = true;
-		// eslint-disable-next-line no-console
+
 		console.warn(
 			'You are using a version of React without useTransition support.' +
 				'While yarr will still work, yarr will not be able to keep' +
