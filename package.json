@@ -50,7 +50,7 @@
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:dts",
 		"build:dts": "tsc --project tsconfig.dts.json",
-		"build:lib": "node scripts/build.mjs",
+		"build:lib": "node bin/build.mjs",
 		"format": "rome format --write ./",
 		"lint": "rome check ./",
 		"prepublishOnly": "pnpm run build",
@@ -101,5 +101,6 @@
 		"@types/history": "^4.7.9",
 		"history": "^4.10.1",
 		"tslib": "^2.5.2"
-	}
+	},
+	"sideEffects": false
 }

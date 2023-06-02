@@ -44,7 +44,7 @@ jobs:
         run: pnpm install
 
       - name: Rome
-        run: pnpm test:rome
+        run: pnpm rome ci
 
       - name: Build
         run: pnpm build
