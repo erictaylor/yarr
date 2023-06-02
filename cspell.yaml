@@ -16,6 +16,7 @@ version: "0.2"
 words:
   - autodocs
   - classname
+  - commitlint
   - daxos
   - erictaylor
   - falsey
