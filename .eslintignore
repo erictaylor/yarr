@@ -1,6 +1,0 @@
-
-node_modules
-bin
-dist
-commitlint.config.js
-jest.config.js
