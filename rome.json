@@ -1,0 +1,47 @@
+{
+	"$schema": "./node_modules/rome/configuration_schema.json",
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"ignore": ["node_modules", "**/dist/**"],
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"recommended": true,
+				"noAccessKey": "error"
+			},
+			"complexity": {
+				"recommended": true,
+				"noUselessFragments": "error",
+				"useSimplifiedLogicExpression": "error"
+			},
+			"correctness": {
+				"recommended": true,
+				"noUnusedVariables": "error"
+			},
+			"style": {
+				"recommended": true,
+				"noNegationElse": "error",
+				"useBlockStatements": "error",
+				"useExponentiationOperator": "error",
+				"useFragmentSyntax": "error",
+				"useSingleCaseStatement": "error"
+			},
+			"nursery": {
+				"useExhaustiveDependencies": "error"
+			}
+		}
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	}
+}

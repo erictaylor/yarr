@@ -3,19 +3,19 @@
  * and eventually combines all property values in an single array
  */
 export const aggregateKeyValues = <
-  List extends Record<string, string[] | string>
+	List extends Record<string, string[] | string>,
 >(
-  list: List,
-  key: string,
-  value = ''
+	list: List,
+	key: string,
+	value = '',
 ): string[] | string => {
-  const decodedValue = decodeURIComponent(value);
+	const decodedValue = decodeURIComponent(value);
 
-  const keyValue = list[key];
+	const keyValue = list[key];
 
-  return keyValue
-    ? Array.isArray(keyValue)
-      ? keyValue.concat(decodedValue)
-      : [keyValue, decodedValue]
-    : decodedValue;
+	return keyValue
+		? Array.isArray(keyValue)
+			? keyValue.concat(decodedValue)
+			: [keyValue, decodedValue]
+		: decodedValue;
 };

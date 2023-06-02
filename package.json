@@ -1,94 +1,107 @@
 {
-  "name": "yarr",
-  "version": "2.0.0",
-  "license": "MIT",
-  "contributors": [
-    "Eric Taylor <eric@daxos.com> (https://github.com/erictaylor)"
-  ],
-  "description": "Yet another React Router.",
-  "repository": "https://github.com/erictaylor/yarr",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
-  "exports": {
-    "require": "./dist/cjs/index.js",
-    "import": "./dist/esm/index.js",
-    "default": "./dist/esm/index.js"
-  },
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=12"
-  },
-  "keywords": [
-    "react",
-    "router",
-    "concurrent",
-    "route",
-    "routing",
-    "preloading",
-    "prefetching",
-    "relay",
-    "suspense",
-    "render-as-you-fetch"
-  ],
-  "scripts": {
-    "build": "yarn build:esm && yarn build:cjs",
-    "build:cjs": "node ./bin/build-cjs.js",
-    "build:esm": "yarn tsc --project tsconfig.build.json",
-    "test": "jest",
-    "lint": "eslint src",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
-  },
-  "peerDependencies": {
-    "react": ">=16.14.0"
-  },
-  "size-limit": [
-    {
-      "path": "dist/esm/index.js",
-      "limit": "10 kB"
-    },
-    {
-      "path": "dist/cjs/yarr.cjs.production.min.js",
-      "limit": "10 kB"
-    }
-  ],
-  "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^13.1.0",
-    "@size-limit/preset-small-lib": "^5.0.3",
-    "@skypack/package-check": "^0.2.2",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/react-hooks": "^7.0.2",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.30.0",
-    "esbuild": "^0.12.25",
-    "eslint": "^7.32.0",
-    "eslint-config-canonical": "^26.2.3",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-typescript-sort-keys": "^1.8.0",
-    "husky": "^7.0.2",
-    "jest": "^27.1.0",
-    "jest-watch-typeahead": "^0.6.4",
-    "prettier": "^2.3.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "semantic-release": "^17.4.7",
-    "size-limit": "^5.0.3",
-    "ts-jest": "^27.0.5",
-    "typescript": "^4.4.2"
-  },
-  "dependencies": {
-    "@types/history": "^4.7.9",
-    "history": "^4.10.1",
-    "tslib": "^2.3.1"
-  }
+	"name": "yarr",
+	"version": "2.0.4",
+	"license": "MIT",
+	"packageManager": "pnpm@8.5.1",
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": "Eric Taylor <eric@daxos.com> (https://github.com/erictaylor)",
+	"description": "Yet another React Router.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/erictaylor/yarr.git"
+	},
+	"homepage": "https://github.com/erictaylor/yarr#readme",
+	"bugs": "https://github.com/erictaylor/yarr/issues",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/*.mjs",
+		"dist/*.mjs.map",
+		"dist/*.js",
+		"dist/*.js.map",
+		"dist/*.d.ts"
+	],
+	"engines": {
+		"node": ">=16"
+	},
+	"keywords": [
+		"react",
+		"router",
+		"concurrent",
+		"route",
+		"routing",
+		"preloading",
+		"prefetching",
+		"relay",
+		"suspense",
+		"render-as-you-fetch"
+	],
+	"scripts": {
+		"build": "pnpm run build:lib && pnpm run build:dts",
+		"build:dts": "tsc --project tsconfig.dts.json",
+		"build:lib": "node bin/build.mjs",
+		"format": "rome format --write ./",
+		"lint": "rome check ./",
+		"prepublishOnly": "pnpm run build",
+		"size": "size-limit",
+		"size:analyze": "size-limit --why",
+		"test": "pnpm run test:rome && pnpm run test:tsc && pnpm run test:vitest run",
+		"test:rome": "rome ci ./src",
+		"test:tsc": "tsc --noEmit",
+		"test:vitest": "vitest"
+	},
+	"peerDependencies": {
+		"react": ">=16.14.0"
+	},
+	"size-limit": [
+		{
+			"path": "dist/index.js",
+			"limit": "10 kB"
+		},
+		{
+			"path": "dist/index.mjs",
+			"limit": "10 kB"
+		}
+	],
+	"devDependencies": {
+		"@commitlint/cli": "^17.6.5",
+		"@commitlint/config-conventional": "^17.6.5",
+		"@size-limit/preset-small-lib": "^8.2.4",
+		"@skypack/package-check": "^0.2.2",
+		"@testing-library/react": "^14.0.0",
+		"@testing-library/react-hooks": "^8.0.1",
+		"@testing-library/user-event": "^14.4.3",
+		"@types/node": "^20.2.5",
+		"@types/react": "^18.2.8",
+		"@types/react-dom": "^18.2.4",
+		"@vitest/coverage-istanbul": "^0.31.4",
+		"esbuild": "^0.17.19",
+		"husky": "^8.0.3",
+		"jsdom": "^22.1.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"rome": "^12.1.3",
+		"semantic-release": "^21.0.2",
+		"size-limit": "^8.2.4",
+		"typescript": "^5.1.3",
+		"vitest": "^0.31.4",
+		"vitest-dom": "^0.1.0"
+	},
+	"dependencies": {
+		"@types/history": "^4.7.9",
+		"history": "^4.10.1",
+		"tslib": "^2.5.2"
+	},
+	"sideEffects": false
 }
