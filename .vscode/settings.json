@@ -1,7 +1,24 @@
 {
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "typescript.tsdk": "node_modules/typescript/lib"
+	"[javascript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll.rome": true,
+		"source.organizeImports.rome": true
+	},
+	"editor.formatOnSave": true,
+	"eslint.enable": false,
+	"prettier.enable": false
 }
