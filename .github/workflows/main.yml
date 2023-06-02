@@ -44,10 +44,10 @@ jobs:
         run: pnpm install
 
       - name: Rome
-        run: pnpm rome ci
+        run: pnpm test:rome
 
-      - name: Build
-        run: pnpm build
+      - name: TSC
+        run: pnpm test:tsc
 
-      - name: Test
-        run: pnpm test:vitest run --coverage
+      - name: Vitest
+        run: pnpm test:vitest --coverage
