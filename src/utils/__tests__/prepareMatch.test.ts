@@ -1,11 +1,11 @@
 import type { MatchedRoute } from '../../types';
-// import SuspenseResource from '../SuspenseResource';
 import { prepareMatch } from '../prepareMatch';
+import { describe, expect, it, vi } from 'vitest';
 
-jest.mock('../SuspenseResource', () => ({
-	SuspenseResource: jest.fn().mockImplementation((componentName) => ({
-		load: jest.fn(),
-		read: jest.fn().mockReturnValue(`mock${componentName}`),
+vi.mock('../SuspenseResource', () => ({
+	SuspenseResource: vi.fn().mockImplementation((componentName) => ({
+		load: vi.fn(),
+		read: vi.fn().mockReturnValue(`mock${componentName}`),
 	})),
 }));
 
@@ -15,7 +15,7 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'matchedLocation' },
 			params: {},
 			route: {
-				component: { load: jest.fn() },
+				component: { load: vi.fn() },
 			},
 			search: {},
 		} as unknown as MatchedRoute;
@@ -38,8 +38,8 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'matchedLocation' },
 			params: { foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
-				preload: jest.fn().mockReturnValue('prefetchedData'),
+				component: { load: vi.fn() },
+				preload: vi.fn().mockReturnValue('prefetchedData'),
 			},
 			search: { baz: 'qux' },
 		} as unknown as MatchedRoute;
@@ -68,7 +68,7 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'matchedLocation' },
 			params: { foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
+				component: { load: vi.fn() },
 			},
 			search: {},
 		} as unknown as MatchedRoute;
@@ -91,8 +91,8 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'matchedLocation' },
 			params: { foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
-				preload: jest.fn().mockReturnValue({
+				component: { load: vi.fn() },
+				preload: vi.fn().mockReturnValue({
 					bar: { data: () => 'preloadedBar', defer: false },
 					foo: () => 'preloadedFoo',
 				}),
@@ -152,8 +152,8 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'matchedLocation' },
 			params: { baz: 'qux', foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
-				preload: jest.fn().mockReturnValue({
+				component: { load: vi.fn() },
+				preload: vi.fn().mockReturnValue({
 					bar: () => 'preloadedBar',
 					foo: { data: () => 'preloadedFoo', defer: true },
 				}),
@@ -213,8 +213,8 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'consecutiveMatch' },
 			params: { baz: 'qux', foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
-				preload: jest.fn().mockReturnValue({
+				component: { load: vi.fn() },
+				preload: vi.fn().mockReturnValue({
 					bar: () => 'preloadedBar',
 					foo: { data: () => 'preloadedFoo', defer: true },
 				}),
@@ -226,8 +226,8 @@ describe('prepareMatch()', () => {
 			location: { pathname: 'consecutiveMatch' },
 			params: { baz: 'qux', foo: 'bar' },
 			route: {
-				component: { load: jest.fn() },
-				preload: jest.fn().mockReturnValue({
+				component: { load: vi.fn() },
+				preload: vi.fn().mockReturnValue({
 					bar: () => 'preloadedBar',
 					foo: { data: () => 'preloadedFoo', defer: true },
 				}),

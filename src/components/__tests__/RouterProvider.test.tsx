@@ -1,8 +1,8 @@
 import { RouterContext } from '../../context/RouterContext';
 import type { RouterProps } from '../../types';
 import { RouterProvider } from '../RouterProvider';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 describe('<RouterProvider />', () => {
 	it('should render children with access to router context', () => {

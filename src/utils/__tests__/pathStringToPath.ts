@@ -1,4 +1,5 @@
 import { pathStringToPath } from '../pathStringToPath';
+import { describe, expect, it } from 'vitest';
 
 describe('pathStringToPath()', () => {
 	it('should return expected path for given path string', () => {

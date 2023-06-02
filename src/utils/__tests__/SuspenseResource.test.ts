@@ -1,7 +1,8 @@
 import { SuspenseResource } from '../SuspenseResource';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 describe('SuspenseResource', () => {
-	const mockLoader = jest
+	const mockLoader = vi
 		.fn()
 		.mockImplementation((): Promise<string> => Promise.resolve('Result'));
 
@@ -79,7 +80,7 @@ describe('SuspenseResource', () => {
 		it('should store loader `error` when promise rejects', async () => {
 			expect.hasAssertions();
 
-			const mockedFailedLoader = jest.fn().mockRejectedValue('mockError');
+			const mockedFailedLoader = vi.fn().mockRejectedValue('mockError');
 
 			const resource = new SuspenseResource(mockedFailedLoader);
 
@@ -104,7 +105,7 @@ describe('SuspenseResource', () => {
 	describe('read()', () => {
 		it('should call load if not already called', () => {
 			const resource = new SuspenseResource(mockLoader);
-			jest.spyOn(resource, 'load');
+			vi.spyOn(resource, 'load');
 
 			// @ts-expect-error -- private field
 			expect(resource.result).toBe(null);
@@ -134,7 +135,7 @@ describe('SuspenseResource', () => {
 			// @ts-expect-error -- private field
 			resource.promise = 'mockPromise';
 
-			jest.spyOn(resource, 'load');
+			vi.spyOn(resource, 'load');
 
 			// @ts-expect-error -- private field
 			expect(resource.result).toBe(null);
@@ -157,7 +158,7 @@ describe('SuspenseResource', () => {
 			// @ts-expect-error -- private field
 			resource.error = 'mockError';
 
-			jest.spyOn(resource, 'load');
+			vi.spyOn(resource, 'load');
 
 			// @ts-expect-error -- private field
 			expect(resource.result).toBe(null);
@@ -180,7 +181,7 @@ describe('SuspenseResource', () => {
 			// @ts-expect-error -- private field
 			resource.promise = 'mockPromise';
 
-			jest.spyOn(resource, 'load');
+			vi.spyOn(resource, 'load');
 
 			// @ts-expect-error -- private field
 			expect(resource.result).toBe('mockResult');

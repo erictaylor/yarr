@@ -1,4 +1,5 @@
 import { queryStringToObject } from '../queryStringToObject';
+import { describe, expect, it } from 'vitest';
 
 describe('queryStringToObject()', () => {
 	it('should return empty object if empty string passed', () => {

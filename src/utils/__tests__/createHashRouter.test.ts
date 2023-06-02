@@ -2,17 +2,18 @@ import type { RoutesConfig } from '../../types';
 import { createHashRouter } from '../createHashRouter';
 import { createRouter } from '../createRouter';
 import { createHashHistory } from 'history';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('history', () => ({
-	createHashHistory: jest.fn(() => ({
+vi.mock('history', () => ({
+	createHashHistory: vi.fn(() => ({
 		type: 'HashHistory',
 	})),
 }));
-jest.mock('../createRouter');
+vi.mock('../createRouter');
 
 describe('createHashRouter', () => {
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('throws when called with no arguments', () => {

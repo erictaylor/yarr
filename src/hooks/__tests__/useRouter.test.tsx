@@ -3,6 +3,7 @@ import type { RouterContextProps } from '../../types';
 import { useRouter } from '../useRouter';
 import { renderHook } from '@testing-library/react-hooks';
 import type { ReactNode } from 'react';
+import { describe, expect, it } from 'vitest';
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => {
 	return (

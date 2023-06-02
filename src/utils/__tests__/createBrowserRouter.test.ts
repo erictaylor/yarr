@@ -2,15 +2,16 @@ import type { RoutesConfig } from '../../types';
 import { createBrowserRouter } from '../createBrowserRouter';
 import { createRouter } from '../createRouter';
 import { createBrowserHistory } from 'history';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('history', () => ({
-	createBrowserHistory: jest.fn(() => ({ type: 'BrowserHistory' })),
+vi.mock('history', () => ({
+	createBrowserHistory: vi.fn(() => ({ type: 'BrowserHistory' })),
 }));
-jest.mock('../createRouter');
+vi.mock('../createRouter');
 
 describe('createBrowserRouter', () => {
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('throws when called with no arguments', () => {

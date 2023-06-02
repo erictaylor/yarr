@@ -1,5 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { sortAndStringifySearchParameters } from '../sortAndStringifySearchParameters';
+import { describe, expect, it } from 'vitest';
 
 describe('sortAndStringifySearchParameters()', () => {
 	it('should return sorted parameters as expected for simple object', () => {

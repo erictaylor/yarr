@@ -1,15 +1,16 @@
 import { matchRegexRoute } from '../matchRegexRoute';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 
 describe('matchRegexRoute()', () => {
-	const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+	const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 	afterEach(() => {
 		warnSpy.mockClear();
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	afterAll(() => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	});
 
 	it('matches correctly when expecting positive result', () => {

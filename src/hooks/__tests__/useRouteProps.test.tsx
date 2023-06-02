@@ -1,12 +1,13 @@
 import { RouteContext } from '../../context/RouteContext';
 import { useRouteProps } from '../useRouteProps';
 import { renderHook } from '@testing-library/react-hooks';
+import { describe, expect, it, vi } from 'vitest';
 
 const ContextWrapper = ({ children }: { children: React.ReactNode }) => (
 	<RouteContext.Provider
 		value={{
 			params: { foo: 'foo' },
-			preloaded: { query: jest.fn() },
+			preloaded: { query: vi.fn() },
 			search: { bar: 'bar' },
 		}}
 	>

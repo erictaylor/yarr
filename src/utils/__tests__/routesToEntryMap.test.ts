@@ -1,26 +1,27 @@
 import type { RoutesConfig } from '../../types';
 import { SuspenseResource } from '../SuspenseResource';
 import { routesToEntryMap } from '../routesToEntryMap';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('../SuspenseResource', () => {
+vi.mock('../SuspenseResource', () => {
 	return {
-		SuspenseResource: jest.fn().mockImplementation((componentName) => ({
-			load: jest.fn(),
-			read: jest.fn().mockReturnValue(`mock${componentName}`),
+		SuspenseResource: vi.fn().mockImplementation((componentName) => ({
+			load: vi.fn(),
+			read: vi.fn().mockReturnValue(`mock${componentName}`),
 		})),
 	};
 });
 
 describe('routesToEntryMap()', () => {
-	const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+	const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 	afterEach(() => {
 		warnSpy.mockClear();
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	afterAll(() => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	});
 
 	it('should set each entry component to a SuspenseResource', () => {
@@ -250,8 +251,8 @@ describe('routesToEntryMap()', () => {
 	});
 
 	it('should merge pass redirectRules from parent route to children', () => {
-		const preload = jest.fn(() => ({ foo: 'bar' }));
-		const redirectRule = jest.fn(() => null);
+		const preload = vi.fn(() => ({ foo: 'bar' }));
+		const redirectRule = vi.fn(() => null);
 		const routes = [
 			{
 				children: [
@@ -369,8 +370,8 @@ describe('routesToEntryMap()', () => {
 	});
 
 	it('should override redirectRules from parent if provided on child route', () => {
-		const redirectRuleLevel1 = jest.fn(() => null);
-		const redirectRuleLevel2 = jest.fn(() => null);
+		const redirectRuleLevel1 = vi.fn(() => null);
+		const redirectRuleLevel2 = vi.fn(() => null);
 
 		const routes = [
 			{

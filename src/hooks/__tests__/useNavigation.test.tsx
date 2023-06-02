@@ -3,6 +3,7 @@ import type { RouterContextProps } from '../../types';
 import { useNavigation } from '../useNavigation';
 import { renderHook } from '@testing-library/react-hooks';
 import type { ReactNode } from 'react';
+import { describe, expect, it } from 'vitest';
 
 const defaultMockHistory = {
 	block: 'mockHistoryBlock',

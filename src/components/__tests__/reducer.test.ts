@@ -1,6 +1,7 @@
 import type { PreparedRouteEntry } from '../../types';
 import type { RouteRendererState } from '../reducer';
 import { reducer } from '../reducer';
+import { describe, expect, it } from 'vitest';
 
 const initialState: RouteRendererState = {
 	historyUpdate: {

@@ -1,11 +1,20 @@
 import { RouterContext } from '../../context/RouterContext';
 import { createMemoryRouter } from '../../utils/createMemoryRouter';
 import { Link } from '../Link';
-import '@testing-library/jest-dom';
 /* eslint-disable react/forbid-component-props */
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { createRef } from 'react';
+import {
+	Mock,
+	afterAll,
+	beforeAll,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi,
+} from 'vitest';
 
 const router = createMemoryRouter({
 	routes: [
@@ -24,13 +33,14 @@ const router = createMemoryRouter({
 	],
 });
 
-jest.spyOn(router, 'isActive');
-jest.spyOn(router, 'preloadCode');
-jest.spyOn(router, 'warmRoute');
-jest.spyOn(router.history, 'replace');
-jest.spyOn(router.history, 'push');
+vi.spyOn(router, 'isActive');
+vi.spyOn(router, 'preloadCode');
+vi.spyOn(router, 'warmRoute');
+vi.spyOn(router.history, 'replace');
+vi.spyOn(router.history, 'push');
 
-const spyIsActive = router.isActive as unknown as jest.Mock<
+const spyIsActive = router.isActive as unknown as Mock<
+	Parameters<typeof router.isActive>,
 	ReturnType<typeof router.isActive>
 >;
 
@@ -48,7 +58,7 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 
 describe('<Link />', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	describe('renders', () => {
@@ -180,7 +190,7 @@ describe('<Link />', () => {
 			});
 
 			it('should call history.push and onClick prop when provided', () => {
-				const mockOnClick = jest.fn();
+				const mockOnClick = vi.fn();
 
 				render(
 					<Link onClick={mockOnClick} to='/about'>
@@ -205,7 +215,7 @@ describe('<Link />', () => {
 
 			it('should pass link state to history push/replace when link is clicked and has state', () => {
 				spyIsActive.mockClear();
-				const mockOnClick = jest.fn();
+				const mockOnClick = vi.fn();
 
 				render(
 					<Link
@@ -235,7 +245,7 @@ describe('<Link />', () => {
 			});
 
 			it('should not not call history push or restore when onClick prop prevents default', () => {
-				const mockOnClick = jest.fn((event) => {
+				const mockOnClick = vi.fn((event) => {
 					event.preventDefault();
 				});
 
@@ -351,7 +361,7 @@ describe('<Link />', () => {
 
 		describe('preload events - handleOnFocus and handleOnMouseEnter', () => {
 			it('should call preloadCode on focus event', () => {
-				const mockOnFocus = jest.fn();
+				const mockOnFocus = vi.fn();
 
 				render(
 					<Link onFocus={mockOnFocus} to='/about'>
@@ -374,7 +384,7 @@ describe('<Link />', () => {
 			});
 
 			it('should call preloadCode on mouse enter event', () => {
-				const mockOnMouseEnter = jest.fn();
+				const mockOnMouseEnter = vi.fn();
 
 				render(
 					<Link onMouseEnter={mockOnMouseEnter} to='/about'>
@@ -399,7 +409,7 @@ describe('<Link />', () => {
 
 		describe('warmRoute events - handleKeyDown and handleMouseDown', () => {
 			it('should call warmRoute on keyDown event', () => {
-				const mockOnKeyDown = jest.fn();
+				const mockOnKeyDown = vi.fn();
 
 				render(
 					<Link onKeyDown={mockOnKeyDown} to='/about'>
@@ -422,7 +432,7 @@ describe('<Link />', () => {
 			});
 
 			it('should call warmRoute on mouseDown event', () => {
-				const mockOnMouseDown = jest.fn();
+				const mockOnMouseDown = vi.fn();
 
 				render(
 					<Link onMouseDown={mockOnMouseDown} to='/about'>

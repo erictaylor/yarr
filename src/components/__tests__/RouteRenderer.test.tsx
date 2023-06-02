@@ -7,13 +7,13 @@ import type {
 } from '../../types';
 import { SuspenseResource } from '../../utils/SuspenseResource';
 import { RouteRenderer } from '../RouteRenderer';
-import '@testing-library/jest-dom';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { Suspense } from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const initialEntry = {
 	component: {
-		read: jest.fn().mockImplementation(() =>
+		read: vi.fn().mockImplementation(() =>
 			({ preloaded, params, search }: PreparedRouteEntryProps) =>
 				(
 					<div>
@@ -41,7 +41,7 @@ const assistPreloadInitialEntry = {
 
 const newRouteEntry = {
 	component: {
-		read: jest.fn().mockImplementation(() =>
+		read: vi.fn().mockImplementation(() =>
 			({ preloaded, params, search }: PreparedRouteEntryProps) =>
 				(
 					<div>
@@ -62,27 +62,25 @@ const newRouteEntry = {
 	search: {},
 };
 
-const mockRouterDispose = jest.fn();
-const mockRouterGet = jest.fn().mockImplementation(() => initialEntry);
-const mockRouterSubscribe = jest
-	.fn()
-	.mockImplementation(() => mockRouterDispose);
-const mockRouteTransitionCompleted = jest.fn();
+const mockRouterDispose = vi.fn();
+const mockRouterGet = vi.fn().mockImplementation(() => initialEntry);
+const mockRouterSubscribe = vi.fn().mockImplementation(() => mockRouterDispose);
+const mockRouteTransitionCompleted = vi.fn();
 
 const mockRouter: RouterContextProps = {
 	assistPreload: false,
 	awaitComponent: false,
 	get: mockRouterGet,
-	getCurrentRouteKey: jest.fn(),
+	getCurrentRouteKey: vi.fn(),
 	history: {
 		action: 'PUSH',
-		block: jest.fn(),
-		createHref: jest.fn(),
-		go: jest.fn(),
-		goBack: jest.fn(),
-		goForward: jest.fn(),
+		block: vi.fn(),
+		createHref: vi.fn(),
+		go: vi.fn(),
+		goBack: vi.fn(),
+		goForward: vi.fn(),
 		length: 0,
-		listen: jest.fn(),
+		listen: vi.fn(),
 		location: {
 			hash: '',
 			key: 'historyKey',
@@ -90,17 +88,17 @@ const mockRouter: RouterContextProps = {
 			search: '',
 			state: undefined,
 		},
-		push: jest.fn(),
-		replace: jest.fn(),
+		push: vi.fn(),
+		replace: vi.fn(),
 	},
-	isActive: jest.fn(),
-	logger: jest.fn(),
-	preloadCode: jest.fn(),
+	isActive: vi.fn(),
+	logger: vi.fn(),
+	preloadCode: vi.fn(),
 	rendererInitialized: false,
 	routeTransitionCompleted: mockRouteTransitionCompleted,
-	setRendererInitialized: jest.fn(),
+	setRendererInitialized: vi.fn(),
 	subscribe: mockRouterSubscribe,
-	warmRoute: jest.fn(),
+	warmRoute: vi.fn(),
 };
 
 const PendingIndicator = () => <div>Pending indicator...</div>;
@@ -117,7 +115,7 @@ const renderRouteRenderer = (routerProps?: Partial<RouterContextProps>) => {
 
 describe('<RouteRenderer />', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should render the initial route entry component from get()', () => {
@@ -286,7 +284,7 @@ describe('<RouteRenderer />', () => {
 
 		const testEntry = {
 			component: {
-				read: jest.fn().mockImplementation(
+				read: vi.fn().mockImplementation(
 					() =>
 						({
 							preloaded,

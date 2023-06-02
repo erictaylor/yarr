@@ -1,9 +1,9 @@
 import { RouterContext } from '../../context/RouterContext';
 import { createMemoryRouter } from '../../utils/createMemoryRouter';
 import { Redirect } from '../Redirect';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const router = createMemoryRouter({
 	routes: [
@@ -22,11 +22,12 @@ const router = createMemoryRouter({
 	],
 });
 
-jest.spyOn(router, 'isActive');
-jest.spyOn(router.history, 'replace');
-jest.spyOn(router.history, 'push');
+vi.spyOn(router, 'isActive');
+vi.spyOn(router.history, 'replace');
+vi.spyOn(router.history, 'push');
 
-const spyIsActive = router.isActive as unknown as jest.Mock<
+const spyIsActive = router.isActive as unknown as Mock<
+	Parameters<typeof router.isActive>,
 	ReturnType<typeof router.isActive>
 >;
 
@@ -44,7 +45,7 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 
 describe('<Redirect />', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should have a readable name in React components tree', () => {

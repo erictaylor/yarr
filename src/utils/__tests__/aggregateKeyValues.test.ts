@@ -1,4 +1,5 @@
 import { aggregateKeyValues } from '../aggregateKeyValues';
+import { describe, expect, it } from 'vitest';
 
 describe('aggregateKeyValues', () => {
 	it('should return single value to non-present key', () => {

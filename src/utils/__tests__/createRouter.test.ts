@@ -5,36 +5,43 @@ import { matchRoutes } from '../matchRoutes';
 import { prepareMatch } from '../prepareMatch';
 import { routesToEntryMap } from '../routesToEntryMap';
 import { createMemoryHistory } from 'history';
+import { Mock, afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('../routesToEntryMap', () => ({
-	routesToEntryMap: jest.fn(() => 'routesEntryMap'),
+vi.mock('../routesToEntryMap', () => ({
+	routesToEntryMap: vi.fn(() => 'routesEntryMap'),
 }));
 
-const componentLoadMock = jest.fn();
+const componentLoadMock = vi.fn();
 
-jest.mock('../matchRoutes', () => ({
-	matchRoutes: jest.fn(() => ({
+vi.mock('../matchRoutes', () => ({
+	matchRoutes: vi.fn(() => ({
 		location: 'matchedLocation',
 		route: { component: { load: componentLoadMock } },
 	})),
 }));
 
-jest.mock('../prepareMatch', () => ({
-	prepareMatch: jest.fn(() => ({
+vi.mock('../prepareMatch', () => ({
+	prepareMatch: vi.fn(() => ({
 		component: { load: componentLoadMock },
 		location: 'preparedLocation',
 	})),
 }));
 
-jest.mock('../locationsMatch', () => ({
-	locationsMatch: jest.fn(() => true),
+vi.mock('../locationsMatch', () => ({
+	locationsMatch: vi.fn(() => true),
 }));
 
-const mockLocationsMatch = locationsMatch as unknown as jest.Mock<boolean>;
-const mockPrepareMatch = prepareMatch as unknown as jest.Mock<{
-	component: { load: () => void };
-	location: string;
-}>;
+const mockLocationsMatch = locationsMatch as unknown as Mock<
+	Parameters<typeof locationsMatch>,
+	ReturnType<typeof locationsMatch>
+>;
+const mockPrepareMatch = prepareMatch as unknown as Mock<
+	Parameters<typeof prepareMatch>,
+	{
+		component: { load: () => void };
+		location: string;
+	}
+>;
 
 describe('createRouter()', () => {
 	const defaultRouterOptions: CreateRouterOptions<RoutesConfig> = {
@@ -43,13 +50,13 @@ describe('createRouter()', () => {
 		awaitPreload: false,
 		history: {
 			action: 'PUSH',
-			block: jest.fn(),
-			createHref: jest.fn(),
-			go: jest.fn(),
-			goBack: jest.fn(),
-			goForward: jest.fn(),
+			block: vi.fn(),
+			createHref: vi.fn(),
+			go: vi.fn(),
+			goBack: vi.fn(),
+			goForward: vi.fn(),
 			length: 0,
-			listen: jest.fn(),
+			listen: vi.fn(),
 			location: {
 				hash: '',
 				key: 'historyKey',
@@ -57,23 +64,23 @@ describe('createRouter()', () => {
 				search: '',
 				state: undefined,
 			},
-			push: jest.fn(),
-			replace: jest.fn(),
+			push: vi.fn(),
+			replace: vi.fn(),
 		},
 		routes: [
 			{
-				component: jest.fn(),
+				component: vi.fn(),
 				path: 'foo',
 			},
 			{
-				component: jest.fn(),
+				component: vi.fn(),
 				path: '*',
 			},
 		],
 	};
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should run the expected functions when called', () => {
@@ -205,8 +212,8 @@ describe('createRouter()', () => {
 		const history = createMemoryHistory<State>();
 		const router = createRouter({ ...defaultRouterOptions, history });
 
-		const mockSubscribeHistoryFunction = jest.fn();
-		const mockSubscribeTransitionFunction = jest.fn();
+		const mockSubscribeHistoryFunction = vi.fn();
+		const mockSubscribeTransitionFunction = vi.fn();
 
 		mockLocationsMatch.mockReturnValueOnce(false);
 
@@ -300,11 +307,11 @@ describe('createRouter()', () => {
 	describe('history listener logic', () => {
 		it('should do nothing when locationsMatch returns true', () => {
 			const history = createMemoryHistory<State>();
-			jest.spyOn(history, 'replace');
+			vi.spyOn(history, 'replace');
 
 			const router = createRouter({ ...defaultRouterOptions, history });
 
-			const mockSubscribeFunction = jest.fn();
+			const mockSubscribeFunction = vi.fn();
 
 			router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
@@ -332,11 +339,11 @@ describe('createRouter()', () => {
 
 		it('should act as expected when first locationsMatch returns false (new location)', () => {
 			const history = createMemoryHistory<State>();
-			jest.spyOn(history, 'replace');
+			vi.spyOn(history, 'replace');
 
 			const router = createRouter({ ...defaultRouterOptions, history });
 
-			const mockSubscribeFunction = jest.fn();
+			const mockSubscribeFunction = vi.fn();
 			router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
 			mockLocationsMatch.mockReturnValueOnce(false);
@@ -399,11 +406,11 @@ describe('createRouter()', () => {
 
 		it('should act as expected when second locationsMatch returns false (replaced location)', () => {
 			const history = createMemoryHistory<State>();
-			jest.spyOn(history, 'replace');
+			vi.spyOn(history, 'replace');
 
 			const router = createRouter({ ...defaultRouterOptions, history });
 
-			const mockSubscribeFunction = jest.fn();
+			const mockSubscribeFunction = vi.fn();
 			router.subscribe({ onTransitionStart: mockSubscribeFunction });
 
 			mockLocationsMatch.mockReturnValueOnce(false).mockReturnValueOnce(false);
@@ -439,7 +446,7 @@ describe('createRouter()', () => {
 
 			mockLocationsMatch.mockReturnValueOnce(false);
 			mockPrepareMatch.mockReturnValueOnce({
-				component: { load: jest.fn() },
+				component: { load: vi.fn() },
 				location: 'newLocation',
 			});
 
@@ -455,13 +462,13 @@ describe('createRouter()', () => {
 			const history = createMemoryHistory<State>();
 			const router = createRouter({ ...defaultRouterOptions, history });
 
-			const firstHistorySubscriber = jest.fn();
-			const secondHistorySubscriber = jest.fn();
-			const thirdHistorySubscriber = jest.fn();
+			const firstHistorySubscriber = vi.fn();
+			const secondHistorySubscriber = vi.fn();
+			const thirdHistorySubscriber = vi.fn();
 
-			const firstTransitionSubscriber = jest.fn();
-			const secondTransitionSubscriber = jest.fn();
-			const thirdTransitionSubscriber = jest.fn();
+			const firstTransitionSubscriber = vi.fn();
+			const secondTransitionSubscriber = vi.fn();
+			const thirdTransitionSubscriber = vi.fn();
 
 			router.subscribe({
 				onTransitionComplete: firstTransitionSubscriber,

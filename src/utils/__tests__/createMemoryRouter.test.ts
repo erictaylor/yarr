@@ -2,17 +2,18 @@ import type { RoutesConfig } from '../../types';
 import { createMemoryRouter } from '../createMemoryRouter';
 import { createRouter } from '../createRouter';
 import { createMemoryHistory } from 'history';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('history', () => ({
-	createMemoryHistory: jest.fn(() => ({
+vi.mock('history', () => ({
+	createMemoryHistory: vi.fn(() => ({
 		type: 'MemoryHistory',
 	})),
 }));
-jest.mock('../createRouter');
+vi.mock('../createRouter');
 
 describe('createMemoryRouter', () => {
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('throws when called with no arguments', () => {

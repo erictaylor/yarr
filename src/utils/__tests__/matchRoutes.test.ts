@@ -1,5 +1,6 @@
 import type { RoutesEntryMap } from '../../types';
 import { matchRoutes } from '../matchRoutes';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('matchRoutes()', () => {
 	const routesEntryMap = new Map([
@@ -9,7 +10,7 @@ describe('matchRoutes()', () => {
 			'/user',
 			{
 				component: 'UserComponent',
-				redirectRules: jest.fn().mockReturnValue('/login'),
+				redirectRules: vi.fn().mockReturnValue('/login'),
 			},
 		],
 		['/user/transactions', { component: 'TransactionsComponent' }],

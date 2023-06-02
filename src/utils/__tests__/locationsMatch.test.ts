@@ -1,4 +1,5 @@
 import { locationsMatch } from '../locationsMatch';
+import { describe, expect, it } from 'vitest';
 
 describe('locationsMatch()', () => {
 	it.each`
