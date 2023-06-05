@@ -99,7 +99,7 @@
 		"vitest-dom": "^0.1.0"
 	},
 	"dependencies": {
-		"@types/history": "^4.7.9",
+		"@types/history": "^5.0.0",
 		"history": "^4.10.1",
 		"tslib": "^2.5.2"
 	},
