@@ -29,7 +29,7 @@ devDependencies:
     version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
   '@testing-library/react-hooks':
     specifier: ^8.0.1
-    version: 8.0.1(@types/react@18.2.8)(react-dom@18.2.0)(react@18.2.0)
+    version: 8.0.1(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
   '@testing-library/user-event':
     specifier: ^14.4.3
     version: 14.4.3(@testing-library/dom@9.3.0)
@@ -38,7 +38,7 @@ devDependencies:
     version: 20.2.5
   '@types/react':
     specifier: ^18.2.8
-    version: 18.2.8
+    version: 18.2.14
   '@types/react-dom':
     specifier: ^18.2.4
     version: 18.2.4
@@ -1071,7 +1071,7 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/react-hooks@8.0.1(@types/react@18.2.8)(react-dom@18.2.0)(react@18.2.0):
+  /@testing-library/react-hooks@8.0.1(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Aqhl2IVmLt8IovEVarNDFuJDVWVvhnr9/GCU6UUnrYXwgDFF9h2L2o2P9KBni1AST5sT6riAyoukFLyjQUgD/g==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -1088,7 +1088,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.22.3
-      '@types/react': 18.2.8
+      '@types/react': 18.2.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-error-boundary: 3.1.4(react@18.2.0)
@@ -1175,11 +1175,11 @@ packages:
   /@types/react-dom@18.2.4:
     resolution: {integrity: sha512-G2mHoTMTL4yoydITgOGwWdWMVd8sNgyEP85xVmMKAPUBwQWm9wBPQUmvbeF4V3WBY1P7mmL4BkjQ0SqUpf1snw==}
     dependencies:
-      '@types/react': 18.2.8
+      '@types/react': 18.2.14
     dev: true
 
-  /@types/react@18.2.8:
-    resolution: {integrity: sha512-lTyWUNrd8ntVkqycEEplasWy2OxNlShj3zqS0LuB1ENUGis5HodmhM7DtCoUGbxj3VW/WsGA0DUhpG6XrM7gPA==}
+  /@types/react@18.2.14:
+    resolution: {integrity: sha512-A0zjq+QN/O0Kpe30hA1GidzyFjatVvrpIvWLxD+xv67Vt91TWWgco9IvrJBkeyHm1trGaFS/FSGqPlhyeZRm0g==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
