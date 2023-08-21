@@ -9,7 +9,7 @@ dependencies:
     version: 4.10.1
   tslib:
     specifier: ^2.5.2
-    version: 2.5.2
+    version: 2.6.2
 
 devDependencies:
   '@commitlint/cli':
@@ -4421,8 +4421,8 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /tslib@2.5.2:
-    resolution: {integrity: sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==}
+  /tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: false
 
   /type-detect@4.0.8:
